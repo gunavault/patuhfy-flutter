@@ -35,7 +35,7 @@ class InspeksiHancaCard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.0),
                         ),
-                        value: true,
+                        value: false,
                         onChanged: (val) {},
                       ),
                     ),

@@ -5,6 +5,7 @@ import 'package:flutter_holo_date_picker/date_picker_theme.dart';
 import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
+import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
@@ -95,6 +96,11 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
                               onPressed: () {
                                 BlocProvider.of<TasksheetPageCubit>(context)
                                     .setDatePage(selectedDate
+                                        .toString()
+                                        .substring(0, 10));
+
+                                BlocProvider.of<ApelPagiCardCubit>(context)
+                                    .checkIsAnwered(selectedDate
                                         .toString()
                                         .substring(0, 10));
                                 Navigator.pop(context);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi_form/apel_pagi_form_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -17,8 +18,9 @@ import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
 class FormApelPagi extends StatelessWidget {
-  FormApelPagi({Key? key}) : super(key: key);
+  FormApelPagi({Key? key, required this.selectedDate}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final String selectedDate;
   @override
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
@@ -76,6 +78,8 @@ class FormApelPagi extends StatelessWidget {
           } else if (apelPagiFormState is SuccessApelPagiFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             showAlertSuccessOkActionV2(context, apelPagiFormState.message, () {
+              BlocProvider.of<ApelPagiCardCubit>(context)
+                  .checkIsAnwered(selectedDate);
               Navigator.pop(context);
             });
           } else if (apelPagiFormState is DuplicatedApelPagiFormState) {
