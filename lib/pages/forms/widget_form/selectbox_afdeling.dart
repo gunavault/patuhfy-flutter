@@ -23,7 +23,6 @@ class SelectboxAfdeling extends StatelessWidget {
 
     List<String> _getSuggestions(String query, List<AfdelingModel> data) {
       List<String> matches = <String>[];
-
       List<String> data_afd = data.map((e) => e.kodeAfd.toString()).toList();
       matches.addAll(data_afd);
 

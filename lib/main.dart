@@ -9,6 +9,7 @@ import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
+import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/configs/routers.dart';
 import 'package:patuhfy/data/local/app_database.dart';
@@ -31,6 +32,8 @@ Future<void> main() async {
   final UserModel user =
       await localDataSource.getCurrentUser() ?? UserModel(company_code: '');
   final remoteDataSource = RemoteDataSource();
+  DateTime dateToday = new DateTime.now();
+  String today = dateToday.toString().substring(0, 10);
   runApp(
     MultiBlocProvider(
       providers: [
@@ -57,6 +60,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               ApelPagiFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              TasksheetPageCubit(localDataSource, remoteDataSource, today),
         ),
       ],
       child: MyApp(

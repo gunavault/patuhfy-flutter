@@ -41,9 +41,6 @@ class FormApelPagi extends StatelessWidget {
     void _submit() {
       final form = _formKey.currentState;
 
-      // print('nama afdeling ini${kodeAfdelingController.text}');
-      // print('imageNameController  ini${imageNameController.text}');
-      // print('nama pickedImageBase64Image i${pickedImageBase64Image}');
       if (form!.validate()) {
         context.loaderOverlay.show();
 
