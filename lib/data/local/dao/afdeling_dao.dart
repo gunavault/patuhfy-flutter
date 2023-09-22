@@ -1,10 +1,10 @@
 import 'package:floor/floor.dart';
-import 'package:patuhfy/models/entities/afdeling_model_entity.dart';
+import 'package:patuhfy/models/afdeling_model.dart';
 
 @dao
 abstract class AfdelingDao {
-  @Query('SELECT * FROM m_afdeling WHERE nik_sap = :id')
-  Future<AfdelingModel?> getAfdById(int id);
+  // @Query('SELECT * FROM m_afdeling WHERE nik_sap = :id')
+  // Future<AfdelingModel?> getAfdById(int id);
 
   @Query('SELECT * FROM m_afdeling WHERE nik_sap = :psa')
   Future<AfdelingModel?> getAfdByPSA(String psa);

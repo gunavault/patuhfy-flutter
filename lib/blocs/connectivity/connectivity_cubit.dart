@@ -26,6 +26,10 @@ class ConnectivityCubit extends Cubit<ConnectivityState> {
     } catch (err) {}
   }
 
+  getStatus() {
+    return hasInterNetConnection;
+  }
+
   void connectionChanged(dynamic hasConnection) {
     hasInterNetConnection = hasConnection;
   }

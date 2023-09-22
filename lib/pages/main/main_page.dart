@@ -43,7 +43,7 @@ class MainPage extends StatelessWidget {
             },
           ),
         ],
-        child: ConnectivityWidget(child: BlocBuilder<PageCubit, PageState>(
+        child: BlocBuilder<PageCubit, PageState>(
           builder: (context, pageState) {
             print('pageState ${pageState}');
             if (pageState is OnBoardingPageState) {
@@ -60,6 +60,6 @@ class MainPage extends StatelessWidget {
               return SplashPage();
             }
           },
-        )));
+        ));
   }
 }

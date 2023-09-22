@@ -4,10 +4,9 @@ import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/entities/afdeling_model_entity.dart';
+import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/form_login_model.dart';
-import 'package:patuhfy/models/entities/user_model_entity.dart';
-
+import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_user_state.dart';

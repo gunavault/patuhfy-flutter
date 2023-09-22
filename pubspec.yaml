@@ -43,7 +43,7 @@ dependencies:
   lottie: ^1.2.1
   floor: ^1.2.0
   dio: ^4.0.4
-  loader_overlay: ^2.0.4+3
+  loader_overlay: ^2.3.2
   searchfield: ^0.5.6
   flutter_iconly: ^1.0.2
   dotted_border: ^2.0.0+3

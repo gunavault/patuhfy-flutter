@@ -73,7 +73,7 @@ class _$AppDatabase extends AppDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 2,
+      version: 3,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -148,24 +148,6 @@ class _$UserDao extends UserDao {
   final InsertionAdapter<UserModel> _userModelInsertionAdapter;
 
   @override
-  Future<UserModel?> getUserById(int id) async {
-    return _queryAdapter.query('SELECT * FROM user WHERE nik_sap = ?1',
-        mapper: (Map<String, Object?> row) => UserModel(
-            id: row['id'] as int?,
-            nik_sap: row['nik_sap'] as String?,
-            name: row['name'] as String?,
-            company_code: row['company_code'] as String?,
-            company_shortname: row['company_shortname'] as String?,
-            company_longname: row['company_longname'] as String?,
-            psa: row['psa'] as String?,
-            psa_name: row['psa_name'] as String?,
-            role: row['role'] as String?,
-            token: row['token'] as String?,
-            foto: row['foto'] as String?),
-        arguments: [id]);
-  }
-
-  @override
   Future<UserModel?> getUserByNikSAP(String nik_sap) async {
     return _queryAdapter.query('SELECT * FROM user WHERE nik_sap = ?1',
         mapper: (Map<String, Object?> row) => UserModel(
@@ -215,14 +197,6 @@ class _$AfdelingDao extends AfdelingDao {
   final InsertionAdapter<AfdelingModel> _afdelingModelInsertionAdapter;
 
   @override
-  Future<AfdelingModel?> getAfdById(int id) async {
-    return _queryAdapter.query('SELECT * FROM m_afdeling WHERE nik_sap = ?1',
-        mapper: (Map<String, Object?> row) =>
-            AfdelingModel(kodeAfd: row['kodeAfd'] as String?),
-        arguments: [id]);
-  }
-
-  @override
   Future<AfdelingModel?> getAfdByPSA(String psa) async {
     return _queryAdapter.query('SELECT * FROM m_afdeling WHERE nik_sap = ?1',
         mapper: (Map<String, Object?> row) =>
@@ -255,10 +229,10 @@ class _$TApelPagiDao extends TApelPagiDao {
     this.database,
     this.changeListener,
   )   : _queryAdapter = QueryAdapter(database),
-        _tApelPagiEntityInsertionAdapter = InsertionAdapter(
+        _apelPagiFormModelInsertionAdapter = InsertionAdapter(
             database,
             't_apel_pagi',
-            (TApelPagiEntity item) => <String, Object?>{
+            (ApelPagiFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
                   'company': item.company,
@@ -276,13 +250,14 @@ class _$TApelPagiDao extends TApelPagiDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<TApelPagiEntity> _tApelPagiEntityInsertionAdapter;
+  final InsertionAdapter<ApelPagiFormModel> _apelPagiFormModelInsertionAdapter;
 
   @override
-  Future<TApelPagiEntity?> getDataApelPagiByTanggal(String tanggal) async {
-    return _queryAdapter.query('SELECT * FROM t_apel_pagi WHERE nik_sap = ?1',
-        mapper: (Map<String, Object?> row) => TApelPagiEntity(
-            id: row['id'] as int?,
+  Future<List<ApelPagiFormModel>> getDataApelPagiByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_apel_pagi WHERE tanggal = ?1',
+        mapper: (Map<String, Object?> row) => ApelPagiFormModel(
             tanggal: row['tanggal'] as String?,
             company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -295,10 +270,9 @@ class _$TApelPagiDao extends TApelPagiDao {
   }
 
   @override
-  Future<List<TApelPagiEntity>> getAllApelPagi() async {
+  Future<List<ApelPagiFormModel>> getAllApelPagi() async {
     return _queryAdapter.queryList('SELECT * FROM t_apel_pagi',
-        mapper: (Map<String, Object?> row) => TApelPagiEntity(
-            id: row['id'] as int?,
+        mapper: (Map<String, Object?> row) => ApelPagiFormModel(
             tanggal: row['tanggal'] as String?,
             company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -316,8 +290,15 @@ class _$TApelPagiDao extends TApelPagiDao {
   }
 
   @override
-  Future<void> insertDataApelPagi(TApelPagiEntity data) async {
-    await _tApelPagiEntityInsertionAdapter.insert(
-        data, OnConflictStrategy.replace);
+  Future<bool?> deleteDataAPelPagiByDate(String tanggal) async {
+    return _queryAdapter.query('DELETE FROM t_apel_pagi where tanggal = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataApelPagi(ApelPagiFormModel data) async {
+    await _apelPagiFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
   }
 }

@@ -1,15 +1,18 @@
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
+import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
-import 'package:patuhfy/models/entities/afdeling_model_entity.dart';
-import 'package:patuhfy/models/entities/user_model_entity.dart';
+import 'package:patuhfy/models/afdeling_model.dart';
+import 'package:patuhfy/models/apel_pagi_form_model.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDataSource {
   final UserDao userDao;
   final AfdelingDao afdelingDao;
+  final TApelPagiDao tApelPagiDao;
 
-  LocalDataSource(this.userDao, this.afdelingDao);
+  LocalDataSource(this.userDao, this.afdelingDao, this.tApelPagiDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -42,5 +45,25 @@ class LocalDataSource {
 
   deleteAfdeling() async {
     return await afdelingDao.deleteAfd();
+  }
+
+  // Transaksi Apel Pagi Dao
+  addDataApelPagi(ApelPagiFormModel dataForm) =>
+      tApelPagiDao.insertDataApelPagi(dataForm);
+
+  getAllDataApelPagi() async {
+    return await tApelPagiDao.getAllApelPagi();
+  }
+
+  getDataApelPagiByTanggal(String tanggal) async {
+    return await tApelPagiDao.getDataApelPagiByTanggal(tanggal);
+  }
+
+  deleteAllApelPagi() async {
+    return await tApelPagiDao.deleteDataAPelPagi();
+  }
+
+  deleteDataAPelPagiByDate(String tanggal) async {
+    return await tApelPagiDao.deleteDataAPelPagiByDate(tanggal);
   }
 }

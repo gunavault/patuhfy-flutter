@@ -8,8 +8,16 @@ class InitialApelPagiFormState extends ApelPagiFormState {}
 class LoadingApelPagiFormState extends ApelPagiFormState {}
 
 class SuccessApelPagiFormState extends ApelPagiFormState {
-  final String? message;
-  SuccessApelPagiFormState(this.message);
+  final int status_code;
+  final String message;
+  SuccessApelPagiFormState({required this.status_code, required this.message});
+}
+
+class DuplicatedApelPagiFormState extends ApelPagiFormState {
+  final int status_code;
+  final String message;
+  DuplicatedApelPagiFormState(
+      {required this.status_code, required this.message});
 }
 
 class ErrorApelPagiFormState extends ApelPagiFormState {
