@@ -1,0 +1,29 @@
+class LocalImages {
+  static const String icTask = 'assets/image/ic_task.png';
+  static const String icUIDesign = 'assets/image/ic_ui_design.png';
+  static const String icWebDev = 'assets/image/ic_web_dev.png';
+  static const String icAppDev = 'assets/image/ic_app_dev.png';
+  static const String icDeshBoard = 'assets/image/ic_desh_board.png';
+  static const String icAccounting = 'assets/image/ic_accounting.png';
+  static const String icHouse = 'assets/image/ic_house.png';
+  static const String icCalendar = 'assets/image/ic_calendar.png';
+  static const String icInbox = 'assets/image/ic_inbox.png';
+  static const String icUser = 'assets/image/ic_user.png';
+  static const String icIntroduction = 'assets/image/ic_introduction.png';
+  static const String icProDescription = 'assets/image/ic_pro_description.png';
+  static const String icEmail = 'assets/image/ic_email.png';
+  static const String icLocation = 'assets/image/ic_location.png';
+  static const String icLogout = 'assets/image/ic_logout.png';
+  static const String icSetting = 'assets/image/ic_setting.png';
+  static const String icEdit = 'assets/image/ic_edit.png';
+  static const String icLock = 'assets/image/ic_lock.png';
+  static const String icSearch = 'assets/image/ic_search.png';
+  static const String icReMail = 'assets/image/ic_re_email.png';
+  static const String icMeeting = 'assets/image/ic_meeting.png';
+  static const String icWebDesign = 'assets/image/ic_web_design.png';
+  static const String icChart = 'assets/image/ic_chart.png';
+  static const String icSchedule = 'assets/image/ic_schedule.png';
+  static const String icEmailBenner = 'assets/image/ic_email_benner.png';
+  static const String icSendOTP = 'assets/image/ic_send_otp.png';
+  static const String icTasks = 'assets/image/ic_tasks.png';
+}

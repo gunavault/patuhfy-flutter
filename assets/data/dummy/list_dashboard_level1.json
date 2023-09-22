@@ -1,0 +1,50 @@
+[
+    {
+        "kategori": "Minyak Goreng",
+        "jumlahRetail": 38,
+        "jumlahStock": 482,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 101
+    },
+    {
+        "kategori": "Kopi",
+        "jumlahRetail": 138,
+        "jumlahStock": 182,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 10
+    },
+    {
+        "kategori": "Tea",
+        "jumlahRetail": 138,
+        "jumlahStock": 182,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 60
+    },
+    {
+        "kategori": "Air Minum",
+        "jumlahRetail": 138,
+        "jumlahStock": 182,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 70
+    },
+    {
+        "kategori": "Gula",
+        "jumlahRetail": 138,
+        "jumlahStock": 182,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 80
+    },
+    {
+        "kategori": "Lain - lain",
+        "jumlahRetail": 138,
+        "jumlahStock": 182,
+        "sales": "5000.000.000",
+        "target": "4900.000.000",
+        "capaianPersen": 90
+    }
+]

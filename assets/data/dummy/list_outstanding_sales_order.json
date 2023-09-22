@@ -1,0 +1,32 @@
+[
+    {
+        "nomorSo": "SO/0001AB/2021",
+        "tglOrder": "11/10/2021 - 2 Hari yang lalu",
+        "persenSo": 80.0,
+        "totalDeliverySo": "6"
+    },
+    {
+        "nomorSo": "SO/0002AB/2021",
+        "tglOrder": "11/10/2021 - 2 Hari yang lalu",
+        "persenSo": 40.0,
+        "totalDeliverySo": "7"
+    },
+    {
+        "nomorSo": "SO/0003AB/2021",
+        "tglOrder": "11/10/2021 - 1 Hari yang lalu",
+        "persenSo": 80.0,
+        "totalDeliverySo": "8"
+    },
+    {
+        "nomorSo": "SO/0004AB/2021",
+        "tglOrder": "11/10/2021 - 10 Hari yang lalu",
+        "persenSo": 100.0,
+        "totalDeliverySo": "29"
+    },
+    {
+        "nomorSo": "SO/0001AB/2021",
+        "tglOrder": "11/10/2021 - 2 Hari yang lalu",
+        "persenSo": 80.0,
+        "totalDeliverySo": "100"
+    }
+]

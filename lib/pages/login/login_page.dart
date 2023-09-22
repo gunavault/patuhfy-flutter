@@ -1,0 +1,296 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
+import 'package:patuhfy/blocs/page/page_cubit.dart';
+import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
+import 'package:patuhfy/configs/styles.dart';
+import 'package:patuhfy/models/form_login_model.dart';
+import 'package:patuhfy/widgets/button.dart';
+import 'package:patuhfy/widgets/constant.dart';
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController nikSapController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+    final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<FormFieldState<String>> _passwordKey =
+        GlobalKey<FormFieldState<String>>();
+    final GlobalKey<FormFieldState<String>> _userIdKey =
+        GlobalKey<FormFieldState<String>>();
+
+    void _login() {
+      FocusScope.of(context).requestFocus(FocusNode());
+
+      context.read<AuthUserCubit>().submitFormLogin(
+            FormLoginModel(
+              nikSapController.text,
+              passwordController.text,
+            ),
+          );
+
+      // _loginBloc.add(LoginPressed(_loginData));
+    }
+
+    void _submit() {
+      final form = _formKey.currentState;
+      if (form!.validate()) {
+        form.save();
+        _login();
+      } else {
+        // setState(() => _autovalidate = true);
+      }
+    }
+
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: LoaderOverlay(
+          child: Stack(
+            children: [
+              MultiBlocListener(
+                  listeners: [
+                    BlocListener<AuthUserCubit, AuthUserState>(
+                      listener: (context, authUserState) {
+                        print('state auth ${authUserState}');
+                        if (authUserState is AuthUserLoadingState) {
+                          print('ke sini');
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                // duration: Duration(seconds: 4),
+                                content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Logging In...'),
+                                    CircularProgressIndicator(),
+                                  ],
+                                ),
+                              ),
+                            );
+                        } else if (authUserState is AuthUserSuccessState) {
+                          context
+                              .read<TypeUserCubit>()
+                              .setTypeUser(authUserState.typeUserState);
+                          context.loaderOverlay.hide();
+
+                          // disini set lagi
+
+                          context.read<PageCubit>().setLoginPage();
+                          context.loaderOverlay.hide();
+                        } else if (authUserState is AuthUserErrorState) {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Username / Password Salah'),
+                                    Icon(Icons.error)
+                                  ],
+                                ),
+                                backgroundColor: primaryColor,
+                              ),
+                            );
+                        } else if (authUserState is AuthUserNotActiveState) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(authUserState.message.toString()),
+                                  Icon(Icons.error)
+                                ],
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                  child: Container(
+                    margin: const EdgeInsets.all(16),
+                    child: ListView(
+                      shrinkWrap: false,
+                      children: [
+                        Container(
+                          height: 50,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text(
+                                'Selamat Datang di Aplikasi Patuhi',
+                                style: kTextStyle.copyWith(
+                                    color: kTitleColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+                            ),
+                            const SizedBox(height: 10.0),
+                            DottedBorder(
+                              dashPattern: const [8, 4],
+                              strokeWidth: 1,
+                              strokeCap: StrokeCap.round,
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(16),
+                              color: kSubTitleColor.withOpacity(0.2),
+                              child: SizedBox(
+                                height: 103,
+                                width: 500,
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    color: const Color(0xFFE7EDFF),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Patuhi App',
+                                        maxLines: 3,
+                                        textAlign: TextAlign.center,
+                                        style: kTextStyle.copyWith(
+                                          color: kSecondaryColor,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                      Text(
+                                        'Percaya sama Tuhan, Patuh sama Aturan!',
+                                        style: kTextStyle.copyWith(
+                                            color: kSubTitleColor),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            TextFormField(
+                              controller: nikSapController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'NIK SAP tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                              autocorrect: false,
+                              // autofocus: true,
+                              keyboardType: TextInputType.name,
+                              cursorColor: kTitleColor,
+                              textInputAction: TextInputAction.next,
+                              decoration: kInputDecoration.copyWith(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 7.0, right: 7.0),
+                                  fillColor: Colors.transparent,
+                                  labelText: 'NIK SAP',
+                                  labelStyle: kTextStyle.copyWith(
+                                      color: kSubTitleColor),
+                                  hintText: 'NIK SAP Aghris',
+                                  hintStyle:
+                                      kTextStyle.copyWith(color: kTitleColor),
+                                  focusColor: kTitleColor,
+                                  border: const OutlineInputBorder(),
+                                  prefixIcon: const Icon(IconlyLight.profile,
+                                      color: kSubTitleColor)),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                              controller: passwordController,
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: true,
+                              cursorColor: kTitleColor,
+                              autocorrect: false,
+                              textInputAction: TextInputAction.next,
+                              decoration: kInputDecoration.copyWith(
+                                contentPadding: const EdgeInsets.only(
+                                    left: 7.0, right: 7.0),
+                                fillColor: Colors.transparent,
+                                labelText: 'Password',
+                                labelStyle:
+                                    kTextStyle.copyWith(color: kSubTitleColor),
+                                hintText: 'password',
+                                hintStyle:
+                                    kTextStyle.copyWith(color: kTitleColor),
+                                focusColor: kTitleColor,
+                                border: const OutlineInputBorder(),
+                                prefixIcon: const Icon(IconlyLight.lock,
+                                    color: kSubTitleColor),
+                                suffixIcon: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                      false
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: kBorderColorTextField),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Forgot Password?',
+                                    style: kTextStyle.copyWith(
+                                        color: kSecondaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            GlobalButton(
+                              width: 350,
+                              onPressed: _submit,
+                              child: const Text('Login'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

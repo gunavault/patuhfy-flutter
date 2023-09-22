@@ -1,0 +1,26 @@
+[
+    {
+        "image": "https://www.nusakita.id/frontend/img/product/1632453785_1632295645_cooking-oil-single-220921-3.png",
+        "name": "Minyak Goreng 1 Liter",
+        "kode_produk": "MG1L",
+        "desc": "Kemasan 1 Liter",
+        "totalStok": "100 PCS",
+        "harga": 12000
+    },
+    {
+        "image": "https://www.nusakita.id/frontend/img/product/1632453785_1632295645_cooking-oil-single-220921-3.png",
+        "name": "Minyak Goreng 2 Liter",
+        "kode_produk": "MG2L",
+        "desc": "Kemasan 2 Liter",
+        "totalStok": "200 PCS",
+        "harga": 24000
+    },
+    {
+        "image": "https://www.nusakita.id/frontend/img/product/1632453785_1632295645_cooking-oil-single-220921-3.png",
+        "name": "Minyak Goreng 3 Liter",
+        "kode_produk": "M32L",
+        "desc": "Kemasan 3 Liter",
+        "totalStok": "150 PCS",
+        "harga": 36000
+    }
+]
