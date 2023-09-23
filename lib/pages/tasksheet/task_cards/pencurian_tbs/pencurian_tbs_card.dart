@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
-import 'package:patuhfy/pages/forms/inspeksi_hanca/form_inspeksi_hanca.dart';
-import 'package:patuhfy/pages/network/disconnected.dart';
+
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class InspeksiTphCard extends StatelessWidget {
-  const InspeksiTphCard({super.key, required this.selectedDate});
+class PencurianTbsCard extends StatelessWidget {
+  const PencurianTbsCard({super.key, required this.selectedDate});
   final String selectedDate;
 
   @override
@@ -48,7 +45,7 @@ class InspeksiTphCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Inpeksi TPH',
+                            'Pencurian TBS',
                             textAlign: TextAlign.start,
                             style: CommonStyle.getRalewayFont(
                               color: CommonColors.blackColor,
@@ -58,7 +55,7 @@ class InspeksiTphCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Melakukan Inspeksi TPH',
+                            'Melaporkan Pencurian TBS',
                             style: CommonStyle.getRalewayFont(
                               color: CommonColors.textGeryColor,
                               fontSize: 12,
@@ -72,7 +69,7 @@ class InspeksiTphCard extends StatelessWidget {
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(
-                        Icons.cloud_upload,
+                        Icons.attachment,
                         color: kNeutralColor,
                       ),
                     ),

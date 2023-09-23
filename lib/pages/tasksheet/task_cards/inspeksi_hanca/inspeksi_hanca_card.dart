@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/pages/forms/inspeksi_hanca/form_inspeksi_hanca.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -16,6 +17,18 @@ class InspeksiHancaCard extends StatelessWidget {
     return BlocBuilder<InspeksiHancaCardCubit, InspeksiHancaCardState>(
       builder: (context, state) {
         if (state is IsInspeksiHancaAswered) {
+          void timesheetAddPopUp(context) {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return InspeksiHancaDetailCard(
+                  dataForm: state.dataForm,
+                );
+              },
+            );
+          }
+
           return Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
             child: Column(
@@ -33,7 +46,7 @@ class InspeksiHancaCard extends StatelessWidget {
                           ),
                         );
                       } else {
-                        // timesheetAddPopUp(context);
+                        timesheetAddPopUp(context);
                       }
                     },
                     child: Container(
