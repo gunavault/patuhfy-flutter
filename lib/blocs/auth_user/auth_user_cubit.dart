@@ -5,6 +5,7 @@ import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
+import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/form_login_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,25 +34,35 @@ class AuthUserCubit extends Cubit<AuthUserState> {
   submitFormLogin(FormLoginModel formLoginModel) async {
     try {
       emit(AuthUserLoadingState());
-      print('lessthan');
+      // Login ke Server
       var userModelRespone = await RemoteDataSource()
           .login(formLoginModel.nik_sap, formLoginModel.password);
-      print('tambahan');
+      // Get data afdeling dari server
       var afdelingModelResponse = await RemoteDataSource().getAfdelingData(
           userModelRespone.userModel!.psa, userModelRespone.userModel!.token);
-      print('tambahan 2');
+      // Get data blok dari server
+      var blokModelResponse = await RemoteDataSource().getBlokData(
+          userModelRespone.userModel!.psa.toString(),
+          userModelRespone.userModel!.company_code.toString(),
+          userModelRespone.userModel!.token.toString());
+
+      // Check data tidak null
       if (userModelRespone.userModel != null &&
           userModelRespone.userModel!.role != "") {
         var userModel = userModelRespone.userModel ?? UserModel();
-        print('ini lewat');
+
+        // Inisiasi data afdeling dan blok
         List<AfdelingModel> afdelingModel =
             afdelingModelResponse.afdelingModel ?? AfdelingModel();
-        print('ini lewat juga ${afdelingModel}');
+        List<BlokModel> blokModel = blokModelResponse.blokModel ?? BlokModel();
+        // Simpen NIK SAP ke sharedpreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
-
         prefs.setString(keyNikSap, userModel.nik_sap ?? "");
-        localDataSource.addUser(userModel);
+
+        // insert ke lokal database
+        await localDataSource.addUser(userModel);
         afdelingModel.forEach((afd) => localDataSource.addAfdeling(afd));
+        blokModel.forEach((blok) => localDataSource.addBlok(blok));
 
         print('sukses nih');
 

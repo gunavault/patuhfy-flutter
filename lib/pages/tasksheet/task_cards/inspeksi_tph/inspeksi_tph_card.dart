@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
+import 'package:patuhfy/pages/forms/inspeksi_hanca/form_inspeksi_hanca.dart';
+import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class InspeksiHancaCard extends StatelessWidget {
-  const InspeksiHancaCard({super.key, required this.selectedDate});
+class InspeksiTphCard extends StatelessWidget {
+  const InspeksiTphCard({super.key, required this.selectedDate});
   final String selectedDate;
 
   @override
@@ -69,8 +72,8 @@ class InspeksiHancaCard extends StatelessWidget {
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(
-                        Icons.attachment_outlined,
-                        color: kTitleColor,
+                        Icons.cloud_upload,
+                        color: kNeutralColor,
                       ),
                     ),
                   ],

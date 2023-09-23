@@ -101,6 +101,7 @@ class PageCubit extends Cubit<PageState> {
     prefs.setBool(keyIsAuth, false);
     localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
     localDataSource.deleteAfdeling();
+    localDataSource.deleteBlok();
     emit(LoginPageState());
   }
 }

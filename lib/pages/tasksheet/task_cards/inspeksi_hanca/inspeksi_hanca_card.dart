@@ -1,41 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:form_builder_image_picker/form_builder_image_picker.dart';
-import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
-import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
+import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
+import 'package:patuhfy/pages/forms/inspeksi_hanca/form_inspeksi_hanca.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import '../../../../models/apel_pagi_form_model.dart';
-
-class ApelPagiCard extends StatelessWidget {
-  const ApelPagiCard({super.key, required this.selectedDate});
+class InspeksiHancaCard extends StatelessWidget {
+  const InspeksiHancaCard({super.key, required this.selectedDate});
   final String selectedDate;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApelPagiCardCubit, ApelPagiCardState>(
+    return BlocBuilder<InspeksiHancaCardCubit, InspeksiHancaCardState>(
       builder: (context, state) {
-        if (state is IsApelPagiAswered) {
-          void timesheetAddPopUp(context) {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return ApelPagiDetailCard(
-                  dataForm: state.dataForm,
-                );
-              },
-            );
-          }
-
+        if (state is IsInspeksiHancaAswered) {
           return Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
             child: Column(
               children: [
                 Padding(
@@ -45,13 +27,13 @@ class ApelPagiCard extends StatelessWidget {
                       if (!state.isAnswered) {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => FormApelPagi(
+                            builder: (context) => FormInspeksiHanca(
                               selectedDate: selectedDate,
                             ),
                           ),
                         );
                       } else {
-                        timesheetAddPopUp(context);
+                        // timesheetAddPopUp(context);
                       }
                     },
                     child: Container(
@@ -60,7 +42,7 @@ class ApelPagiCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                           color: CommonColors.containerTextB.withOpacity(0.2)),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           !state.isAnswered
@@ -96,7 +78,7 @@ class ApelPagiCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Apel Pagi',
+                                  'Inpeksi Hanca',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -106,7 +88,7 @@ class ApelPagiCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Apel Pagi',
+                                  'Melakukan Inspeksi Hanca',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,
@@ -120,8 +102,8 @@ class ApelPagiCard extends StatelessWidget {
                           IconButton(
                             onPressed: () {},
                             icon: const Icon(
-                              Icons.attachment_outlined,
-                              color: kTitleColor,
+                              Icons.cloud_upload,
+                              color: kNeutralColor,
                             ),
                           ),
                         ],

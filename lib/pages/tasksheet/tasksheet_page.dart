@@ -5,7 +5,8 @@ import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
 import 'package:patuhfy/widgets/button.dart';
@@ -17,19 +18,8 @@ class Tasksheet extends StatelessWidget {
 
   Tasksheet({super.key});
 
-  int calculateWeekOfMonth(DateTime date) {
-    DateTime firstDayOfMonth = DateTime(date.year, date.month, 1);
-
-    int differenceInDays = date.difference(firstDayOfMonth).inDays;
-
-    int weekOfMonth = (differenceInDays / 7).ceil();
-
-    return weekOfMonth;
-  }
-
   @override
   Widget build(BuildContext context) {
-    int weekOfMonth = calculateWeekOfMonth(selectedDate);
     return Scaffold(
       backgroundColor: kDarkWhite,
       appBar: AppBar(
@@ -100,15 +90,14 @@ class Tasksheet extends StatelessWidget {
                 ),
                 child: BlocBuilder<AuthSessionCubit, AuthUserSessionState>(
                   builder: (context, state) {
-                    print('aaaaaaaaaaaaaaaaaaakuuuu');
                     if (state is AuthUserSessionUpdatedState) {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            height: 66.0,
-                            width: 66.0,
+                            height: 50.0,
+                            width: 50.0,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -145,23 +134,23 @@ class Tasksheet extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 10.0),
-                              SizedBox(
-                                width: 220,
-                                height: 5,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  child: LinearProgressIndicator(
-                                    value: 0.3,
-                                    valueColor:
-                                        const AlwaysStoppedAnimation<Color>(
-                                            Color(0xffFF4444)),
-                                    backgroundColor: const Color(0xffFF4444)
-                                        .withOpacity(0.1),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10.0),
+                              // SizedBox(
+                              //   width: 220,
+                              //   height: 5,
+                              //   child: ClipRRect(
+                              //     borderRadius: const BorderRadius.all(
+                              //         Radius.circular(10)),
+                              //     child: LinearProgressIndicator(
+                              //       value: 0.3,
+                              //       valueColor:
+                              //           const AlwaysStoppedAnimation<Color>(
+                              //               Color(0xffFF4444)),
+                              //       backgroundColor: const Color(0xffFF4444)
+                              //           .withOpacity(0.1),
+                              //     ),
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 10.0),
                               // RichText(
                               //   text: TextSpan(
                               //     text: '4',
@@ -206,7 +195,8 @@ class Tasksheet extends StatelessWidget {
                     children: [
                       LabelTaskDoTo(selectedDate: selectedDate),
                       ApelPagiCard(selectedDate: state.selectedDate),
-                      InspeksiHancaCard(selectedDate: state.selectedDate)
+                      InspeksiHancaCard(selectedDate: state.selectedDate),
+                      InspeksiTphCard(selectedDate: state.selectedDate)
                     ],
                   );
                 }
@@ -224,7 +214,7 @@ class Tasksheet extends StatelessWidget {
                 onPressed: () {
                   // showSubmitPopUp();
                 },
-                child: const Text('Simpan ke Database Holding '),
+                child: const Text('Lihat History'),
               ),
             ),
           ],

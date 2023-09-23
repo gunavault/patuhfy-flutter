@@ -2,10 +2,13 @@ import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
 import 'package:patuhfy/data/local/dao/blok_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
+import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
+import 'package:patuhfy/models/blok_model.dart';
+import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,9 +17,10 @@ class LocalDataSource {
   final AfdelingDao afdelingDao;
   final BlokDao blokDao;
   final TApelPagiDao tApelPagiDao;
+  final TInspeksiHancaDao tInspeksiHancaDao;
 
-  LocalDataSource(
-      this.userDao, this.afdelingDao, this.blokDao, this.tApelPagiDao);
+  LocalDataSource(this.userDao, this.afdelingDao, this.blokDao,
+      this.tApelPagiDao, this.tInspeksiHancaDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -31,12 +35,6 @@ class LocalDataSource {
     return await afdelingDao.getAllAfd();
   }
 
-  // updateFoto() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var username = prefs.get String(keyUsername) ?? "";
-  //   return await userDao.getUserByUsername(username);
-  // }
-
   deleteUser(String nik_sap) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nik_sap = prefs.getString(keyNikSap) ?? "";
@@ -49,6 +47,13 @@ class LocalDataSource {
 
   deleteAfdeling() async {
     return await afdelingDao.deleteAfd();
+  }
+
+  // Blok
+  addBlok(BlokModel blokModel) => blokDao.insertBlok(blokModel);
+
+  deleteBlok() async {
+    return await blokDao.deleteBlok();
   }
 
   // Transaksi Apel Pagi Dao
@@ -92,5 +97,48 @@ class LocalDataSource {
 
   deleteDataAPelPagiByDate(String tanggal) async {
     return await tApelPagiDao.deleteDataAPelPagiByDate(tanggal);
+  }
+
+  // Transaksi Inspeksi Hanca Dao
+  addDataInspeksiHanca(InspeksiHancaFormModel dataForm) =>
+      tInspeksiHancaDao.insertDataInspeksiHanca(dataForm);
+
+  getAllDataInspeksiHanca() async {
+    return await tInspeksiHancaDao.getAllInspeksiHanca();
+  }
+
+  getDataInspeksiHancaByTanggal(String tanggal) async {
+    return await tInspeksiHancaDao.getDataInspeksiHancaByTanggal(tanggal);
+  }
+
+  getDataInspeksiHancaByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<InspeksiHancaFormModel> dataForm;
+    dataForm = await tInspeksiHancaDao.getDataInspeksiHancaByTanggal(tanggal);
+
+    if (dataForm.length == 0) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      InspeksiHancaFormModelSelectResponse response = await RemoteDataSource()
+          .getDataInspeksiHancaByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.length != 0) {
+        await addDataInspeksiHanca(response.dataForm.first);
+      }
+
+      return response.dataForm;
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllInspeksiHanca() async {
+    return await tInspeksiHancaDao.deleteDataInspeksiHanca();
+  }
+
+  deleteDataInspeksiHancaByDate(String tanggal) async {
+    return await tInspeksiHancaDao.deleteDataInspeksiHancaByDate(tanggal);
   }
 }

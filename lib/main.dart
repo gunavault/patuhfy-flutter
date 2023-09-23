@@ -7,6 +7,8 @@ import 'package:patuhfy/blocs/apel_pagi_form/apel_pagi_form_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
+import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
+import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
@@ -18,6 +20,7 @@ import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/main/main_page.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 Future<void> main() async {
@@ -28,10 +31,13 @@ Future<void> main() async {
   ));
   final database =
       await $FloorAppDatabase.databaseBuilder('patuhfy.db').build();
-  final localDataSource = LocalDataSource(database.userDao,
-      database.afdelingDao, database.blokDao, database.tApelpagiDao);
-  final UserModel user =
-      await localDataSource.getCurrentUser() ?? UserModel(company_code: '');
+  final localDataSource = LocalDataSource(
+      database.userDao,
+      database.afdelingDao,
+      database.blokDao,
+      database.tApelpagiDao,
+      database.tInspeksiHancaDao);
+  final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = new DateTime.now();
   String today = dateToday.toString().substring(0, 10);
@@ -69,6 +75,15 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               ApelPagiCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              InspeksiHancaFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              InspeksiHancaCardCubit(localDataSource, remoteDataSource)
                 ..checkIsAnwered(today.toString()),
         ),
       ],
