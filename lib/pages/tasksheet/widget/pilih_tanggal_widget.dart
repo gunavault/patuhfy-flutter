@@ -54,7 +54,7 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
                           // default is not looping
                           firstDate: DateTime(1990, 01, 01),
                           lastDate: DateTime(2030, 1, 1),
-                          initialDate: DateTime.now(),
+                          initialDate: selectedDate,
                           locale: DatePicker.localeFromString('en'),
                           onChange: (DateTime newDate, _) {
                             setNewState(() {

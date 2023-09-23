@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
+import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
+
+import '../../../../models/apel_pagi_form_model.dart';
 
 class ApelPagiCard extends StatelessWidget {
   const ApelPagiCard({super.key, required this.selectedDate});
@@ -16,6 +22,18 @@ class ApelPagiCard extends StatelessWidget {
     return BlocBuilder<ApelPagiCardCubit, ApelPagiCardState>(
       builder: (context, state) {
         if (state is IsApelPagiAswered) {
+          void timesheetAddPopUp(context) {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return ApelPagiDetailCard(
+                  dataForm: state.dataForm,
+                );
+              },
+            );
+          }
+
           print('apa nihhhh statrnya ${state.isAnswered}');
           return Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
@@ -33,7 +51,9 @@ class ApelPagiCard extends StatelessWidget {
                             ),
                           ),
                         );
-                      } else {}
+                      } else {
+                        timesheetAddPopUp(context);
+                      }
                     },
                     child: Container(
                       width: double.infinity,
