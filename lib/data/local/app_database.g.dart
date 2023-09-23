@@ -65,6 +65,8 @@ class _$AppDatabase extends AppDatabase {
 
   AfdelingDao? _afdelingDaoInstance;
 
+  BlokDao? _blokDaoInstance;
+
   TApelPagiDao? _tApelpagiDaoInstance;
 
   Future<sqflite.Database> open(
@@ -73,7 +75,7 @@ class _$AppDatabase extends AppDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 3,
+      version: 4,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -93,6 +95,8 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_afdeling` (`kodeAfd` TEXT, PRIMARY KEY (`kodeAfd`))');
         await database.execute(
+            'CREATE TABLE IF NOT EXISTS `m_blok` (`kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, PRIMARY KEY (`kodePsa`))');
+        await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
 
         await callback?.onCreate?.call(database, version);
@@ -109,6 +113,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   AfdelingDao get afdelingDao {
     return _afdelingDaoInstance ??= _$AfdelingDao(database, changeListener);
+  }
+
+  @override
+  BlokDao get blokDao {
+    return _blokDaoInstance ??= _$BlokDao(database, changeListener);
   }
 
   @override
@@ -221,6 +230,81 @@ class _$AfdelingDao extends AfdelingDao {
   Future<void> insertAfdeling(AfdelingModel afd) async {
     await _afdelingModelInsertionAdapter.insert(
         afd, OnConflictStrategy.replace);
+  }
+}
+
+class _$BlokDao extends BlokDao {
+  _$BlokDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _blokModelInsertionAdapter = InsertionAdapter(
+            database,
+            'm_blok',
+            (BlokModel item) => <String, Object?>{
+                  'kodePsa': item.kodePsa,
+                  'kodeAfd': item.kodeAfd,
+                  'kodeBlok': item.kodeBlok,
+                  'namaBlok': item.namaBlok,
+                  'tahunTanam': item.tahunTanam
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<BlokModel> _blokModelInsertionAdapter;
+
+  @override
+  Future<BlokModel?> getBlokByPsa(String psa) async {
+    return _queryAdapter.query('SELECT * FROM m_blok WHERE kodePsa = ?1',
+        mapper: (Map<String, Object?> row) => BlokModel(
+            kodePsa: row['kodePsa'] as String?,
+            kodeAfd: row['kodeAfd'] as String?,
+            kodeBlok: row['kodeBlok'] as String?,
+            namaBlok: row['namaBlok'] as String?,
+            tahunTanam: row['tahunTanam'] as String?),
+        arguments: [psa]);
+  }
+
+  @override
+  Future<BlokModel?> getAfdByPsaAndAfd(
+    String psa,
+    String afd,
+  ) async {
+    return _queryAdapter.query(
+        'SELECT * FROM m_blok WHERE kodePsa = ?1 and kodeAfd = ?2',
+        mapper: (Map<String, Object?> row) => BlokModel(
+            kodePsa: row['kodePsa'] as String?,
+            kodeAfd: row['kodeAfd'] as String?,
+            kodeBlok: row['kodeBlok'] as String?,
+            namaBlok: row['namaBlok'] as String?,
+            tahunTanam: row['tahunTanam'] as String?),
+        arguments: [psa, afd]);
+  }
+
+  @override
+  Future<List<BlokModel>> getAllBlok() async {
+    return _queryAdapter.queryList('SELECT * FROM m_blok',
+        mapper: (Map<String, Object?> row) => BlokModel(
+            kodePsa: row['kodePsa'] as String?,
+            kodeAfd: row['kodeAfd'] as String?,
+            kodeBlok: row['kodeBlok'] as String?,
+            namaBlok: row['namaBlok'] as String?,
+            tahunTanam: row['tahunTanam'] as String?));
+  }
+
+  @override
+  Future<bool?> deleteBlok() async {
+    return _queryAdapter.query('DELETE FROM m_blok',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<void> insertBlok(BlokModel blok) async {
+    await _blokModelInsertionAdapter.insert(blok, OnConflictStrategy.replace);
   }
 }
 

@@ -86,9 +86,6 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
       dataForm.tanggal = today;
       dataForm.company = userModel.company_code;
       dataForm.unitKerja = userModel.psa;
-      // get latitude and longitude and put it in the dataForm Object
-
-      print('dataForm APel ${dataForm}');
 
       final connectivityResult = await (Connectivity()
           .checkConnectivity()); // cCheck if there is connection post to local and database
@@ -104,7 +101,6 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
       if (connectivityResult != ConnectivityResult.none) {
         localDataSource.deleteDataAPelPagiByDate(
             dataForm.tanggal.toString()); //Hapus data di Lokal By Date
-        print('error ${err.toString()}');
         emit(ErrorApelPagiFormState(err.toString())); //Emit Error State
       } else {
         emit(SuccessApelPagiFormState(

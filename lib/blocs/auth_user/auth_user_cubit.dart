@@ -33,6 +33,7 @@ class AuthUserCubit extends Cubit<AuthUserState> {
   submitFormLogin(FormLoginModel formLoginModel) async {
     try {
       emit(AuthUserLoadingState());
+      print('lessthan');
       var userModelRespone = await RemoteDataSource()
           .login(formLoginModel.nik_sap, formLoginModel.password);
       print('tambahan');

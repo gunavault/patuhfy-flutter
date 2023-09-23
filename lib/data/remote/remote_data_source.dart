@@ -46,7 +46,6 @@ class RemoteDataSource {
               .map((value) => AfdelingModel.fromJson(value))
               .toList());
     } on DioError catch (err) {
-      print('error di api ${err.response.toString()}');
       return [];
       // return err.response.toString();
     }
@@ -59,14 +58,37 @@ class RemoteDataSource {
       var response = await dio.post("$baseUrl/tasksheet/apel-pagi",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
-      print('scallback $callback');
       return ApelPagiFormModelResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg']);
     } on DioError catch (err) {
-      print('error ${err.response.toString()}');
       return ApelPagiFormModelResponse(
           message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<ApelPagiFormModelSelectResponse> getDataApelPagiByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return ApelPagiFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => ApelPagiFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return ApelPagiFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [ApelPagiFormModel(afd: '', foto: '')]);
     }
   }
 }

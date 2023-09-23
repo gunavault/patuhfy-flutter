@@ -28,8 +28,8 @@ Future<void> main() async {
   ));
   final database =
       await $FloorAppDatabase.databaseBuilder('patuhfy.db').build();
-  final localDataSource = LocalDataSource(
-      database.userDao, database.afdelingDao, database.tApelpagiDao);
+  final localDataSource = LocalDataSource(database.userDao,
+      database.afdelingDao, database.blokDao, database.tApelpagiDao);
   final UserModel user =
       await localDataSource.getCurrentUser() ?? UserModel(company_code: '');
   final remoteDataSource = RemoteDataSource();

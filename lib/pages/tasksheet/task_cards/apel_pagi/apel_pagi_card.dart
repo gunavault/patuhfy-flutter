@@ -70,7 +70,7 @@ class ApelPagiCard extends StatelessWidget {
                                   child: Checkbox(
                                     visualDensity:
                                         const VisualDensity(horizontal: -4),
-                                    activeColor: kRedColor,
+                                    activeColor: kDarkWhite,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),

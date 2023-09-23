@@ -1,7 +1,9 @@
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
+import 'package:patuhfy/data/local/dao/blok_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
+import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
@@ -10,9 +12,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LocalDataSource {
   final UserDao userDao;
   final AfdelingDao afdelingDao;
+  final BlokDao blokDao;
   final TApelPagiDao tApelPagiDao;
 
-  LocalDataSource(this.userDao, this.afdelingDao, this.tApelPagiDao);
+  LocalDataSource(
+      this.userDao, this.afdelingDao, this.blokDao, this.tApelPagiDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -57,6 +61,29 @@ class LocalDataSource {
 
   getDataApelPagiByTanggal(String tanggal) async {
     return await tApelPagiDao.getDataApelPagiByTanggal(tanggal);
+  }
+
+  getDataApelPagiByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<ApelPagiFormModel> dataForm;
+    dataForm = await tApelPagiDao.getDataApelPagiByTanggal(tanggal);
+
+    if (dataForm.length == 0) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      ApelPagiFormModelSelectResponse response = await RemoteDataSource()
+          .getDataApelPagiByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.length != 0) {
+        await addDataApelPagi(response.dataForm.first);
+      }
+
+      return response.dataForm;
+    } else {
+      return dataForm;
+    }
   }
 
   deleteAllApelPagi() async {

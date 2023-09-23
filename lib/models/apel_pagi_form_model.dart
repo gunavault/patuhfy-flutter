@@ -25,14 +25,14 @@ class ApelPagiFormModel {
 
   ApelPagiFormModel.fromJson(Map<String, dynamic> json) {
     // print('afd ga ${json["afdeling"]}');
-    tanggal = json['data']["tanggal"];
-    company = json['data']["company"];
-    unitKerja = json['data']["unitKerja"];
-    afd = json['data']["afd"];
-    foto = json['data']["foto"];
-    createdBy = json['data']["createdBy"];
-    long = json['data']["long"];
-    lat = json['data']["lat"];
+    tanggal = json["TANGGAL"];
+    company = json["COMPANY"];
+    unitKerja = json["UNIT_KERJA"];
+    afd = json["AFDELING"];
+    foto = json["FOTO"];
+    createdBy = json["CREATED_BY"];
+    long = json["LONG"];
+    lat = json["LAT"];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,6 +54,19 @@ class ApelPagiFormModel {
 class ApelPagiFormModelResponse {
   final int status_code;
   final String message;
+  final ApelPagiFormModel? dataForm;
 
-  ApelPagiFormModelResponse({required this.status_code, required this.message});
+  ApelPagiFormModelResponse(
+      {required this.status_code, required this.message, this.dataForm});
+}
+
+class ApelPagiFormModelSelectResponse {
+  final int status_code;
+  final String message;
+  final List<ApelPagiFormModel> dataForm;
+
+  ApelPagiFormModelSelectResponse(
+      {required this.status_code,
+      required this.message,
+      required this.dataForm});
 }

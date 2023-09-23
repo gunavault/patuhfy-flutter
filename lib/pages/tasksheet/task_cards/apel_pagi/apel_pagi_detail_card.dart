@@ -98,11 +98,15 @@ class ApelPagiDetailCard extends StatelessWidget {
             color: CommonColors.blackColor,
           ),
         ),
-        Image.memory(
-          base64Decode(dataForm!.foto.toString()),
-          width: bannerWidth,
-          height: bannerHeight,
-          fit: BoxFit.cover,
+        const SizedBox(height: 10.0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.memory(
+            base64Decode(dataForm!.foto.toString()),
+            width: bannerWidth,
+            height: bannerHeight,
+            fit: BoxFit.cover,
+          ),
         )
       ],
     );

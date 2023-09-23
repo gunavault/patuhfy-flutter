@@ -19,11 +19,19 @@ class ApelPagiCardCubit extends Cubit<ApelPagiCardState> {
     List<ApelPagiFormModel> cekData;
     cekData =
         await localDataSource.getDataApelPagiByTanggal(taskDate.toString());
-    print('cekData.length ${taskDate} ');
-    print('cekData.length ${cekData.length} ');
+    //Check if data offline exists
+    print('cek lengh offline ada ga ${cekData.length}');
     if (cekData.length == 0) {
-      //Check duplikat
-      emit(IsApelPagiAswered(false, null));
+      // if not exist in offline then check online of exists then put to local
+      cekData = await localDataSource
+          .getDataApelPagiByTanggalOnlineOrOffline(taskDate.toString());
+      // Cek data online
+      print('cek lengh online ada ga ${cekData.length}');
+      if (cekData.length == 0) {
+        emit(IsApelPagiAswered(false, null));
+      } else {
+        emit(IsApelPagiAswered(true, cekData.first));
+      }
     } else {
       emit(IsApelPagiAswered(true, cekData.first));
     }
