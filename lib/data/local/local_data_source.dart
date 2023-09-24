@@ -1,14 +1,18 @@
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
 import 'package:patuhfy/data/local/dao/blok_dao.dart';
+import 'package:patuhfy/data/local/dao/t_inspeksi_tph_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
+import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
+import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,9 +22,17 @@ class LocalDataSource {
   final BlokDao blokDao;
   final TApelPagiDao tApelPagiDao;
   final TInspeksiHancaDao tInspeksiHancaDao;
+  final TInspeksiTphDao tInspeksiTphDao;
+  final TPencurianTbsDao tPencurianTbsDao;
 
-  LocalDataSource(this.userDao, this.afdelingDao, this.blokDao,
-      this.tApelPagiDao, this.tInspeksiHancaDao);
+  LocalDataSource(
+      this.userDao,
+      this.afdelingDao,
+      this.blokDao,
+      this.tApelPagiDao,
+      this.tInspeksiHancaDao,
+      this.tInspeksiTphDao,
+      this.tPencurianTbsDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -115,7 +127,6 @@ class LocalDataSource {
     // cek off line dlu
     List<InspeksiHancaFormModel> dataForm;
     dataForm = await tInspeksiHancaDao.getDataInspeksiHancaByTanggal(tanggal);
-
     if (dataForm.length == 0) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
@@ -140,5 +151,89 @@ class LocalDataSource {
 
   deleteDataInspeksiHancaByDate(String tanggal) async {
     return await tInspeksiHancaDao.deleteDataInspeksiHancaByDate(tanggal);
+  }
+
+  // Transaksi Inspeksi Tph Dao
+  addDataInspeksiTph(InspeksiTphFormModel dataForm) =>
+      tInspeksiTphDao.insertDataInspeksiTph(dataForm);
+
+  getAllDataInspeksiTph() async {
+    return await tInspeksiTphDao.getAllInspeksiTph();
+  }
+
+  getDataInspeksiTphByTanggal(String tanggal) async {
+    return await tInspeksiTphDao.getDataInspeksiTphByTanggal(tanggal);
+  }
+
+  getDataInspeksiTphByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<InspeksiTphFormModel> dataForm;
+    dataForm = await tInspeksiTphDao.getDataInspeksiTphByTanggal(tanggal);
+    if (dataForm.length == 0) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      InspeksiTphFormModelSelectResponse response = await RemoteDataSource()
+          .getDataInspeksiTphByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.length != 0) {
+        await addDataInspeksiTph(response.dataForm.first);
+      }
+
+      return response.dataForm;
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllInspeksiTph() async {
+    return await tInspeksiTphDao.deleteDataInspeksiTph();
+  }
+
+  deleteDataInspeksiTphByDate(String tanggal) async {
+    return await tInspeksiTphDao.deleteDataInspeksiTphByDate(tanggal);
+  }
+
+  // Transaksi Pencurian Tbs
+  addDataPencurianTbs(PencurianTbsFormModel dataForm) =>
+      tPencurianTbsDao.insertDataPencurianTbs(dataForm);
+
+  getAllDataPencurianTbs() async {
+    return await tPencurianTbsDao.getAllPencurianTbs();
+  }
+
+  getDataPencurianTbsByTanggal(String tanggal) async {
+    return await tPencurianTbsDao.getDataPencurianTbsByTanggal(tanggal);
+  }
+
+  getDataPencurianTbsByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<PencurianTbsFormModel> dataForm;
+    dataForm = await tPencurianTbsDao.getDataPencurianTbsByTanggal(tanggal);
+    if (dataForm.length == 0) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      PencurianTbsFormModelSelectResponse response = await RemoteDataSource()
+          .getDataPencurianTbsByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.length != 0) {
+        await addDataPencurianTbs(response.dataForm.first);
+      }
+
+      return response.dataForm;
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllPencurianTbs() async {
+    return await tPencurianTbsDao.deleteDataPencurianTbs();
+  }
+
+  deleteDataPencurianTbsByDate(String tanggal) async {
+    return await tPencurianTbsDao.deleteDataPencurianTbsByDate(tanggal);
   }
 }

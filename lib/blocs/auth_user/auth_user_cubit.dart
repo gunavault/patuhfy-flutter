@@ -48,7 +48,7 @@ class AuthUserCubit extends Cubit<AuthUserState> {
 
       // Check data tidak null
       if (userModelRespone.userModel != null &&
-          userModelRespone.userModel!.role != "") {
+          userModelRespone.userModel!.role != null) {
         var userModel = userModelRespone.userModel ?? UserModel();
 
         // Inisiasi data afdeling dan blok
@@ -64,7 +64,8 @@ class AuthUserCubit extends Cubit<AuthUserState> {
         afdelingModel.forEach((afd) => localDataSource.addAfdeling(afd));
         blokModel.forEach((blok) => localDataSource.addBlok(blok));
 
-        print('sukses nih');
+        print('sukses nih ${userModelRespone.userModel!.role}');
+        print('sukses nih userModel ${userModelRespone.userModel}');
 
         emit(
           AuthUserSuccessState(
@@ -73,7 +74,7 @@ class AuthUserCubit extends Cubit<AuthUserState> {
           ),
         );
       } else if (userModelRespone.userModel != null &&
-          userModelRespone.userModel!.role == "") {
+          userModelRespone.userModel!.role == null) {
         emit(AuthUserNotActiveState("Akun Anda Belum Aktif"));
       } else {
         // Kesini kalo password salah

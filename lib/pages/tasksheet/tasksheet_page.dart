@@ -49,8 +49,7 @@ class Tasksheet extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.notifications_on_sharp,
-                    color: Color.fromARGB(255, 241, 94, 2)),
+                const Icon(Icons.notifications_on_sharp, color: kGreyTextColor),
               ],
             ),
           ),
@@ -96,18 +95,26 @@ class Tasksheet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
-                            height: 50.0,
-                            width: 50.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image:
-                                      NetworkImage("${state.userModel!.foto}"),
-                                  // AssetImage('assets/images/profile.png'),
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
+                          state.userModel!.foto != null
+                              ? Container(
+                                  height: 50.0,
+                                  width: 50.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "${state.userModel!.foto}"),
+                                        // AssetImage('assets/images/profile.png'),
+                                        fit: BoxFit.cover),
+                                  ),
+                                )
+                              : Container(
+                                  height: 50.0,
+                                  width: 50.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
                           const SizedBox(width: 10.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

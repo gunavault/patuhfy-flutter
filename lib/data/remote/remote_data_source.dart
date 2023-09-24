@@ -7,6 +7,8 @@ import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
+import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/selectbox/selectbox_afdeling_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
@@ -92,6 +94,8 @@ class RemoteDataSource {
     try {
       var dio = Dio();
 
+      print(
+          'cek apel pagi $baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}');
       var response = await dio.get(
           "$baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
           options: optionAuth(token));
@@ -152,6 +156,92 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [InspeksiHancaFormModel()]);
+    }
+  }
+
+  // Inspeksi TPH
+  Future<InspeksiTphFormModelResponse> createInspeksiTph(
+      token, InspeksiTphFormModel dataForm) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.post("$baseUrl/tasksheet/inspeksi-tph",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return InspeksiTphFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return InspeksiTphFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<InspeksiTphFormModelSelectResponse> getDataInspeksiTphByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/inspeksi-tph/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return InspeksiTphFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => InspeksiTphFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return InspeksiTphFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [InspeksiTphFormModel()]);
+    }
+  }
+
+  //  Pencurian TBS
+  Future<PencurianTbsFormModelResponse> createPencurianTbs(
+      token, PencurianTbsFormModel dataForm) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.post("$baseUrl/tasksheet/inspeksi-tph",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return PencurianTbsFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return PencurianTbsFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<PencurianTbsFormModelSelectResponse> getDataPencurianTbsByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/pencurian-tbs/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return PencurianTbsFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => PencurianTbsFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return PencurianTbsFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [PencurianTbsFormModel()]);
     }
   }
 }

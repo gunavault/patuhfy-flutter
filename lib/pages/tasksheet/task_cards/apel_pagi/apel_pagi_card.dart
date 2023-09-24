@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:form_builder_image_picker/form_builder_image_picker.dart';
-import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_detail_card.dart';

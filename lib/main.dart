@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/apel_pagi_card/apel_pagi_card_cubit.dart';
-import 'package:patuhfy/blocs/apel_pagi_form/apel_pagi_form_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
+
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
@@ -36,7 +37,9 @@ Future<void> main() async {
       database.afdelingDao,
       database.blokDao,
       database.tApelpagiDao,
-      database.tInspeksiHancaDao);
+      database.tInspeksiHancaDao,
+      database.tInspeksiTphDao,
+      database.tPencurianTbsDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = new DateTime.now();

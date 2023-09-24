@@ -10,6 +10,7 @@ import 'package:patuhfy/pages/close_rtl/close_rtl_page.dart';
 import 'package:patuhfy/pages/home/drawer_home.dart';
 import 'package:patuhfy/pages/lapor/lapor_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
+import 'package:patuhfy/pages/user_page/user_page.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -21,9 +22,9 @@ class HomePageV2 extends StatelessWidget {
   // static const List<Widget> _widgetOptions = <Widget>[
   Widget _activeScreen(activeTab) {
     print('disin apa ${activeTab}');
-    if (activeTab == TabState.home) {
-      return Content(
-        key: PageStorageKey('home'),
+    if (activeTab == TabState.profile) {
+      return UserProfilePage(
+        key: PageStorageKey('profile'),
       );
     } else if (activeTab == TabState.tasksheet) {
       return Tasksheet(
@@ -75,21 +76,21 @@ class HomePageV2 extends StatelessWidget {
               ),
 
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.wallet),
+                icon: Icon(IconlyLight.document),
                 label: "Approval Form",
               ),
 
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.calendar),
+                icon: Icon(IconlyLight.shieldDone),
                 label: "Lapor",
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.profile),
+                icon: Icon(IconlyLight.ticket),
                 label: "Close RTL",
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.home),
-                label: "Home",
+                icon: Icon(IconlyLight.profile),
+                label: "User",
               ),
             ],
             onTap: (int index) {

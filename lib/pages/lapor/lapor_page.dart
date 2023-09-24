@@ -8,29 +8,9 @@ class LaporPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ListTile(
-            title: Row(
-              children: [
-                const Icon(Icons.exit_to_app),
-                const SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'Logout',
-                ),
-              ],
-            ),
-            onTap: () {
-              context.read<PageCubit>().logout();
-            },
-          ),
-          Center(child: Text('awwww')),
-        ],
-      ),
-    );
+        body: Center(
+            child: Container(
+      child: Text('Under Development Menu Lapor'),
+    )));
   }
 }

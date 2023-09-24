@@ -99,9 +99,11 @@ class PageCubit extends Cubit<PageState> {
   logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(keyIsAuth, false);
-    localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
-    localDataSource.deleteAfdeling();
-    localDataSource.deleteBlok();
+    await localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
+    await localDataSource.deleteAfdeling();
+    await localDataSource.deleteBlok();
+    await localDataSource.deleteAllInspeksiHanca();
+    await localDataSource.deleteAllApelPagi();
     emit(LoginPageState());
   }
 }

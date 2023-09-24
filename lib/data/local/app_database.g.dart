@@ -71,13 +71,17 @@ class _$AppDatabase extends AppDatabase {
 
   TInspeksiHancaDao? _tInspeksiHancaDaoInstance;
 
+  TInspeksiTphDao? _tInspeksiTphDaoInstance;
+
+  TPencurianTbsDao? _tPencurianTbsDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 6,
+      version: 7,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -102,6 +106,10 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDIberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -133,6 +141,18 @@ class _$AppDatabase extends AppDatabase {
   TInspeksiHancaDao get tInspeksiHancaDao {
     return _tInspeksiHancaDaoInstance ??=
         _$TInspeksiHancaDao(database, changeListener);
+  }
+
+  @override
+  TInspeksiTphDao get tInspeksiTphDao {
+    return _tInspeksiTphDaoInstance ??=
+        _$TInspeksiTphDao(database, changeListener);
+  }
+
+  @override
+  TPencurianTbsDao get tPencurianTbsDao {
+    return _tPencurianTbsDaoInstance ??=
+        _$TPencurianTbsDao(database, changeListener);
   }
 }
 
@@ -511,6 +531,218 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
   @override
   Future<void> insertDataInspeksiHanca(InspeksiHancaFormModel data) async {
     await _inspeksiHancaFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TInspeksiTphDao extends TInspeksiTphDao {
+  _$TInspeksiTphDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _inspeksiTphFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_inspeksi_tph',
+            (InspeksiTphFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'company': item.company,
+                  'unitKerja': item.unitKerja,
+                  'afd': item.afd,
+                  'foto': item.foto,
+                  'blok': item.blok,
+                  'tahunTanam': item.tahunTanam,
+                  'kapveld': item.kapveld,
+                  'mandor': item.mandor,
+                  'pemanen': item.pemanen,
+                  'noTph': item.noTph,
+                  'panenBuahSangatMentah': item.panenBuahSangatMentah,
+                  'tbsBusuk': item.tbsBusuk,
+                  'gagangTandanPanjang': item.gagangTandanPanjang,
+                  'tbsTidakDIberiNomor': item.tbsTidakDIberiNomor,
+                  'tbsTidakDisusunRapi': item.tbsTidakDisusunRapi,
+                  'tangkaiTidakBerbentukV': item.tangkaiTidakBerbentukV,
+                  'createdBy': item.createdBy,
+                  'long': item.long,
+                  'lat': item.lat
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<InspeksiTphFormModel>
+      _inspeksiTphFormModelInsertionAdapter;
+
+  @override
+  Future<List<InspeksiTphFormModel>> getDataInspeksiTphByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_inspeksi_tph WHERE tanggal = ?1',
+        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            kapveld: row['kapveld'] as int?,
+            mandor: row['mandor'] as String?,
+            pemanen: row['pemanen'] as String?,
+            noTph: row['noTph'] as int?,
+            panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
+            tbsBusuk: row['tbsBusuk'] as int?,
+            gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
+            tbsTidakDIberiNomor: row['tbsTidakDIberiNomor'] as int?,
+            tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
+            tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<InspeksiTphFormModel>> getAllInspeksiTph() async {
+    return _queryAdapter.queryList('SELECT * FROM t_inspeksi_tph',
+        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            kapveld: row['kapveld'] as int?,
+            mandor: row['mandor'] as String?,
+            pemanen: row['pemanen'] as String?,
+            noTph: row['noTph'] as int?,
+            panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
+            tbsBusuk: row['tbsBusuk'] as int?,
+            gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
+            tbsTidakDIberiNomor: row['tbsTidakDIberiNomor'] as int?,
+            tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
+            tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?));
+  }
+
+  @override
+  Future<bool?> deleteDataInspeksiTph() async {
+    return _queryAdapter.query('DELETE FROM t_inspeksi_tph',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataInspeksiTphByDate(String tanggal) async {
+    return _queryAdapter.query('DELETE FROM t_inspeksi_tph where tanggal = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataInspeksiTph(InspeksiTphFormModel data) async {
+    await _inspeksiTphFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TPencurianTbsDao extends TPencurianTbsDao {
+  _$TPencurianTbsDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _pencurianTbsFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_pencurian_tbs',
+            (PencurianTbsFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'company': item.company,
+                  'unitKerja': item.unitKerja,
+                  'afd': item.afd,
+                  'foto': item.foto,
+                  'blok': item.blok,
+                  'tahunTanam': item.tahunTanam,
+                  'realisasiPencurianTbsTandan':
+                      item.realisasiPencurianTbsTandan,
+                  'realisasiPencurianTbsKg': item.realisasiPencurianTbsKg,
+                  'rtl': item.rtl,
+                  'createdBy': item.createdBy,
+                  'long': item.long,
+                  'lat': item.lat
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<PencurianTbsFormModel>
+      _pencurianTbsFormModelInsertionAdapter;
+
+  @override
+  Future<List<PencurianTbsFormModel>> getDataPencurianTbsByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_pencurian_tbs WHERE tanggal = ?1',
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            realisasiPencurianTbsTandan:
+                row['realisasiPencurianTbsTandan'] as int?,
+            realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
+            foto: row['foto'] as String?,
+            rtl: row['rtl'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<PencurianTbsFormModel>> getAllPencurianTbs() async {
+    return _queryAdapter.queryList('SELECT * FROM t_pencurian_tbs',
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            realisasiPencurianTbsTandan:
+                row['realisasiPencurianTbsTandan'] as int?,
+            realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
+            foto: row['foto'] as String?,
+            rtl: row['rtl'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?));
+  }
+
+  @override
+  Future<bool?> deleteDataPencurianTbs() async {
+    return _queryAdapter.query('DELETE FROM t_pencurian_tbs',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataPencurianTbsByDate(String tanggal) async {
+    return _queryAdapter.query('DELETE FROM t_pencurian_tbs where tanggal = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataPencurianTbs(PencurianTbsFormModel data) async {
+    await _pencurianTbsFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }
