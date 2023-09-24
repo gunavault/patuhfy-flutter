@@ -107,7 +107,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDIberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
 
@@ -559,7 +559,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
                   'panenBuahSangatMentah': item.panenBuahSangatMentah,
                   'tbsBusuk': item.tbsBusuk,
                   'gagangTandanPanjang': item.gagangTandanPanjang,
-                  'tbsTidakDIberiNomor': item.tbsTidakDIberiNomor,
+                  'tbsTidakDiberiNomor': item.tbsTidakDiberiNomor,
                   'tbsTidakDisusunRapi': item.tbsTidakDisusunRapi,
                   'tangkaiTidakBerbentukV': item.tangkaiTidakBerbentukV,
                   'createdBy': item.createdBy,
@@ -595,7 +595,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
             panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
             tbsBusuk: row['tbsBusuk'] as int?,
             gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
-            tbsTidakDIberiNomor: row['tbsTidakDIberiNomor'] as int?,
+            tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?,
             tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
             tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
             createdBy: row['createdBy'] as String?,
@@ -621,7 +621,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
             panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
             tbsBusuk: row['tbsBusuk'] as int?,
             gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
-            tbsTidakDIberiNomor: row['tbsTidakDIberiNomor'] as int?,
+            tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?,
             tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
             tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
             createdBy: row['createdBy'] as String?,

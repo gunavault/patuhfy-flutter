@@ -45,16 +45,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
 
-    // Simpen dulu yang offline
-    List<InspeksiTphFormModel> cek_length;
-    cek_length = await localDataSource
-        .getDataInspeksiTphByTanggal(dataForm.tanggal.toString());
-
-    if (cek_length.length == 0) {
-      //Check duplikat
-      await localDataSource.addDataInspeksiTph(dataForm);
-    }
-    // setelah itu simpen ke database holding
+    // simpen ke database holding
     InspeksiTphFormModelResponse res_from_api =
         await remoteDataSource.createInspeksiTph(
       userModel.token,
@@ -62,6 +53,16 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     );
 
     if (res_from_api.status_code == 200) {
+      // Simpen dulu yang offline
+      List<InspeksiTphFormModel> cek_length;
+      cek_length = await localDataSource
+          .getDataInspeksiTphByTanggal(dataForm.tanggal.toString());
+
+      if (cek_length.length == 0) {
+        //Check duplikat
+        await localDataSource.addDataInspeksiTph(dataForm);
+      }
+
       emit(SuccessInspeksiTphFormState(
           status_code: res_from_api.status_code,
           message: res_from_api.message));

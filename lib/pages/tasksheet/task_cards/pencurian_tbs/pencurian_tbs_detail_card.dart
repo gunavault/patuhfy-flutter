@@ -2,17 +2,45 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
-import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
+import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class InspeksiHancaDetailCard extends StatelessWidget {
-  const InspeksiHancaDetailCard({super.key, required this.dataForm});
+class PencurianTbsDetailCard extends StatelessWidget {
+  const PencurianTbsDetailCard({super.key, required this.dataForm});
 
-  final InspeksiHancaFormModel? dataForm;
+  final PencurianTbsFormModel? dataForm;
+
+  Widget evidencePencurianTbs(context) {
+    final double bannerWidth = MediaQuery.of(context).size.width;
+    final double bannerHeight = MediaQuery.of(context).size.width * 3 / 4;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Evidence Apel Pagi",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: CommonColors.blackColor,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.memory(
+            base64Decode(dataForm!.foto.toString()),
+            width: bannerWidth,
+            height: bannerHeight,
+            fit: BoxFit.cover,
+          ),
+        )
+      ],
+    );
+  }
 
   Widget textFieldWidget({fieldText, fieldValue}) {
     return Column(
@@ -135,41 +163,18 @@ class InspeksiHancaDetailCard extends StatelessWidget {
                 fieldValue: dataForm!.tahunTanam,
               ),
               textFieldWidget(
-                fieldText: 'Kavpled',
-                fieldValue: dataForm!.kapveld,
+                fieldText: 'Realisasi Pencurian TBS (Tandan)',
+                fieldValue: dataForm!.realisasiPencurianTbsTandan,
               ),
               textFieldWidget(
-                fieldText: 'Mandor',
-                fieldValue: dataForm!.mandor,
+                fieldText: 'Realisasi Pencurian TBS (Kg)',
+                fieldValue: dataForm!.realisasiPencurianTbsKg,
               ),
               textFieldWidget(
-                fieldText: 'Pemanen',
-                fieldValue: dataForm!.pemanen,
+                fieldText: 'Rencana Tindak Lanjut',
+                fieldValue: dataForm!.rtl,
               ),
-              textFieldWidget(
-                fieldText: 'Brondolan Tidak dikutip',
-                fieldValue: dataForm!.brondolanTidakDikutip,
-              ),
-              textFieldWidget(
-                fieldText: 'Buah Busuk',
-                fieldValue: dataForm!.buahBusuk,
-              ),
-              textFieldWidget(
-                fieldText: 'Buah Lewat matang tidak dipanen',
-                fieldValue: dataForm!.buahLewatMarangTidakDipanen,
-              ),
-              textFieldWidget(
-                fieldText: 'Buah Lewat Matang Tidak diangkut ke TPH',
-                fieldValue: dataForm!.buahLewatMatangTidakDiangkutKeTph,
-              ),
-              textFieldWidget(
-                fieldText: 'Pelepah tidak dipotong 3 dan tidak di susun',
-                fieldValue: dataForm!.pelepahTidakDipotongTiga,
-              ),
-              textFieldWidget(
-                fieldText: 'Pelepah tidak di turunkan',
-                fieldValue: dataForm!.pelepahTidakDiturunkan,
-              ),
+              evidencePencurianTbs(context),
               const SizedBox(height: 30.0),
             ],
           ),

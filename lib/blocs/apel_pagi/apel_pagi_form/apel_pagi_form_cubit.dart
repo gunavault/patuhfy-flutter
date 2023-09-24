@@ -45,17 +45,6 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
 
-    print('latitude ${position.latitude}`');
-    print('longitude ${position.longitude}`');
-    // Simpen dulu yang offline
-    List<ApelPagiFormModel> cek_length;
-    cek_length = await localDataSource
-        .getDataApelPagiByTanggal(dataForm.tanggal.toString());
-
-    if (cek_length.length == 0) {
-      //Check duplikat
-      await localDataSource.addDataApelPagi(dataForm);
-    }
     // setelah itu simpen ke database holding
     ApelPagiFormModelResponse res_from_api =
         await remoteDataSource.createApelPagi(
@@ -64,6 +53,16 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     );
 
     if (res_from_api.status_code == 200) {
+      // Simpen dulu yang offline
+      List<ApelPagiFormModel> cek_length;
+      cek_length = await localDataSource
+          .getDataApelPagiByTanggal(dataForm.tanggal.toString());
+
+      if (cek_length.length == 0) {
+        //Check duplikat
+        await localDataSource.addDataApelPagi(dataForm);
+      }
+
       emit(SuccessApelPagiFormState(
           status_code: res_from_api.status_code,
           message: res_from_api.message));

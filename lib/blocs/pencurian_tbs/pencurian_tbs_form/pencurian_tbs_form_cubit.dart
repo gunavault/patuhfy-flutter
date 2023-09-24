@@ -45,15 +45,6 @@ class PencurianTbsFormCubit extends Cubit<PencurianTbsFormState> {
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
 
-    // Simpen dulu yang offline
-    List<PencurianTbsFormModel> cek_length;
-    cek_length = await localDataSource
-        .getDataPencurianTbsByTanggal(dataForm.tanggal.toString());
-
-    if (cek_length.length == 0) {
-      //Check duplikat
-      await localDataSource.addDataPencurianTbs(dataForm);
-    }
     // setelah itu simpen ke database holding
     PencurianTbsFormModelResponse res_from_api =
         await remoteDataSource.createPencurianTbs(
@@ -62,6 +53,16 @@ class PencurianTbsFormCubit extends Cubit<PencurianTbsFormState> {
     );
 
     if (res_from_api.status_code == 200) {
+      // Simpen dulu yang offline
+      List<PencurianTbsFormModel> cek_length;
+      cek_length = await localDataSource
+          .getDataPencurianTbsByTanggal(dataForm.tanggal.toString());
+
+      if (cek_length.length == 0) {
+        //Check duplikat
+        await localDataSource.addDataPencurianTbs(dataForm);
+      }
+
       emit(SuccessPencurianTbsFormState(
           status_code: res_from_api.status_code,
           message: res_from_api.message));

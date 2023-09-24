@@ -45,15 +45,6 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
 
-    // Simpen dulu yang offline
-    List<InspeksiHancaFormModel> cek_length;
-    cek_length = await localDataSource
-        .getDataInspeksiHancaByTanggal(dataForm.tanggal.toString());
-
-    if (cek_length.length == 0) {
-      //Check duplikat
-      await localDataSource.addDataInspeksiHanca(dataForm);
-    }
     // setelah itu simpen ke database holding
     InspeksiHancaFormModelResponse res_from_api =
         await remoteDataSource.createInspeksiHanca(
@@ -62,6 +53,16 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     );
 
     if (res_from_api.status_code == 200) {
+      // Simpen dulu yang offline
+      List<InspeksiHancaFormModel> cek_length;
+      cek_length = await localDataSource
+          .getDataInspeksiHancaByTanggal(dataForm.tanggal.toString());
+
+      if (cek_length.length == 0) {
+        //Check duplikat
+        await localDataSource.addDataInspeksiHanca(dataForm);
+      }
+
       emit(SuccessInspeksiHancaFormState(
           status_code: res_from_api.status_code,
           message: res_from_api.message));

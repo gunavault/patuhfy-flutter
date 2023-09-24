@@ -18,7 +18,7 @@ class InspeksiTphFormModel {
   int? panenBuahSangatMentah;
   int? tbsBusuk;
   int? gagangTandanPanjang;
-  int? tbsTidakDIberiNomor;
+  int? tbsTidakDiberiNomor;
   int? tbsTidakDisusunRapi;
   int? tangkaiTidakBerbentukV;
   String? createdBy;
@@ -39,7 +39,7 @@ class InspeksiTphFormModel {
       this.panenBuahSangatMentah,
       this.tbsBusuk,
       this.gagangTandanPanjang,
-      this.tbsTidakDIberiNomor,
+      this.tbsTidakDiberiNomor,
       this.tbsTidakDisusunRapi,
       this.tangkaiTidakBerbentukV,
       this.createdBy,
@@ -61,7 +61,7 @@ class InspeksiTphFormModel {
     panenBuahSangatMentah = json["PANEN_BUAH_SANGAT_MENTAH"];
     tbsBusuk = json["TBS_BUSUK"];
     gagangTandanPanjang = json["GAGANG_TANDAN_PANJANG"];
-    tbsTidakDIberiNomor = json["TBS_TIDAK_DIBERI_NOMOR"];
+    tbsTidakDiberiNomor = json["TBS_TIDAK_DIBERI_NOMOR"];
     tbsTidakDisusunRapi = json["TBS_TIDAK_DISUSUN_RAPI"];
     tangkaiTidakBerbentukV = json["TANGKAI_TIDAK_BERBENTUK_V"];
     createdBy = json["CREATED_BY"];
@@ -83,7 +83,7 @@ class InspeksiTphFormModel {
     data["PANEN_BUAH_SANGAT_MENTAH"] = panenBuahSangatMentah;
     data["TBS_BUSUK"] = tbsBusuk;
     data["GAGANG_TANDAN_PANJANG"] = gagangTandanPanjang;
-    data["TBS_TIDAK_DIBERI_NOMOR"] = tbsTidakDIberiNomor;
+    data["TBS_TIDAK_DIBERI_NOMOR"] = tbsTidakDiberiNomor;
     data["TBS_TIDAK_DISUSUN_RAPI"] = tbsTidakDisusunRapi;
     data["TANGKAI_TIDAK_BERBENTUK_V"] = tangkaiTidakBerbentukV;
     data["CREATED_BY"] = createdBy;

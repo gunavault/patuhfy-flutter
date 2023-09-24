@@ -2,17 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
-import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
+import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class InspeksiHancaDetailCard extends StatelessWidget {
-  const InspeksiHancaDetailCard({super.key, required this.dataForm});
+class InspeksiTphDetailCard extends StatelessWidget {
+  const InspeksiTphDetailCard({super.key, required this.dataForm});
 
-  final InspeksiHancaFormModel? dataForm;
+  final InspeksiTphFormModel? dataForm;
 
   Widget textFieldWidget({fieldText, fieldValue}) {
     return Column(
@@ -147,28 +145,32 @@ class InspeksiHancaDetailCard extends StatelessWidget {
                 fieldValue: dataForm!.pemanen,
               ),
               textFieldWidget(
-                fieldText: 'Brondolan Tidak dikutip',
-                fieldValue: dataForm!.brondolanTidakDikutip,
+                fieldText: 'No TPH',
+                fieldValue: dataForm!.noTph,
               ),
               textFieldWidget(
-                fieldText: 'Buah Busuk',
-                fieldValue: dataForm!.buahBusuk,
+                fieldText: 'Panen Buah Sangat Mentah',
+                fieldValue: dataForm!.panenBuahSangatMentah,
               ),
               textFieldWidget(
-                fieldText: 'Buah Lewat matang tidak dipanen',
-                fieldValue: dataForm!.buahLewatMarangTidakDipanen,
+                fieldText: 'TBS Busuk',
+                fieldValue: dataForm!.tbsBusuk,
               ),
               textFieldWidget(
-                fieldText: 'Buah Lewat Matang Tidak diangkut ke TPH',
-                fieldValue: dataForm!.buahLewatMatangTidakDiangkutKeTph,
+                fieldText: 'Gagang Tandan Panjang',
+                fieldValue: dataForm!.gagangTandanPanjang,
               ),
               textFieldWidget(
-                fieldText: 'Pelepah tidak dipotong 3 dan tidak di susun',
-                fieldValue: dataForm!.pelepahTidakDipotongTiga,
+                fieldText: 'TBS Tidak Diberi Nomor',
+                fieldValue: dataForm!.tbsTidakDiberiNomor,
               ),
               textFieldWidget(
-                fieldText: 'Pelepah tidak di turunkan',
-                fieldValue: dataForm!.pelepahTidakDiturunkan,
+                fieldText: 'TBS Tidak Disusun Rapi',
+                fieldValue: dataForm!.tbsTidakDisusunRapi,
+              ),
+              textFieldWidget(
+                fieldText: 'Tangkai Tidak Berbentuk V',
+                fieldValue: dataForm!.tangkaiTidakBerbentukV,
               ),
               const SizedBox(height: 30.0),
             ],
