@@ -169,13 +169,11 @@ class RemoteDataSource {
       print('data yang dikirim aap ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/inspeksi-tph",
           data: dataForm.toJson(), options: optionAuth(token));
-      print('response ap anih ${response}');
       dynamic callback = response.data;
       return InspeksiTphFormModelResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg']);
     } on DioError catch (err) {
-      print('errornya apa $err.response.toString()');
       return InspeksiTphFormModelResponse(
           message: err.response.toString(), status_code: 500);
     }

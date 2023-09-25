@@ -60,9 +60,7 @@ class LoginPage extends StatelessWidget {
                   listeners: [
                     BlocListener<AuthUserCubit, AuthUserState>(
                       listener: (context, authUserState) {
-                        print('state auth ${authUserState}');
                         if (authUserState is AuthUserLoadingState) {
-                          print('ke sini');
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
@@ -128,7 +126,7 @@ class LoginPage extends StatelessWidget {
                       shrinkWrap: false,
                       children: [
                         Container(
-                          height: 50,
+                          height: 70,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -136,11 +134,11 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Center(
                               child: Text(
-                                'Selamat Datang di Aplikasi Patuhi',
+                                'Hii Planters, Silahkan Login',
                                 style: kTextStyle.copyWith(
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
+                                    fontSize: 15.0),
                               ),
                             ),
                             const SizedBox(height: 10.0),
@@ -166,7 +164,7 @@ class LoginPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Patuhi App',
+                                        'Patuhfy App',
                                         maxLines: 3,
                                         textAlign: TextAlign.center,
                                         style: kTextStyle.copyWith(
@@ -178,7 +176,7 @@ class LoginPage extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 10.0),
                                       Text(
-                                        'Percaya sama Tuhan, Patuh sama Aturan!',
+                                        'Hal baik dimulai dengan Halaman Login!',
                                         style: kTextStyle.copyWith(
                                             color: kSubTitleColor),
                                       ),
@@ -188,7 +186,7 @@ class LoginPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(
-                              height: 50,
+                              height: 30,
                             ),
                             TextFormField(
                               controller: nikSapController,

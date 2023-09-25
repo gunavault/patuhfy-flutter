@@ -15,8 +15,8 @@ import 'package:patuhfy/widgets/constant.dart';
 
 class Tasksheet extends StatelessWidget {
   int? weekCount;
-  DateTime selectedDate = DateTime.now();
-
+  DateTime dateNow = DateTime.now();
+  bool isToday = false;
   Tasksheet({super.key});
 
   @override
@@ -68,7 +68,7 @@ class Tasksheet extends StatelessWidget {
                 }
 
                 return PilihTanggalTaskSheetWidget(
-                  selectedDate: selectedDate,
+                  selectedDate: dateNow,
                 );
               },
             ),
@@ -142,37 +142,6 @@ class Tasksheet extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 10.0),
-                              // SizedBox(
-                              //   width: 220,
-                              //   height: 5,
-                              //   child: ClipRRect(
-                              //     borderRadius: const BorderRadius.all(
-                              //         Radius.circular(10)),
-                              //     child: LinearProgressIndicator(
-                              //       value: 0.3,
-                              //       valueColor:
-                              //           const AlwaysStoppedAnimation<Color>(
-                              //               Color(0xffFF4444)),
-                              //       backgroundColor: const Color(0xffFF4444)
-                              //           .withOpacity(0.1),
-                              //     ),
-                              //   ),
-                              // ),
-                              // const SizedBox(height: 10.0),
-                              // RichText(
-                              //   text: TextSpan(
-                              //     text: '4',
-                              //     style: kTextStyle.copyWith(
-                              //         color: kBlueColor, fontSize: 12),
-                              //     children: [
-                              //       TextSpan(
-                              //         text: ' /10 Task Selesai.',
-                              //         style: kTextStyle.copyWith(
-                              //             fontSize: 12, color: kTitleColor),
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
                             ],
                           ),
                           const Spacer(),
@@ -197,15 +166,33 @@ class Tasksheet extends StatelessWidget {
               builder: (context, state) {
                 if (state is SetTasksheetPageState) {
                   DateTime selectedDate = DateTime.parse(state.selectedDate);
+                  print('berapa ${dateNow.difference(selectedDate).inDays}');
+
+                  isToday = (dateNow.difference(selectedDate).inDays == 0
+                      ? true
+                      : false);
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LabelTaskDoTo(selectedDate: selectedDate),
-                      ApelPagiCard(selectedDate: state.selectedDate),
-                      InspeksiHancaCard(selectedDate: state.selectedDate),
-                      InspeksiTphCard(selectedDate: state.selectedDate),
-                      PencurianTbsCard(selectedDate: state.selectedDate)
+                      ApelPagiCard(
+                        selectedDate: state.selectedDate,
+                        isToday: isToday,
+                      ),
+                      InspeksiHancaCard(
+                        selectedDate: state.selectedDate,
+                        isToday: isToday,
+                      ),
+                      InspeksiTphCard(
+                        selectedDate: state.selectedDate,
+                        isToday: isToday,
+                      ),
+                      PencurianTbsCard(
+                        selectedDate: state.selectedDate,
+                        isToday: isToday,
+                      )
                     ],
                   );
                 }

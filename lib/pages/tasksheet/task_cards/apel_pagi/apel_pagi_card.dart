@@ -1,21 +1,19 @@
+import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:form_builder_image_picker/form_builder_image_picker.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import '../../../../models/apel_pagi_form_model.dart';
-
 class ApelPagiCard extends StatelessWidget {
-  const ApelPagiCard({super.key, required this.selectedDate});
+  const ApelPagiCard(
+      {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
+  final bool isToday;
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +40,30 @@ class ApelPagiCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 06, bottom: 06),
                   child: InkWell(
                     onTap: () {
-                      if (!state.isAnswered) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => FormApelPagi(
-                              selectedDate: selectedDate,
+                      if (isToday) {
+                        if (!state.isAnswered) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => FormApelPagi(
+                                selectedDate: selectedDate,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          timesheetAddPopUp(context);
+                        }
                       } else {
-                        timesheetAddPopUp(context);
+                        FloatingSnackBar(
+                          message: 'Oops, Pengisian Form sudah ditutup!',
+                          context: context,
+                          textColor: Colors.white,
+                          textStyle: const TextStyle(color: Colors.white),
+                          duration: const Duration(milliseconds: 1500),
+                          backgroundColor: kOrangeColor,
+                        );
                       }
+
+                      print('udah lewat bos');
                     },
                     child: Container(
                       width: double.infinity,

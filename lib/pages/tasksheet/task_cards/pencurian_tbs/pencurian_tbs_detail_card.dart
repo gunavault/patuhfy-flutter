@@ -21,7 +21,7 @@ class PencurianTbsDetailCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Evidence Apel Pagi",
+          "Evidence Pencurian TBS",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

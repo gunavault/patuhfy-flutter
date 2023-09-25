@@ -1,3 +1,4 @@
+import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
@@ -9,9 +10,10 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class PencurianTbsCard extends StatelessWidget {
-  const PencurianTbsCard({super.key, required this.selectedDate});
+  const PencurianTbsCard(
+      {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
-
+  final bool isToday;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PencurianTbsCardCubit, PencurianTbsCardState>(
@@ -37,16 +39,27 @@ class PencurianTbsCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 06, bottom: 06),
                   child: InkWell(
                     onTap: () {
-                      if (!state.isAnswered) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => FormPencurianTbs(
-                              selectedDate: selectedDate,
+                      if (isToday) {
+                        if (!state.isAnswered) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => FormPencurianTbs(
+                                selectedDate: selectedDate,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          timesheetAddPopUp(context);
+                        }
                       } else {
-                        timesheetAddPopUp(context);
+                        FloatingSnackBar(
+                          message: 'Oops, Pengisian Form sudah ditutup!',
+                          context: context,
+                          textColor: Colors.white,
+                          textStyle: const TextStyle(color: Colors.white),
+                          duration: const Duration(milliseconds: 1500),
+                          backgroundColor: kOrangeColor,
+                        );
                       }
                     },
                     child: Container(

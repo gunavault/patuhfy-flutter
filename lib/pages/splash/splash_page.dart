@@ -43,11 +43,11 @@ class _SplashPageState extends State<SplashPage> {
                 ),
               ),
               Text(
-                'Patuhi Ibumu',
+                'Managed By PTPN Group',
                 style: kTextStyle.copyWith(
                     color: kTitleColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 30.0),
+                    fontSize: 15.0),
               ),
             ],
           ),
