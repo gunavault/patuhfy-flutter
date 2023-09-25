@@ -39,8 +39,8 @@ class PencurianTbsCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 06, bottom: 06),
                   child: InkWell(
                     onTap: () {
-                      if (isToday) {
-                        if (!state.isAnswered) {
+                      if (!state.isAnswered) {
+                        if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => FormPencurianTbs(
@@ -49,17 +49,17 @@ class PencurianTbsCard extends StatelessWidget {
                             ),
                           );
                         } else {
-                          timesheetAddPopUp(context);
+                          FloatingSnackBar(
+                            message: 'Oops, Pengisian Form sudah ditutup!',
+                            context: context,
+                            textColor: Colors.white,
+                            textStyle: const TextStyle(color: Colors.white),
+                            duration: const Duration(milliseconds: 1500),
+                            backgroundColor: kOrangeColor,
+                          );
                         }
                       } else {
-                        FloatingSnackBar(
-                          message: 'Oops, Pengisian Form sudah ditutup!',
-                          context: context,
-                          textColor: Colors.white,
-                          textStyle: const TextStyle(color: Colors.white),
-                          duration: const Duration(milliseconds: 1500),
-                          backgroundColor: kOrangeColor,
-                        );
+                        timesheetAddPopUp(context);
                       }
                     },
                     child: Container(
