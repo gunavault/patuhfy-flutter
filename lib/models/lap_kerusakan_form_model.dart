@@ -15,17 +15,18 @@ class LapKerusakanFormModel {
   String? keterangan;
   String? rencana_tindaklanjut;
 
-  LapKerusakanFormModel(
-      {this.tanggal,
-      this.company,
-      this.unitKerja,
-      this.afd,
-      this.foto,
-      this.createdBy,
-      this.long,
-      this.lat,
-      this.keterangan,
-      this.rencana_tindaklanjut,});
+  LapKerusakanFormModel({
+    this.tanggal,
+    this.company,
+    this.unitKerja,
+    this.afd,
+    this.foto,
+    this.createdBy,
+    this.long,
+    this.lat,
+    this.keterangan,
+    this.rencana_tindaklanjut,
+  });
 
   LapKerusakanFormModel.fromJson(Map<String, dynamic> json) {
     // print('afd ga ${json["afdeling"]}');
@@ -35,8 +36,8 @@ class LapKerusakanFormModel {
     afd = json["AFDELING"];
     foto = json["FOTO"];
     createdBy = json["CREATED_BY"];
-    long = json["LONG"];
-    lat = json["LAT"];
+    long = json["LONG"].toString();
+    lat = json["LAT"].toString();
     keterangan = json["KETERANGAN"];
     rencana_tindaklanjut = json["RENCANA_TINDAKLANJUT"];
   }

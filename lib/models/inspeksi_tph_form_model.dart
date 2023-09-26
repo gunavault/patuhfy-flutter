@@ -65,8 +65,8 @@ class InspeksiTphFormModel {
     tbsTidakDisusunRapi = json["TBS_TIDAK_DISUSUN_RAPI"];
     tangkaiTidakBerbentukV = json["TANGKAI_TIDAK_BERBENTUK_V"];
     createdBy = json["CREATED_BY"];
-    long = json["LAT"];
-    lat = json["LONG"];
+    long = json["LONG"].toString();
+    lat = json["LAT"].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -87,8 +87,8 @@ class InspeksiTphFormModel {
     data["TBS_TIDAK_DISUSUN_RAPI"] = tbsTidakDisusunRapi;
     data["TANGKAI_TIDAK_BERBENTUK_V"] = tangkaiTidakBerbentukV;
     data["CREATED_BY"] = createdBy;
-    data["LAT"] = long;
-    data["LONG"] = lat;
+    data["LAT"] = lat;
+    data["LONG"] = long;
 
     return data;
   }

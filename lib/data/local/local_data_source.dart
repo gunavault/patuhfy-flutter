@@ -241,7 +241,7 @@ class LocalDataSource {
     return await tPencurianTbsDao.deleteDataPencurianTbsByDate(tanggal);
   }
 
-    // Transaksi Laporan Kerusakan Dao
+  // Transaksi Laporan Kerusakan Dao
   addDataLapKerusakan(LapKerusakanFormModel dataForm) =>
       tLapKerusakanDao.insertDataLapKerusakan(dataForm);
 
@@ -284,5 +284,3 @@ class LocalDataSource {
     return await tLapKerusakanDao.deleteDataLapKerusakanByDate(tanggal);
   }
 }
-
-

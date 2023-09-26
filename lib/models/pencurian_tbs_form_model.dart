@@ -46,8 +46,8 @@ class PencurianTbsFormModel {
     foto = json["FOTO"];
     rtl = json["RTL"];
     createdBy = json["CREATED_BY"];
-    long = json["LAT"];
-    lat = json["LONG"];
+    lat = json["LAT"].toString();
+    long = json["LONG"].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -63,8 +63,8 @@ class PencurianTbsFormModel {
     data["FOTO"] = foto;
     data["RTL"] = rtl;
     data["CREATED_BY"] = createdBy;
-    data["LAT"] = long;
-    data["LONG"] = lat;
+    data["LAT"] = lat;
+    data["LONG"] = long;
 
     return data;
   }

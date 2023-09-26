@@ -122,7 +122,7 @@ class RemoteDataSource {
       token, InspeksiHancaFormModel dataForm) async {
     try {
       var dio = Dio();
-
+      print('inspeksi hancan ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/inspeksi-hanca",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
@@ -247,7 +247,6 @@ class RemoteDataSource {
           dataForm: [PencurianTbsFormModel()]);
     }
   }
-
 
   //Laporan Kerusakan
   Future<LapKerusakanFormModelResponse> createLapKerusakan(

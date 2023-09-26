@@ -31,8 +31,8 @@ class ApelPagiFormModel {
     afd = json["AFDELING"];
     foto = json["FOTO"];
     createdBy = json["CREATED_BY"];
-    long = json["LONG"];
-    lat = json["LAT"];
+    long = json["LONG"].toString();
+    lat = json["LAT"].toString();
   }
 
   Map<String, dynamic> toJson() {

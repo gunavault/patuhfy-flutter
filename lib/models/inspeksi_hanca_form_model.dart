@@ -63,8 +63,8 @@ class InspeksiHancaFormModel {
     pelepahTidakDipotongTiga = json["PELEPAH_TIDAK_DIPOTONG_TIGA"];
     pelepahTidakDiturunkan = json["PELEPAH_TIDAK_DITURUNKAN"];
     createdBy = json["CREATED_BY"];
-    long = json["LAT"];
-    lat = json["LONG"];
+    long = json["LONG"].toString();
+    lat = json["LAT"].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -86,8 +86,8 @@ class InspeksiHancaFormModel {
     data["PELEPAH_TIDAK_DIPOTONG_TIGA"] = pelepahTidakDipotongTiga;
     data["PELEPAH_TIDAK_DITURUNKAN"] = pelepahTidakDiturunkan;
     data["CREATED_BY"] = createdBy;
-    data["LAT"] = long;
-    data["LONG"] = lat;
+    data["LAT"] = lat;
+    data["LONG"] = long;
 
     return data;
   }
