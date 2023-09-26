@@ -7,6 +7,7 @@ import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/lap_kerusakan/lap_kerusakan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_card.dart';
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
@@ -190,6 +191,10 @@ class Tasksheet extends StatelessWidget {
                         isToday: isToday,
                       ),
                       PencurianTbsCard(
+                        selectedDate: state.selectedDate,
+                        isToday: isToday,
+                      ),
+                       LapKerusakanCard(
                         selectedDate: state.selectedDate,
                         isToday: isToday,
                       )

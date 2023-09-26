@@ -75,6 +75,8 @@ class _$AppDatabase extends AppDatabase {
 
   TPencurianTbsDao? _tPencurianTbsDaoInstance;
 
+  TLapKerusakanDao? _tLapKerusakanDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -110,6 +112,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -153,6 +157,12 @@ class _$AppDatabase extends AppDatabase {
   TPencurianTbsDao get tPencurianTbsDao {
     return _tPencurianTbsDaoInstance ??=
         _$TPencurianTbsDao(database, changeListener);
+  }
+
+  @override
+  TLapKerusakanDao get tLapKerusakanDao {
+    return _tLapKerusakanDaoInstance ??=
+        _$TLapKerusakanDao(database, changeListener);
   }
 }
 
@@ -743,6 +753,92 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   @override
   Future<void> insertDataPencurianTbs(PencurianTbsFormModel data) async {
     await _pencurianTbsFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TLapKerusakanDao extends TLapKerusakanDao {
+  _$TLapKerusakanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _lapKerusakanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_lap_kerusakan',
+            (LapKerusakanFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'company': item.company,
+                  'unitKerja': item.unitKerja,
+                  'afd': item.afd,
+                  'foto': item.foto,
+                  'createdBy': item.createdBy,
+                  'long': item.long,
+                  'lat': item.lat,
+                  'keterangan': item.keterangan,
+                  'rencana_tindaklanjut': item.rencana_tindaklanjut
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<LapKerusakanFormModel>
+      _lapKerusakanFormModelInsertionAdapter;
+
+  @override
+  Future<List<LapKerusakanFormModel>> getDataLapKerusakanByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_lap_kerusakan WHERE tanggal = ?1',
+        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            foto: row['foto'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            keterangan: row['keterangan'] as String?,
+            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<LapKerusakanFormModel>> getAllLapKerusakan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_lap_kerusakan',
+        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
+            tanggal: row['tanggal'] as String?,
+            company: row['company'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            foto: row['foto'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            keterangan: row['keterangan'] as String?,
+            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?));
+  }
+
+  @override
+  Future<bool?> deleteDataLapKerusakan() async {
+    return _queryAdapter.query('DELETE FROM t_lap_kerusakan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataLapKerusakanByDate(String tanggal) async {
+    return _queryAdapter.query('DELETE FROM t_lap_kerusakan where tanggal = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataLapKerusakan(LapKerusakanFormModel data) async {
+    await _lapKerusakanFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }

@@ -12,6 +12,8 @@ import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_form/inspeksi_tph_form_cubit.dart';
+import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_card/lap_kerusakan_card_cubit.dart';
+import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_form/lap_kerusakan_form_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
@@ -43,7 +45,8 @@ Future<void> main() async {
       database.tApelpagiDao,
       database.tInspeksiHancaDao,
       database.tInspeksiTphDao,
-      database.tPencurianTbsDao);
+      database.tPencurianTbsDao,
+      database.tLapKerusakanDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = new DateTime.now();
@@ -110,6 +113,15 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               PencurianTbsFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              LapKerusakanCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              LapKerusakanFormCubit(localDataSource, remoteDataSource),
         ),
       ],
       child: MyApp(

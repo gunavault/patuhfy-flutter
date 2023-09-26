@@ -4,6 +4,7 @@ import 'package:patuhfy/data/local/dao/blok_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_tph_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
+import 'package:patuhfy/data/local/dao/t_lap_kerusakan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
@@ -12,6 +13,7 @@ import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +26,7 @@ class LocalDataSource {
   final TInspeksiHancaDao tInspeksiHancaDao;
   final TInspeksiTphDao tInspeksiTphDao;
   final TPencurianTbsDao tPencurianTbsDao;
+  final TLapKerusakanDao tLapKerusakanDao;
 
   LocalDataSource(
       this.userDao,
@@ -32,7 +35,8 @@ class LocalDataSource {
       this.tApelPagiDao,
       this.tInspeksiHancaDao,
       this.tInspeksiTphDao,
-      this.tPencurianTbsDao);
+      this.tPencurianTbsDao,
+      this.tLapKerusakanDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -236,4 +240,49 @@ class LocalDataSource {
   deleteDataPencurianTbsByDate(String tanggal) async {
     return await tPencurianTbsDao.deleteDataPencurianTbsByDate(tanggal);
   }
+
+    // Transaksi Laporan Kerusakan Dao
+  addDataLapKerusakan(LapKerusakanFormModel dataForm) =>
+      tLapKerusakanDao.insertDataLapKerusakan(dataForm);
+
+  getAllDataLapKerusakan() async {
+    return await tLapKerusakanDao.getAllLapKerusakan();
+  }
+
+  getDataLapKerusakanByTanggal(String tanggal) async {
+    return await tLapKerusakanDao.getDataLapKerusakanByTanggal(tanggal);
+  }
+
+  getDataLapKerusakanByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<LapKerusakanFormModel> dataForm;
+    dataForm = await tLapKerusakanDao.getDataLapKerusakanByTanggal(tanggal);
+
+    if (dataForm.length == 0) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      LapKerusakanFormModelSelectResponse response = await RemoteDataSource()
+          .getDataLapKerusakanByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.length != 0) {
+        await addDataLapKerusakan(response.dataForm.first);
+      }
+
+      return response.dataForm;
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllLapKerusakan() async {
+    return await tLapKerusakanDao.deleteDataLapKerusakan();
+  }
+
+  deleteDataLapKerusakanByDate(String tanggal) async {
+    return await tLapKerusakanDao.deleteDataLapKerusakanByDate(tanggal);
+  }
 }
+
+

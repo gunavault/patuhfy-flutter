@@ -8,6 +8,7 @@ import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/selectbox/selectbox_afdeling_model.dart';
 import 'package:patuhfy/models/user_model.dart';
@@ -244,6 +245,50 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [PencurianTbsFormModel()]);
+    }
+  }
+
+
+  //Laporan Kerusakan
+  Future<LapKerusakanFormModelResponse> createLapKerusakan(
+      token, LapKerusakanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.post("$baseUrl/tasksheet/lap-kerusakan",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return LapKerusakanFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return LapKerusakanFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<LapKerusakanFormModelSelectResponse> getDataLapKerusakanByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/lap-kerusakan/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return LapKerusakanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => LapKerusakanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return LapKerusakanFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [LapKerusakanFormModel()]);
     }
   }
 }
