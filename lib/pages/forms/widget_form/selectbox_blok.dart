@@ -12,18 +12,16 @@ class SelectboxBlok extends StatelessWidget {
       this.titleName,
       this.isTitleName,
       required this.filledController,
-      required this.fieldController,
-      required this.parameterController});
+      required this.fieldController});
 
   final String? titleName;
   final bool? isTitleName;
   final TextEditingController filledController;
   final TextEditingController fieldController;
-  final String parameterController;
+  // final String parameterController;
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SelectboxBlokCubit>(context).getData(parameterController);
     Widget _customPopupItemBuilderExample2(
         BuildContext context, BlokModel item, bool isSelected) {
       return Container(
@@ -51,80 +49,96 @@ class SelectboxBlok extends StatelessWidget {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        isTitleName == true
-            ? Text(
-                titleName!,
-                style: CommonStyle.getRalewayFont(
-                  color: CommonColors.blackColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
+    return BlocBuilder<SelectboxBlokCubit, SelectboxBlokState>(
+      builder: (context, state) {
+        if (state is SetParamSBState) {
+          BlocProvider.of<SelectboxBlokCubit>(context).getData(state.kodeAfd);
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              isTitleName == true
+                  ? Text(
+                      titleName!,
+                      style: CommonStyle.getRalewayFont(
+                        color: CommonColors.blackColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 10,
+              ),
+              DropdownSearch<BlokModel>(
+                validator: (value) {
+                  if (value is Null) {
+                    return 'Blok Tidak Boleh kosong';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  filledController.text = value!.tahunTanam.toString();
+                  fieldController.text = value.kodeBlok.toString();
+                },
+                asyncItems: (String? filter) =>
+                    BlocProvider.of<SelectboxBlokCubit>(context)
+                        .getData(state.kodeAfd),
+                popupProps: PopupPropsMultiSelection.modalBottomSheet(
+                  showSelectedItems: true,
+                  itemBuilder: _customPopupItemBuilderExample2,
+                  showSearchBox: true,
                 ),
-              )
-            : const SizedBox(),
-        const SizedBox(
-          height: 10,
-        ),
-        DropdownSearch<BlokModel>(
-          onChanged: (value) {
-            filledController.text = value!.tahunTanam.toString();
-            fieldController.text = value.kodeBlok.toString();
-          },
-          asyncItems: (String? filter) =>
-              BlocProvider.of<SelectboxBlokCubit>(context)
-                  .getData(parameterController),
-          popupProps: PopupPropsMultiSelection.modalBottomSheet(
-            showSelectedItems: true,
-            itemBuilder: _customPopupItemBuilderExample2,
-            showSearchBox: true,
-          ),
-          compareFn: (item, sItem) => item.kodeBlok == sItem.kodeBlok,
-          dropdownDecoratorProps: DropDownDecoratorProps(
-            dropdownSearchDecoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(
-                  left: 15, right: 18, top: 16, bottom: 16),
-              labelText: titleName,
-              fillColor: Colors.transparent,
-              hintStyle: CommonStyle.getRalewayFont(
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 0, 0, 0), width: 0.5),
+                compareFn: (item, sItem) => item.kodeBlok == sItem.kodeBlok,
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                        left: 15, right: 18, top: 16, bottom: 16),
+                    labelText: titleName,
+                    fillColor: Colors.transparent,
+                    hintStyle: CommonStyle.getRalewayFont(
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15),
+                    disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 0, 0, 0), width: 0.5),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: CommonColors.redColor, width: 0.5),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: CommonColors.redColor, width: 0.5),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: CommonColors.textGeryColor, width: 0.5),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderSide: const BorderSide(
+                          color: CommonColors.textGeryColor, width: 0.5),
+                    ),
+                    filled: true,
+                    // fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                  ),
+                ),
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide:
-                    const BorderSide(color: CommonColors.redColor, width: 0.5),
+              const SizedBox(
+                height: 10,
               ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide:
-                    const BorderSide(color: CommonColors.redColor, width: 0.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide: const BorderSide(
-                    color: CommonColors.textGeryColor, width: 0.5),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                borderSide: const BorderSide(
-                    color: CommonColors.textGeryColor, width: 0.5),
-              ),
-              filled: true,
-              // fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-      ],
+            ],
+          );
+        }
+
+        return Text('Loading..');
+      },
     );
   }
 }

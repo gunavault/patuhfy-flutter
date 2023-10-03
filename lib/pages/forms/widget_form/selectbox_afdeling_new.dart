@@ -66,12 +66,16 @@ class SelectboxAfdelingNew extends StatelessWidget {
           height: 10,
         ),
         DropdownSearch<AfdelingModel>(
+          validator: (value) {
+            if (value is Null) {
+              return 'Afdeling Tidak Boleh kosong';
+            }
+            return null;
+          },
           onChanged: (value) {
             kodeAfdelingController.text = value!.toString();
-
             BlocProvider.of<SelectboxBlokCubit>(context)
                 .setParam(value!.toString());
-            // onUpdateBlokFunc();
           },
           asyncItems: (String? filter) =>
               BlocProvider.of<SelectboxAfdelingCubit>(context).getDataNew(),

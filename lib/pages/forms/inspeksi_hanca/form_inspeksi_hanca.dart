@@ -177,20 +177,11 @@ class FormInspeksiHanca extends StatelessWidget {
                           isTitleName: true,
                           kodeAfdelingController: kodeAfdelingController,
                         ),
-                        BlocBuilder<SelectboxBlokCubit, SelectboxBlokState>(
-                          builder: (context, state) {
-                            if (state is SetParamSBState) {
-                              return SelectboxBlok(
-                                  titleName: 'Blok',
-                                  isTitleName: true,
-                                  filledController: tahunTanamController,
-                                  fieldController: kodeBlokController,
-                                  parameterController: state.kodeAfd);
-                            }
-
-                            return Text('loading');
-                          },
-                        ),
+                        SelectboxBlok(
+                            titleName: 'Blok',
+                            isTitleName: true,
+                            filledController: tahunTanamController,
+                            fieldController: kodeBlokController),
                         // TextFormFieldWidgetForm(
                         //   fieldText: 'Blok',
                         //   fieldKeterangan: 'Blok',
