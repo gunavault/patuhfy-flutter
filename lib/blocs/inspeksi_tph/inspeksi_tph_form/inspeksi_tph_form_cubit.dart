@@ -22,6 +22,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dataForm.lat = prefs.getString('lat');
     dataForm.long = prefs.getString('long');
+    dataForm.isSend = 0;
 
     List<InspeksiTphFormModel> cek_length;
     cek_length = await localDataSource
@@ -44,6 +45,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
         desiredAccuracy: LocationAccuracy.high);
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
+    dataForm.isSend = 1;
 
     // simpen ke database holding
     InspeksiTphFormModelResponse res_from_api =
@@ -83,7 +85,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
       UserModel userModel = await localDataSource.getCurrentUser();
       dataForm.createdBy = userModel.nik_sap;
       dataForm.tanggal = today;
-      dataForm.company = userModel.company_code;
+      // dataForm.company = userModel.company_code;
       dataForm.unitKerja = userModel.psa;
 
       final connectivityResult = await (Connectivity()

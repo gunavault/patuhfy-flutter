@@ -47,7 +47,7 @@ class LocalDataSource {
     return await userDao.getUserByNikSAP(nik_sap);
   }
 
-  getAllAfdeling() async {
+  Future<List<AfdelingModel>> getAllAfdeling() async {
     return await afdelingDao.getAllAfd();
   }
 
@@ -70,6 +70,19 @@ class LocalDataSource {
 
   deleteBlok() async {
     return await blokDao.deleteBlok();
+  }
+
+  Future<List<BlokModel>> getAllBlokByKodeAfd(
+      String psa, String kodeAfd) async {
+    List<BlokModel> data;
+    return await blokDao.getAfdByPsaAndAfd(psa, kodeAfd);
+  }
+
+  getAllBlokByKodeAfdFilter(String psa, String kodeAfd, String filter) async {
+    List<BlokModel> data;
+    data = await blokDao.getAfdByPsaAndAfdFilter(psa, kodeAfd, filter);
+
+    return data;
   }
 
   // Transaksi Apel Pagi Dao

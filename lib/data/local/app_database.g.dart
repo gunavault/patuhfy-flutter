@@ -99,21 +99,21 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER, `nik_sap` TEXT, `name` TEXT, `company_code` TEXT, `company_shortname` TEXT, `company_longname` TEXT, `psa` TEXT, `psa_name` TEXT, `role` TEXT, `token` TEXT, `foto` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER, `nik_sap` TEXT, `name` TEXT, `company_code` TEXT, `company_shortname` TEXT, `company_longname` TEXT, `psa` TEXT, `psa_name` TEXT, `role` TEXT, `token` TEXT, `foto` TEXT, `hasSawit` INTEGER, `hasKaret` INTEGER, `hasTeh` INTEGER, `hasTebu` INTEGER, `hasKopi` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_afdeling` (`kodeAfd` TEXT, PRIMARY KEY (`kodeAfd`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `m_blok` (`kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, PRIMARY KEY (`kodePsa`))');
+            'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `company` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -185,7 +185,12 @@ class _$UserDao extends UserDao {
                   'psa_name': item.psa_name,
                   'role': item.role,
                   'token': item.token,
-                  'foto': item.foto
+                  'foto': item.foto,
+                  'hasSawit': item.hasSawit,
+                  'hasKaret': item.hasKaret,
+                  'hasTeh': item.hasTeh,
+                  'hasTebu': item.hasTebu,
+                  'hasKopi': item.hasKopi
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -210,7 +215,12 @@ class _$UserDao extends UserDao {
             psa_name: row['psa_name'] as String?,
             role: row['role'] as String?,
             token: row['token'] as String?,
-            foto: row['foto'] as String?),
+            foto: row['foto'] as String?,
+            hasSawit: row['hasSawit'] as int?,
+            hasKaret: row['hasKaret'] as int?,
+            hasTebu: row['hasTebu'] as int?,
+            hasKopi: row['hasKopi'] as int?,
+            hasTeh: row['hasTeh'] as int?),
         arguments: [nik_sap]);
   }
 
@@ -282,6 +292,7 @@ class _$BlokDao extends BlokDao {
             database,
             'm_blok',
             (BlokModel item) => <String, Object?>{
+                  'id': item.id,
                   'kodePsa': item.kodePsa,
                   'kodeAfd': item.kodeAfd,
                   'kodeBlok': item.kodeBlok,
@@ -298,8 +309,8 @@ class _$BlokDao extends BlokDao {
   final InsertionAdapter<BlokModel> _blokModelInsertionAdapter;
 
   @override
-  Future<BlokModel?> getBlokByPsa(String psa) async {
-    return _queryAdapter.query('SELECT * FROM m_blok WHERE kodePsa = ?1',
+  Future<List<BlokModel>> getBlokByPsa(String psa) async {
+    return _queryAdapter.queryList('SELECT * FROM m_blok WHERE kodePsa = ?1',
         mapper: (Map<String, Object?> row) => BlokModel(
             kodePsa: row['kodePsa'] as String?,
             kodeAfd: row['kodeAfd'] as String?,
@@ -310,11 +321,11 @@ class _$BlokDao extends BlokDao {
   }
 
   @override
-  Future<BlokModel?> getAfdByPsaAndAfd(
+  Future<List<BlokModel>> getAfdByPsaAndAfd(
     String psa,
     String afd,
   ) async {
-    return _queryAdapter.query(
+    return _queryAdapter.queryList(
         'SELECT * FROM m_blok WHERE kodePsa = ?1 and kodeAfd = ?2',
         mapper: (Map<String, Object?> row) => BlokModel(
             kodePsa: row['kodePsa'] as String?,
@@ -323,6 +334,18 @@ class _$BlokDao extends BlokDao {
             namaBlok: row['namaBlok'] as String?,
             tahunTanam: row['tahunTanam'] as String?),
         arguments: [psa, afd]);
+  }
+
+  @override
+  Future<List<BlokModel>> getAfdByPsaAndAfdFilter(
+    String psa,
+    String afd,
+    String filter,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM m_blok WHERE kodePsa = ?1 and kodeAfd = ?2 and kodeBlok like %?3%',
+        mapper: (Map<String, Object?> row) => BlokModel(kodePsa: row['kodePsa'] as String?, kodeAfd: row['kodeAfd'] as String?, kodeBlok: row['kodeBlok'] as String?, namaBlok: row['namaBlok'] as String?, tahunTanam: row['tahunTanam'] as String?),
+        arguments: [psa, afd, filter]);
   }
 
   @override
@@ -359,13 +382,13 @@ class _$TApelPagiDao extends TApelPagiDao {
             (ApelPagiFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
-                  'company': item.company,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
                   'createdBy': item.createdBy,
                   'long': item.long,
-                  'lat': item.lat
+                  'lat': item.lat,
+                  'isSend': item.isSend
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -383,13 +406,13 @@ class _$TApelPagiDao extends TApelPagiDao {
         'SELECT * FROM t_apel_pagi WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => ApelPagiFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             foto: row['foto'] as String?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?),
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -398,13 +421,13 @@ class _$TApelPagiDao extends TApelPagiDao {
     return _queryAdapter.queryList('SELECT * FROM t_apel_pagi',
         mapper: (Map<String, Object?> row) => ApelPagiFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             foto: row['foto'] as String?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?));
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
   }
 
   @override
@@ -438,7 +461,6 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
             (InspeksiHancaFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
-                  'company': item.company,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
@@ -457,7 +479,8 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
                   'pelepahTidakDiturunkan': item.pelepahTidakDiturunkan,
                   'createdBy': item.createdBy,
                   'long': item.long,
-                  'lat': item.lat
+                  'lat': item.lat,
+                  'isSend': item.isSend
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -476,7 +499,6 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
         'SELECT * FROM t_inspeksi_hanca WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -494,7 +516,8 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
             pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?),
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -503,7 +526,6 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
     return _queryAdapter.queryList('SELECT * FROM t_inspeksi_hanca',
         mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -521,7 +543,8 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
             pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?));
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
   }
 
   @override
@@ -556,7 +579,6 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
             (InspeksiTphFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
-                  'company': item.company,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
@@ -574,7 +596,8 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
                   'tangkaiTidakBerbentukV': item.tangkaiTidakBerbentukV,
                   'createdBy': item.createdBy,
                   'long': item.long,
-                  'lat': item.lat
+                  'lat': item.lat,
+                  'isSend': item.isSend
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -593,7 +616,6 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
         'SELECT * FROM t_inspeksi_tph WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -610,7 +632,8 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
             tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?),
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -619,7 +642,6 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
     return _queryAdapter.queryList('SELECT * FROM t_inspeksi_tph',
         mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -636,7 +658,8 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
             tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?));
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
   }
 
   @override
@@ -670,7 +693,6 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             (PencurianTbsFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
-                  'company': item.company,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
@@ -682,7 +704,8 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
                   'rtl': item.rtl,
                   'createdBy': item.createdBy,
                   'long': item.long,
-                  'lat': item.lat
+                  'lat': item.lat,
+                  'isSend': item.isSend
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -701,7 +724,6 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
         'SELECT * FROM t_pencurian_tbs WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -713,7 +735,8 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             rtl: row['rtl'] as String?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?),
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -722,7 +745,6 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
     return _queryAdapter.queryList('SELECT * FROM t_pencurian_tbs',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -734,7 +756,8 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             rtl: row['rtl'] as String?,
             createdBy: row['createdBy'] as String?,
             long: row['long'] as String?,
-            lat: row['lat'] as String?));
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
   }
 
   @override
@@ -768,7 +791,6 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
             (LapKerusakanFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
-                  'company': item.company,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
@@ -776,7 +798,8 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
                   'long': item.long,
                   'lat': item.lat,
                   'keterangan': item.keterangan,
-                  'rencana_tindaklanjut': item.rencana_tindaklanjut
+                  'rencana_tindaklanjut': item.rencana_tindaklanjut,
+                  'isSend': item.isSend
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -795,7 +818,6 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
         'SELECT * FROM t_lap_kerusakan WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             foto: row['foto'] as String?,
@@ -803,7 +825,8 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
             long: row['long'] as String?,
             lat: row['lat'] as String?,
             keterangan: row['keterangan'] as String?,
-            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?),
+            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?,
+            isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -812,7 +835,6 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
     return _queryAdapter.queryList('SELECT * FROM t_lap_kerusakan',
         mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
             tanggal: row['tanggal'] as String?,
-            company: row['company'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             foto: row['foto'] as String?,
@@ -820,7 +842,8 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
             long: row['long'] as String?,
             lat: row['lat'] as String?,
             keterangan: row['keterangan'] as String?,
-            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?));
+            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?,
+            isSend: row['isSend'] as int?));
   }
 
   @override

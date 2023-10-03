@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -163,23 +166,43 @@ class FormInspeksiHanca extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxAfdeling(
+                        // SelectboxAfdeling(
+                        //   titleName: "Afdeling",
+                        //   isTitleName: true,
+                        //   kodeAfdelingController: kodeAfdelingController,
+                        // ),
+
+                        SelectboxAfdelingNew(
                           titleName: "Afdeling",
                           isTitleName: true,
                           kodeAfdelingController: kodeAfdelingController,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Blok',
-                          fieldKeterangan: 'Blok',
-                          fieldType: 'text',
-                          fieldController: kodeBlokController,
+                        BlocBuilder<SelectboxBlokCubit, SelectboxBlokState>(
+                          builder: (context, state) {
+                            if (state is SetParamSBState) {
+                              return SelectboxBlok(
+                                  titleName: 'Blok',
+                                  isTitleName: true,
+                                  filledController: tahunTanamController,
+                                  fieldController: kodeBlokController,
+                                  parameterController: state.kodeAfd);
+                            }
+
+                            return Text('loading');
+                          },
                         ),
+                        // TextFormFieldWidgetForm(
+                        //   fieldText: 'Blok',
+                        //   fieldKeterangan: 'Blok',
+                        //   fieldType: 'text',
+                        //   fieldController: kodeBlokController,
+                        // ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Tahun Tanam',
-                          fieldKeterangan: 'Tahun Tanam',
-                          fieldType: 'number',
-                          fieldController: tahunTanamController,
-                        ),
+                            fieldText: 'Tahun Tanam',
+                            fieldKeterangan: 'Tahun Tanam',
+                            fieldType: 'number',
+                            fieldController: tahunTanamController,
+                            isEnabled: true),
                         TextFormFieldWidgetForm(
                           fieldText: 'Kavpled',
                           fieldKeterangan: 'Kavpled',

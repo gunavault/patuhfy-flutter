@@ -14,6 +14,11 @@ class UserModel {
   String? role;
   String? token;
   String? foto;
+  int? hasSawit;
+  int? hasKaret;
+  int? hasTeh;
+  int? hasTebu;
+  int? hasKopi;
 
   UserModel(
       {this.id,
@@ -26,7 +31,12 @@ class UserModel {
       this.psa_name,
       this.role,
       this.token,
-      this.foto});
+      this.foto,
+      this.hasSawit,
+      this.hasKaret,
+      this.hasTebu,
+      this.hasKopi,
+      this.hasTeh});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = int.parse(json["user"]["nik_sap"]);
@@ -40,6 +50,11 @@ class UserModel {
     token = json["user"]["user_tokens"];
     role = json["user"]["role"];
     foto = json["user"]["photo"];
+    hasSawit = json["user"]["has_sawit"];
+    hasKaret = json["user"]["has_karet"];
+    hasTebu = json["user"]["has_tebu"];
+    hasKopi = json["user"]["has_kopi"];
+    hasTeh = json["user"]["has_teh"];
   }
 }
 

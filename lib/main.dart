@@ -18,6 +18,7 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
@@ -73,6 +74,9 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (context) => SelectboxAfdelingCubit(localDataSource),
+        ),
+        BlocProvider(
+          create: (context) => SelectboxBlokCubit(localDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>

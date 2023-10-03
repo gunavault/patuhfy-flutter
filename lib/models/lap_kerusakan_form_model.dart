@@ -5,7 +5,7 @@ class LapKerusakanFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;
   String? tanggal;
-  String? company;
+  // String? company;
   String? unitKerja;
   String? afd;
   String? foto;
@@ -14,24 +14,25 @@ class LapKerusakanFormModel {
   String? lat;
   String? keterangan;
   String? rencana_tindaklanjut;
+  int? isSend;
 
-  LapKerusakanFormModel({
-    this.tanggal,
-    this.company,
-    this.unitKerja,
-    this.afd,
-    this.foto,
-    this.createdBy,
-    this.long,
-    this.lat,
-    this.keterangan,
-    this.rencana_tindaklanjut,
-  });
+  LapKerusakanFormModel(
+      {this.tanggal,
+      // this.company,
+      this.unitKerja,
+      this.afd,
+      this.foto,
+      this.createdBy,
+      this.long,
+      this.lat,
+      this.keterangan,
+      this.rencana_tindaklanjut,
+      this.isSend});
 
   LapKerusakanFormModel.fromJson(Map<String, dynamic> json) {
     // print('afd ga ${json["afdeling"]}');
     tanggal = json["TANGGAL"];
-    company = json["COMPANY"];
+    // company = json["COMPANY"];
     unitKerja = json["UNIT_KERJA"];
     afd = json["AFDELING"];
     foto = json["FOTO"];
@@ -40,12 +41,13 @@ class LapKerusakanFormModel {
     lat = json["LAT"].toString();
     keterangan = json["KETERANGAN"];
     rencana_tindaklanjut = json["RENCANA_TINDAKLANJUT"];
+    isSend = 1;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
-    data["COMPANY"] = company;
+    // data["COMPANY"] = company;
     data["UNITKERJA"] = unitKerja;
     data["AFD"] = afd;
     data["FOTO"] = foto;

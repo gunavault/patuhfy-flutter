@@ -8,12 +8,14 @@ class TextFormFieldWidgetForm extends StatelessWidget {
       required this.fieldText,
       required this.fieldKeterangan,
       required this.fieldType,
-      required this.fieldController});
+      required this.fieldController,
+      this.isEnabled});
 
   final String fieldText;
   final String fieldKeterangan;
   final String fieldType;
   final TextEditingController fieldController;
+  final bool? isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class TextFormFieldWidgetForm extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
+            enabled: isEnabled == null ? true : false,
             controller: fieldController,
             validator: (value) {
               if (value!.isEmpty) {

@@ -23,6 +23,7 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dataForm.lat = prefs.getString('lat');
     dataForm.long = prefs.getString('long');
+    dataForm.isSend = 0;
 
     List<LapKerusakanFormModel> cek_length;
     cek_length = await localDataSource
@@ -45,6 +46,7 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
         desiredAccuracy: LocationAccuracy.high);
     dataForm.lat = position.latitude.toString();
     dataForm.long = position.longitude.toString();
+    dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
     LapKerusakanFormModelResponse res_from_api =
@@ -84,7 +86,7 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
       UserModel userModel = await localDataSource.getCurrentUser();
       dataForm.createdBy = userModel.nik_sap;
       dataForm.tanggal = today;
-      dataForm.company = userModel.company_code;
+      // dataForm.company = userModel.company_code;
       dataForm.unitKerja = userModel.psa;
 
       final connectivityResult = await (Connectivity()

@@ -2,7 +2,8 @@ import 'package:floor/floor.dart';
 
 @Entity(tableName: "m_blok")
 class BlokModel {
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
+  int? id;
   String? kodePsa;
   String? kodeAfd;
   String? kodeBlok;
@@ -33,6 +34,9 @@ class BlokModel {
     data["tahunTanam"] = tahunTanam;
     return data;
   }
+
+  @override
+  String toString() => kodeBlok.toString();
 }
 
 class BlokModelResponse {

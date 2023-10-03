@@ -16,6 +16,9 @@ class AfdelingModel {
     data["kodeAfd"] = kodeAfd;
     return data;
   }
+
+  @override
+  String toString() => kodeAfd.toString();
 }
 
 class AfdelingModelResponse {

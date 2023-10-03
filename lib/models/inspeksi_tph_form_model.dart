@@ -5,7 +5,7 @@ class InspeksiTphFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;
   String? tanggal;
-  String? company;
+  // String? company;
   String? unitKerja;
   String? afd;
   String? foto;
@@ -24,10 +24,11 @@ class InspeksiTphFormModel {
   String? createdBy;
   String? long;
   String? lat;
+  int? isSend;
 
   InspeksiTphFormModel(
       {this.tanggal,
-      this.company,
+      // this.company,
       this.unitKerja,
       this.afd,
       this.blok,
@@ -44,12 +45,13 @@ class InspeksiTphFormModel {
       this.tangkaiTidakBerbentukV,
       this.createdBy,
       this.long,
-      this.lat});
+      this.lat,
+      this.isSend});
 
   InspeksiTphFormModel.fromJson(Map<String, dynamic> json) {
     // print('afd ga ${json["afdeling"]}');
     tanggal = json["TANGGAL"];
-    company = json["COMPANY"];
+    // company = json["COMPANY"];
     unitKerja = json["UNIT_KERJA"];
     afd = json["AFDELING"];
     blok = json["BLOK"];
@@ -67,12 +69,13 @@ class InspeksiTphFormModel {
     createdBy = json["CREATED_BY"];
     long = json["LONG"].toString();
     lat = json["LAT"].toString();
+    isSend = 1;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
-    data["COMPANY"] = company;
+    // data["COMPANY"] = company;
     data["UNIT_KERJA"] = unitKerja;
     data["AFDELING"] = afd;
     data["BLOK"] = blok;
