@@ -103,7 +103,11 @@ class PageCubit extends Cubit<PageState> {
     await localDataSource.deleteAfdeling();
     await localDataSource.deleteBlok();
     await localDataSource.deleteAllInspeksiHanca();
+    await localDataSource.deleteAllInspeksiTph();
     await localDataSource.deleteAllApelPagi();
+    await localDataSource.deleteAllPencurianTbs();
+    await localDataSource.deleteAllLapKerusakan();
+
     emit(LoginPageState());
   }
 }
