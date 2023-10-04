@@ -54,7 +54,7 @@ class MainPage extends StatelessWidget {
               // return LaporPage();
               return BlocProvider(
                 create: (BuildContext context) => TabCubit(),
-                child: HomePageV2(),
+                child: ConnectivityWidget(child: HomePageV2()),
               );
             } else {
               return SplashPage();

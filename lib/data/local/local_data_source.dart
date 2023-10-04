@@ -143,9 +143,10 @@ class LocalDataSource {
 
       if (response.dataForm.length != 0) {
         await addDataApelPagi(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
       }
-
-      return response.dataForm;
     } else {
       return dataForm;
     }
@@ -185,9 +186,10 @@ class LocalDataSource {
 
       if (response.dataForm.length != 0) {
         await addDataInspeksiHanca(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
       }
-
-      return response.dataForm;
     } else {
       return dataForm;
     }
@@ -227,9 +229,10 @@ class LocalDataSource {
 
       if (response.dataForm.length != 0) {
         await addDataInspeksiTph(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
       }
-
-      return response.dataForm;
     } else {
       return dataForm;
     }
@@ -269,9 +272,10 @@ class LocalDataSource {
 
       if (response.dataForm.length != 0) {
         await addDataPencurianTbs(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
       }
-
-      return response.dataForm;
     } else {
       return dataForm;
     }
@@ -312,9 +316,10 @@ class LocalDataSource {
 
       if (response.dataForm.length != 0) {
         await addDataLapKerusakan(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
       }
-
-      return response.dataForm;
     } else {
       return dataForm;
     }

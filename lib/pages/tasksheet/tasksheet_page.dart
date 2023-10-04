@@ -194,7 +194,7 @@ class Tasksheet extends StatelessWidget {
                         selectedDate: state.selectedDate,
                         isToday: isToday,
                       ),
-                       LapKerusakanCard(
+                      LapKerusakanCard(
                         selectedDate: state.selectedDate,
                         isToday: isToday,
                       )

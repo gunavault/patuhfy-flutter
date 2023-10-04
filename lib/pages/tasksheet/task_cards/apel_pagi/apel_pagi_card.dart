@@ -20,6 +20,10 @@ class ApelPagiCard extends StatelessWidget {
     return BlocBuilder<ApelPagiCardCubit, ApelPagiCardState>(
       builder: (context, state) {
         if (state is IsApelPagiAswered) {
+          if (state.dataForm != null) {
+            print('aww is sent ${state.dataForm!.isSend}');
+          }
+
           void timesheetAddPopUp(context) {
             showDialog(
               barrierDismissible: false,
@@ -62,8 +66,6 @@ class ApelPagiCard extends StatelessWidget {
                       } else {
                         timesheetAddPopUp(context);
                       }
-
-                      print('udah lewat bos');
                     },
                     child: Container(
                       width: double.infinity,
@@ -93,7 +95,9 @@ class ApelPagiCard extends StatelessWidget {
                                   child: Checkbox(
                                     visualDensity:
                                         const VisualDensity(horizontal: -4),
-                                    activeColor: kGreenColor,
+                                    activeColor: state.dataForm!.isSend == 1
+                                        ? kGreenColor
+                                        : ratingBarColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),

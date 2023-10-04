@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
@@ -15,23 +16,28 @@ class PencurianTbsCardCubit extends Cubit<PencurianTbsCardState> {
 
   checkIsAnwered(String taskDate) async {
     List<PencurianTbsFormModel> cekData;
-    cekData =
-        await localDataSource.getDataPencurianTbsByTanggal(taskDate.toString());
-    //Check if data offline exists
-    print('cek lengh offline ada ga ${cekData.length}');
-    if (cekData.length == 0) {
-      // if not exist in offline then check online of exists then put to local
+
+    final connectivityResult = await (Connectivity()
+        .checkConnectivity()); // cCheck if there is connection post to local and database
+
+    if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
           .getDataPencurianTbsByTanggalOnlineOrOffline(taskDate.toString());
-      // Cek data online
-      print('cek lengh online ada ga ${cekData.length}');
+      if (cekData.length == 0) {
+        emit(IsPencurianTbsAswered(false, null));
+      } else {
+        // Send to Database Server Holding
+        emit(IsPencurianTbsAswered(true, cekData.first));
+      }
+    } else {
+      cekData = await localDataSource
+          .getDataPencurianTbsByTanggal(taskDate.toString());
+
       if (cekData.length == 0) {
         emit(IsPencurianTbsAswered(false, null));
       } else {
         emit(IsPencurianTbsAswered(true, cekData.first));
       }
-    } else {
-      emit(IsPencurianTbsAswered(true, cekData.first));
     }
   }
 }

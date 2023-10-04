@@ -44,7 +44,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/masterdata/get-afd-by-psa?psa=AK01",
+          "$baseUrl/masterdata/get-afd-by-psa?psa=$kodePsa",
           options: optionAuth(token));
 
       List<dynamic> parsedData = response.data['data'];
@@ -63,9 +63,9 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/masterdata/get-blok-by-psa?psa=AK01&&company=${company}",
+          "$baseUrl/masterdata/get-blok-by-psa?psa=$kodePsa&&company=${company}",
           options: optionAuth(token));
-
+      print('data blok nih ${response.data['data']}');
       List<dynamic> parsedData = response.data['data'];
       return BlokModelResponse(
           blokModel:
@@ -76,12 +76,12 @@ class RemoteDataSource {
     }
   }
 
-  Future getMandorByPsa(String kodePsa, String token) async {
+  getMandorByPsa(String kodePsa, String token) async {
     try {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/masterdata/get-mandor-by-psa?psa=AK01",
+          "$baseUrl/masterdata/get-mandor-by-psa?psa=$kodePsa",
           options: optionAuth(token));
 
       List<dynamic> parsedData = response.data['data'];
@@ -99,7 +99,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/masterdata/get-pemanen-by-psa?psa=AK01",
+          "$baseUrl/masterdata/get-pemanen-by-psa?psa=$kodePsa",
           options: optionAuth(token));
 
       List<dynamic> parsedData = response.data['data'];
@@ -160,7 +160,7 @@ class RemoteDataSource {
       token, InspeksiHancaFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('inspeksi hancan ${dataForm.toJson()}');
+
       var response = await dio.post("$baseUrl/tasksheet/inspeksi-hanca",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;

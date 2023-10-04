@@ -8,6 +8,7 @@ class InitialApelPagiCardState extends ApelPagiCardState {}
 class IsApelPagiAswered extends ApelPagiCardState {
   final bool isAnswered;
   final ApelPagiFormModel? dataForm;
+  // final bool isSend;
 
   IsApelPagiAswered(this.isAnswered, this.dataForm);
 }

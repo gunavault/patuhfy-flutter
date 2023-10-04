@@ -91,7 +91,9 @@ class InspeksiTphCard extends StatelessWidget {
                                   child: Checkbox(
                                     visualDensity:
                                         const VisualDensity(horizontal: -4),
-                                    activeColor: kGreenColor,
+                                    activeColor: state.dataForm!.isSend == 1
+                                        ? kGreenColor
+                                        : ratingBarColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),
@@ -105,7 +107,7 @@ class InspeksiTphCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Inspeksi Tph',
+                                  'Inspeksi TPH',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,

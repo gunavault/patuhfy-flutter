@@ -2,7 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
-import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
@@ -77,14 +76,13 @@ class SelectboxMandorWidget extends StatelessWidget {
           },
           asyncItems: (String? filter) =>
               BlocProvider.of<SelectboxMandorCubit>(context).getData(),
-              itemAsString: (MandorModel u) => u.userAsString(),
-
+          itemAsString: (MandorModel u) => u.userAsString(),
           popupProps: PopupPropsMultiSelection.modalBottomSheet(
             showSelectedItems: true,
             itemBuilder: _customPopupItemBuilderExample2,
             showSearchBox: true,
           ),
-          compareFn: (item, sItem) => item.nikSap == sItem.nikSap ,
+          compareFn: (item, sItem) => item.nikSap == sItem.nikSap,
           dropdownDecoratorProps: DropDownDecoratorProps(
             dropdownSearchDecoration: InputDecoration(
               contentPadding: const EdgeInsets.only(

@@ -90,7 +90,9 @@ class PencurianTbsCard extends StatelessWidget {
                                   child: Checkbox(
                                     visualDensity:
                                         const VisualDensity(horizontal: -4),
-                                    activeColor: kGreenColor,
+                                    activeColor: state.dataForm!.isSend == 1
+                                        ? kGreenColor
+                                        : ratingBarColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),
