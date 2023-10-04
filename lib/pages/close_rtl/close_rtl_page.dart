@@ -172,10 +172,10 @@ class UserModelDropdown {
     return list.map((item) => UserModelDropdown.fromJson(item)).toList();
   }
 
-  // ///this method will prevent the override of toString
-  // String userAsString() {
-  //   return '#${this.id} ${this.name}';
-  // }
+  ///this method will prevent the override of toString
+  String userAsString() {
+    return '#${this.id} ${this.name}';
+  }
 
   // ///this method will prevent the override of toString
   // bool userFilterByCreationDate(String filter) {

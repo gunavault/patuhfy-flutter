@@ -9,6 +9,8 @@ import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
+import 'package:patuhfy/models/mandor_model.dart';
+import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/selectbox/selectbox_afdeling_model.dart';
 import 'package:patuhfy/models/user_model.dart';
@@ -68,6 +70,42 @@ class RemoteDataSource {
       return BlokModelResponse(
           blokModel:
               parsedData.map((value) => BlokModel.fromJson(value)).toList());
+    } on DioError catch (err) {
+      return [];
+      // return err.response.toString();
+    }
+  }
+
+  Future getMandorByPsa(String kodePsa, String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/masterdata/get-mandor-by-psa?psa=AK01",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return MandorModelResponse(
+          mandorModel:
+              parsedData.map((value) => MandorModel.fromJson(value)).toList());
+    } on DioError catch (err) {
+      return [];
+      // return err.response.toString();
+    }
+  }
+
+  Future getPemanenByPsa(String kodePsa, String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/masterdata/get-pemanen-by-psa?psa=AK01",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return PemanenModelResponse(
+          pemanenModel:
+              parsedData.map((value) => PemanenModel.fromJson(value)).toList());
     } on DioError catch (err) {
       return [];
       // return err.response.toString();

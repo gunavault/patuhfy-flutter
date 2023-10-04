@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
-
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
@@ -19,7 +17,8 @@ import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_car
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
-import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/configs/routers.dart';
@@ -28,7 +27,6 @@ import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/main/main_page.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 Future<void> main() async {
@@ -47,7 +45,9 @@ Future<void> main() async {
       database.tInspeksiHancaDao,
       database.tInspeksiTphDao,
       database.tPencurianTbsDao,
-      database.tLapKerusakanDao);
+      database.tLapKerusakanDao,
+      database.mandorDao,
+      database.pemanenDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = new DateTime.now();
@@ -77,6 +77,12 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (context) => SelectboxBlokCubit(localDataSource),
+        ),
+        BlocProvider(
+          create: (context) => SelectboxMandorCubit(localDataSource),
+        ),
+        BlocProvider(
+          create: (context) => SelectboxPemanenCubit(localDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>

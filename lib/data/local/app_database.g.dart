@@ -77,6 +77,10 @@ class _$AppDatabase extends AppDatabase {
 
   TLapKerusakanDao? _tLapKerusakanDaoInstance;
 
+  MandorDao? _mandorDaoInstance;
+
+  PemanenDao? _pemanenDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -114,6 +118,10 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `m_mandor` (`nikSap` TEXT, `namaMandor` TEXT, `kodeAfd` TEXT, PRIMARY KEY (`nikSap`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `m_pemanen` (`nikSapPemanen` TEXT, `namaPemanen` TEXT, `nikSapMandor` TEXT, PRIMARY KEY (`nikSapPemanen`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -163,6 +171,16 @@ class _$AppDatabase extends AppDatabase {
   TLapKerusakanDao get tLapKerusakanDao {
     return _tLapKerusakanDaoInstance ??=
         _$TLapKerusakanDao(database, changeListener);
+  }
+
+  @override
+  MandorDao get mandorDao {
+    return _mandorDaoInstance ??= _$MandorDao(database, changeListener);
+  }
+
+  @override
+  PemanenDao get pemanenDao {
+    return _pemanenDaoInstance ??= _$PemanenDao(database, changeListener);
   }
 }
 
@@ -863,5 +881,152 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
   Future<void> insertDataLapKerusakan(LapKerusakanFormModel data) async {
     await _lapKerusakanFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$MandorDao extends MandorDao {
+  _$MandorDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _mandorModelInsertionAdapter = InsertionAdapter(
+            database,
+            'm_mandor',
+            (MandorModel item) => <String, Object?>{
+                  'nikSap': item.nikSap,
+                  'namaMandor': item.namaMandor,
+                  'kodeAfd': item.kodeAfd
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<MandorModel> _mandorModelInsertionAdapter;
+
+  @override
+  Future<List<MandorModel>> getMandorByPsa(String psa) async {
+    return _queryAdapter.queryList('SELECT * FROM m_mandor WHERE kodePsa = ?1',
+        mapper: (Map<String, Object?> row) => MandorModel(
+            nikSap: row['nikSap'] as String?,
+            namaMandor: row['namaMandor'] as String?,
+            kodeAfd: row['kodeAfd'] as String?),
+        arguments: [psa]);
+  }
+
+  @override
+  Future<List<MandorModel>> getAfdByPsaAndAfd(
+    String psa,
+    String afd,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM m_mandor WHERE kodePsa = ?1 and kodeAfd = ?2',
+        mapper: (Map<String, Object?> row) => MandorModel(
+            nikSap: row['nikSap'] as String?,
+            namaMandor: row['namaMandor'] as String?,
+            kodeAfd: row['kodeAfd'] as String?),
+        arguments: [psa, afd]);
+  }
+
+  @override
+  Future<List<MandorModel>> getAllMandor() async {
+    return _queryAdapter.queryList('SELECT * FROM m_mandor',
+        mapper: (Map<String, Object?> row) => MandorModel(
+            nikSap: row['nikSap'] as String?,
+            namaMandor: row['namaMandor'] as String?,
+            kodeAfd: row['kodeAfd'] as String?));
+  }
+
+  @override
+  Future<bool?> deleteMandor() async {
+    return _queryAdapter.query('DELETE FROM m_mandor',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<void> insertMandor(MandorModel mandor) async {
+    await _mandorModelInsertionAdapter.insert(
+        mandor, OnConflictStrategy.replace);
+  }
+}
+
+class _$PemanenDao extends PemanenDao {
+  _$PemanenDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _pemanenModelInsertionAdapter = InsertionAdapter(
+            database,
+            'm_pemanen',
+            (PemanenModel item) => <String, Object?>{
+                  'nikSapPemanen': item.nikSapPemanen,
+                  'namaPemanen': item.namaPemanen,
+                  'nikSapMandor': item.nikSapMandor
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<PemanenModel> _pemanenModelInsertionAdapter;
+
+  @override
+  Future<List<PemanenModel>> getPemanenByPsa(String psa) async {
+    return _queryAdapter.queryList('SELECT * FROM m_pemanen WHERE kodePsa = ?1',
+        mapper: (Map<String, Object?> row) => PemanenModel(
+            nikSapPemanen: row['nikSapPemanen'] as String?,
+            namaPemanen: row['namaPemanen'] as String?,
+            nikSapMandor: row['nikSapMandor'] as String?),
+        arguments: [psa]);
+  }
+
+  @override
+  Future<List<PemanenModel>> getPemanenByMandor(String nikMandor) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM m_pemanen WHERE nikSapMandor = ?1',
+        mapper: (Map<String, Object?> row) => PemanenModel(
+            nikSapPemanen: row['nikSapPemanen'] as String?,
+            namaPemanen: row['namaPemanen'] as String?,
+            nikSapMandor: row['nikSapMandor'] as String?),
+        arguments: [nikMandor]);
+  }
+
+  @override
+  Future<List<PemanenModel>> getAfdByPsaAndAfd(
+    String psa,
+    String afd,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM m_pemanen WHERE kodePsa = ?1 and kodeAfd = ?2',
+        mapper: (Map<String, Object?> row) => PemanenModel(
+            nikSapPemanen: row['nikSapPemanen'] as String?,
+            namaPemanen: row['namaPemanen'] as String?,
+            nikSapMandor: row['nikSapMandor'] as String?),
+        arguments: [psa, afd]);
+  }
+
+  @override
+  Future<List<PemanenModel>> getAllPemanen() async {
+    return _queryAdapter.queryList('SELECT * FROM m_pemanen',
+        mapper: (Map<String, Object?> row) => PemanenModel(
+            nikSapPemanen: row['nikSapPemanen'] as String?,
+            namaPemanen: row['namaPemanen'] as String?,
+            nikSapMandor: row['nikSapMandor'] as String?));
+  }
+
+  @override
+  Future<bool?> deletePemanen() async {
+    return _queryAdapter.query('DELETE FROM m_pemanen',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<void> insertPemanen(PemanenModel pemanen) async {
+    await _pemanenModelInsertionAdapter.insert(
+        pemanen, OnConflictStrategy.replace);
   }
 }

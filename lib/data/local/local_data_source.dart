@@ -1,6 +1,8 @@
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
 import 'package:patuhfy/data/local/dao/blok_dao.dart';
+import 'package:patuhfy/data/local/dao/mandor_dao.dart';
+import 'package:patuhfy/data/local/dao/pemanen_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_tph_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
@@ -14,6 +16,8 @@ import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
+import 'package:patuhfy/models/mandor_model.dart';
+import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +31,8 @@ class LocalDataSource {
   final TInspeksiTphDao tInspeksiTphDao;
   final TPencurianTbsDao tPencurianTbsDao;
   final TLapKerusakanDao tLapKerusakanDao;
+  final MandorDao mandorDao;
+  final PemanenDao pemanenDao;
 
   LocalDataSource(
       this.userDao,
@@ -36,7 +42,9 @@ class LocalDataSource {
       this.tInspeksiHancaDao,
       this.tInspeksiTphDao,
       this.tPencurianTbsDao,
-      this.tLapKerusakanDao);
+      this.tLapKerusakanDao,
+      this.mandorDao,
+      this.pemanenDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -65,13 +73,6 @@ class LocalDataSource {
     return await afdelingDao.deleteAfd();
   }
 
-  // Blok
-  addBlok(BlokModel blokModel) => blokDao.insertBlok(blokModel);
-
-  deleteBlok() async {
-    return await blokDao.deleteBlok();
-  }
-
   Future<List<BlokModel>> getAllBlokByKodeAfd(
       String psa, String kodeAfd) async {
     List<BlokModel> data;
@@ -83,6 +84,36 @@ class LocalDataSource {
     data = await blokDao.getAfdByPsaAndAfdFilter(psa, kodeAfd, filter);
 
     return data;
+  }
+
+  // Blok
+  addBlok(BlokModel blokModel) => blokDao.insertBlok(blokModel);
+
+  deleteBlok() async {
+    return await blokDao.deleteBlok();
+  }
+
+  // Mandor Kelapa Sawit
+  addMandor(MandorModel mandorModel) => mandorDao.insertMandor(mandorModel);
+
+  deleteMandor() async {
+    return await mandorDao.deleteMandor();
+  }
+
+  Future<List<MandorModel>> getAllMandor() async {
+    return await mandorDao.getAllMandor();
+  }
+
+  // Pemanen Kelapa Sawit
+  addPemanen(PemanenModel pemanenModel) =>
+      pemanenDao.insertPemanen(pemanenModel);
+
+  deletePemanen() async {
+    return await pemanenDao.deletePemanen();
+  }
+
+  Future<List<PemanenModel>> getPemanenByMandor(String nikMandor) async {
+    return await pemanenDao.getPemanenByMandor(nikMandor);
   }
 
   // Transaksi Apel Pagi Dao

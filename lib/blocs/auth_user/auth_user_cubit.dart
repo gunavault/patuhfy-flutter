@@ -7,6 +7,8 @@ import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/form_login_model.dart';
+import 'package:patuhfy/models/mandor_model.dart';
+import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +47,14 @@ class AuthUserCubit extends Cubit<AuthUserState> {
           userModelRespone.userModel!.psa.toString(),
           userModelRespone.userModel!.company_code.toString(),
           userModelRespone.userModel!.token.toString());
-
+      // Get data mandor dari server
+      var mandorModelResponse = await RemoteDataSource().getMandorByPsa(
+          userModelRespone.userModel!.psa.toString(),
+          userModelRespone.userModel!.token.toString());
+      // Get data pemanen dari server
+      var pemanenModelResponse = await RemoteDataSource().getPemanenByPsa(
+          userModelRespone.userModel!.psa.toString(),
+          userModelRespone.userModel!.token.toString());
       // Check data tidak null
       if (userModelRespone.userModel != null &&
           userModelRespone.userModel!.role != null) {
@@ -55,6 +64,10 @@ class AuthUserCubit extends Cubit<AuthUserState> {
         List<AfdelingModel> afdelingModel =
             afdelingModelResponse.afdelingModel ?? AfdelingModel();
         List<BlokModel> blokModel = blokModelResponse.blokModel ?? BlokModel();
+        List<MandorModel> mandorModel =
+            mandorModelResponse.mandorModel ?? MandorModel();
+        List<PemanenModel> pemanenModel =
+            pemanenModelResponse.pemanenModel ?? PemanenModel();
         // Simpen NIK SAP ke sharedpreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString(keyNikSap, userModel.nik_sap ?? "");
@@ -63,6 +76,8 @@ class AuthUserCubit extends Cubit<AuthUserState> {
         await localDataSource.addUser(userModel);
         afdelingModel.forEach((afd) => localDataSource.addAfdeling(afd));
         blokModel.forEach((blok) => localDataSource.addBlok(blok));
+        mandorModel.forEach((mandor) => localDataSource.addMandor(mandor));
+        pemanenModel.forEach((pemanen) => localDataSource.addPemanen(pemanen));
 
         print('sukses nih ${userModelRespone.userModel!.role}');
         print('sukses nih userModel ${userModelRespone.userModel}');

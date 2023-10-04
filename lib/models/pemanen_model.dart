@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "m_Pemanen")
+@Entity(tableName: "m_pemanen")
 class PemanenModel {
   @PrimaryKey()
   String? nikSapPemanen;
@@ -10,6 +10,7 @@ class PemanenModel {
   PemanenModel({this.nikSapPemanen, this.namaPemanen, this.nikSapMandor});
 
   PemanenModel.fromJson(Map<String, dynamic> json) {
+    print('apakah di exce ini pemanen ${json}');
     this.nikSapPemanen = json["nik_pemanen"];
     this.namaPemanen = json["nama_pemanen"];
     this.nikSapMandor = json["nik_mandor"];
@@ -29,8 +30,8 @@ class PemanenModel {
 }
 
 class PemanenModelResponse {
-  List<PemanenModel>? pemanenModel;
+  List<PemanenModel> pemanenModel;
   String? message;
 
-  PemanenModelResponse({this.pemanenModel, this.message});
+  PemanenModelResponse({required this.pemanenModel, this.message});
 }

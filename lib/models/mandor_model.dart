@@ -10,6 +10,7 @@ class MandorModel {
   MandorModel({this.nikSap, this.namaMandor, this.kodeAfd});
 
   MandorModel.fromJson(Map<String, dynamic> json) {
+    print('apakah di exe juga nih mandor? ${json}');
     this.nikSap = json["nik_sap"];
     this.namaMandor = json["nama"];
     this.kodeAfd = json["afdeling"];

@@ -9,6 +9,8 @@ import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_mandor_widget.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_pemanen_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -200,18 +202,28 @@ class FormInspeksiHanca extends StatelessWidget {
                           fieldType: 'number',
                           fieldController: kavpeldController,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Mandor',
-                          fieldKeterangan: 'Mandor',
-                          fieldType: 'text',
-                          fieldController: mandorController,
+                        SelectboxMandorWidget(
+                          titleName: "Mandor",
+                          isTitleName: true,
+                          kodeMandorController: mandorController,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Pemanen',
-                          fieldKeterangan: 'Pemanen',
-                          fieldType: 'text',
+                        SelectboxPemanenWidget(
+                          titleName: "Pemanen",
+                          isTitleName: true,
                           fieldController: pemanenController,
                         ),
+                        // TextFormFieldWidgetForm(
+                        //   fieldText: 'Mandor',
+                        //   fieldKeterangan: 'Mandor',
+                        //   fieldType: 'text',
+                        //   fieldController: mandorController,
+                        // ),
+                        // TextFormFieldWidgetForm(
+                        //   fieldText: 'Pemanen',
+                        //   fieldKeterangan: 'Pemanen',
+                        //   fieldType: 'text',
+                        //   fieldController: pemanenController,
+                        // ),
                         const SizedBox(height: 20.0),
                         Text(
                           'Isian Inspeksi Hanca',
