@@ -80,6 +80,8 @@ class SelectboxBlok extends StatelessWidget {
                 asyncItems: (String? filter) =>
                     BlocProvider.of<SelectboxBlokCubit>(context)
                         .getData(state.kodeAfd),
+                    itemAsString: (BlokModel u) => u.userAsString(),
+
                 popupProps: PopupPropsMultiSelection.modalBottomSheet(
                   showSelectedItems: true,
                   itemBuilder: _customPopupItemBuilderExample2,

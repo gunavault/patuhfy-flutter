@@ -94,6 +94,7 @@ class _CloseRTLState extends State<CloseRTL> {
             Expanded(
               child: DropdownSearch<UserModelDropdown>(
                 asyncItems: (String? filter) => getData(filter),
+                itemAsString: (UserModelDropdown u) => u.userAsString(),
                 popupProps: PopupPropsMultiSelection.modalBottomSheet(
                   showSelectedItems: true,
                   itemBuilder: _customPopupItemBuilderExample2,

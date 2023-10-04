@@ -34,9 +34,13 @@ class BlokModel {
     data["tahunTanam"] = tahunTanam;
     return data;
   }
+String userAsString() {
+    return 'Kode AFD : ${this.kodeBlok} - ${this.kodeAfd}';
+  }
 
   @override
   String toString() => kodeBlok.toString();
+  
 }
 
 class BlokModelResponse {

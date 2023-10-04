@@ -27,6 +27,9 @@ class MandorModel {
 
   @override
   String toString() => nikSap.toString();
+  String userAsString() {
+    return '${this.nikSap} ${this.namaMandor}';
+  }
 }
 
 class MandorModelResponse {

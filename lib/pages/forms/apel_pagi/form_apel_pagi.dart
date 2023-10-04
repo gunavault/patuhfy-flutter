@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
-
+import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
@@ -48,6 +49,9 @@ class FormApelPagi extends StatelessWidget {
       } else {
         // setState(() => _autovalidate = true);
       }
+    }
+    void onChangeSelectboxAfdeling(value) {
+      kodeAfdelingController.text = value!.toString();
     }
 
     return GestureDetector(
@@ -131,10 +135,10 @@ class FormApelPagi extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxAfdeling(
+                        SelectboxAfdelingNew(
                           titleName: "Afdeling",
                           isTitleName: true,
-                          kodeAfdelingController: kodeAfdelingController,
+                          onChangeFunc: onChangeSelectboxAfdeling,
                         ),
                         UploadFoto(
                           fieldName: 'Evidence Apel Pagi',

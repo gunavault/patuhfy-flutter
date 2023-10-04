@@ -27,6 +27,9 @@ class PemanenModel {
 
   @override
   String toString() => nikSapPemanen.toString();
+  String userAsString() {
+    return '${this.nikSapPemanen} ${this.namaPemanen}';
+  }
 }
 
 class PemanenModelResponse {

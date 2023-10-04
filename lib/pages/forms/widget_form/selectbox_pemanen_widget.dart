@@ -83,6 +83,8 @@ class SelectboxPemanenWidget extends StatelessWidget {
                 asyncItems: (String? filter) =>
                     BlocProvider.of<SelectboxPemanenCubit>(context)
                         .getData(state.kodeMandor),
+                    itemAsString: (PemanenModel u) => u.userAsString(),
+
                 popupProps: PopupPropsMultiSelection.modalBottomSheet(
                   showSelectedItems: true,
                   itemBuilder: _customPopupItemBuilderExample2,

@@ -77,12 +77,14 @@ class SelectboxMandorWidget extends StatelessWidget {
           },
           asyncItems: (String? filter) =>
               BlocProvider.of<SelectboxMandorCubit>(context).getData(),
+              itemAsString: (MandorModel u) => u.userAsString(),
+
           popupProps: PopupPropsMultiSelection.modalBottomSheet(
             showSelectedItems: true,
             itemBuilder: _customPopupItemBuilderExample2,
             showSearchBox: true,
           ),
-          compareFn: (item, sItem) => item.nikSap == sItem.nikSap,
+          compareFn: (item, sItem) => item.nikSap == sItem.nikSap ,
           dropdownDecoratorProps: DropDownDecoratorProps(
             dropdownSearchDecoration: InputDecoration(
               contentPadding: const EdgeInsets.only(

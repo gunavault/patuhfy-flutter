@@ -3,9 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_form/inspeksi_tph_form_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_mandor_widget.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_pemanen_widget.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -81,6 +87,25 @@ class FormInspeksiTph extends StatelessWidget {
       } else {
         // setState(() => _autovalidate = true);
       }
+    }
+        void onChangeSelectboxAfdeling(value) {
+      kodeAfdelingController.text = value!.toString();
+      BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
+    }
+
+    void onChangeSelectboxBlok(value) {
+      tahunTanamController.text = value!.tahunTanam.toString();
+      kodeBlokController.text = value.kodeBlok.toString();
+    }
+
+    void onChangeSelectboxMandor(value) {
+      mandorController.text = value!.toString();
+      BlocProvider.of<SelectboxPemanenCubit>(context)
+          .setParam(value!.toString());
+    }
+
+    void onChangeSelectboxPemanen(value) {
+      pemanenController.text = value!.nikSapPemanen.toString();
     }
 
     return GestureDetector(
@@ -165,41 +190,40 @@ class FormInspeksiTph extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxAfdeling(
+                        SelectboxAfdelingNew(
                           titleName: "Afdeling",
                           isTitleName: true,
-                          kodeAfdelingController: kodeAfdelingController,
+                          onChangeFunc: onChangeSelectboxAfdeling,
+                        ),
+                        SelectboxBlok(
+                          titleName: 'Blok',
+                          isTitleName: true,
+                          onChangeFunc: onChangeSelectboxBlok,
                         ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Blok',
-                          fieldKeterangan: 'Blok',
-                          fieldType: 'text',
-                          fieldController: kodeBlokController,
-                        ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Tahun Tanam',
-                          fieldKeterangan: 'Tahun Tanam',
-                          fieldType: 'number',
-                          fieldController: tahunTanamController,
-                        ),
+                            fieldText: 'Tahun Tanam',
+                            fieldKeterangan: 'Tahun Tanam',
+                            fieldType: 'number',
+                            fieldController: tahunTanamController,
+                            isEnabled: true),
                         TextFormFieldWidgetForm(
                           fieldText: 'Kavpled',
                           fieldKeterangan: 'Kavpled',
                           fieldType: 'number',
                           fieldController: kavpeldController,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Mandor',
-                          fieldKeterangan: 'Mandor',
-                          fieldType: 'text',
-                          fieldController: mandorController,
+                         SelectboxMandorWidget(
+                          titleName: "Mandor",
+                          isTitleName: true,
+                          onChangeFunc: onChangeSelectboxMandor,
+                          // kodeMandorController: mandorController,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Pemanen',
-                          fieldKeterangan: 'Pemanen',
-                          fieldType: 'text',
-                          fieldController: pemanenController,
-                        ),
+                        SelectboxPemanenWidget(
+                            titleName: "Pemanen",
+                            isTitleName: true,
+                            onChangeFunc: onChangeSelectboxPemanen
+                            // fieldController: pemanenController,
+                            ),
                         TextFormFieldWidgetForm(
                           fieldText: 'No TPH',
                           fieldKeterangan: 'No TPh',
