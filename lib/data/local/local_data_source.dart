@@ -265,13 +265,12 @@ class LocalDataSource {
     if (dataForm.length == 0) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
-
       PencurianTbsFormModelSelectResponse response = await RemoteDataSource()
           .getDataPencurianTbsByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
-
       if (response.dataForm.length != 0) {
-        await addDataPencurianTbs(response.dataForm.first);
+        response.dataForm.forEach((data) => addDataPencurianTbs(data));
+
         return response.dataForm;
       } else {
         return dataForm;

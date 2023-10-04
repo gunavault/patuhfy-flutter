@@ -5,7 +5,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class PencurianTbsDetailCard extends StatelessWidget {
@@ -130,7 +129,7 @@ class PencurianTbsDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task Inspeksi Hanca Panen',
+                    'Isian Task Pencurian TBS',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,

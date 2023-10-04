@@ -6,15 +6,10 @@ import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
-import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/pages/home/home_page_v2.dart';
-import 'package:patuhfy/pages/lapor/lapor_page.dart';
 import 'package:patuhfy/pages/login/login_page.dart';
-import 'package:patuhfy/pages/login/login_page3.dart';
-import 'package:patuhfy/pages/onboarding/on_boarding_page.dart';
 import 'package:patuhfy/pages/onboarding/onboard.dart';
 import 'package:patuhfy/pages/splash/splash_page.dart';
-import 'package:patuhfy/widgets/connectivity.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);

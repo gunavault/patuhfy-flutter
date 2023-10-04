@@ -5,6 +5,7 @@ import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_c
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_form/inspeksi_tph_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
+import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
@@ -59,6 +60,13 @@ class FormPencurianTbs extends StatelessWidget {
       // _loginBloc.add(LoginPressed(_loginData));
     }
 
+    void _updateBLocAfterSuccess() {
+      BlocProvider.of<PencurianTbsCardCubit>(context)
+          .checkIsAnwered(selectedDate);
+
+      BlocProvider.of<PencurianTbsListCubit>(context).getData(selectedDate);
+    }
+
     void _submit() {
       final form = _formKey.currentState;
 
@@ -72,7 +80,7 @@ class FormPencurianTbs extends StatelessWidget {
       }
     }
 
-        void onChangeSelectboxAfdeling(value) {
+    void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
       BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
     }
@@ -108,8 +116,7 @@ class FormPencurianTbs extends StatelessWidget {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             showAlertSuccessOkActionV2(context, PencurianTbsFormState.message,
                 () {
-              BlocProvider.of<PencurianTbsCardCubit>(context)
-                  .checkIsAnwered(selectedDate);
+              _updateBLocAfterSuccess();
               Navigator.pop(context);
             });
           } else if (PencurianTbsFormState is DuplicatedPencurianTbsFormState) {

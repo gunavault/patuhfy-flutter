@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
     Callback? callback,
   ]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 7,
+      version: 8,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -115,7 +115,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
         await database.execute(
@@ -711,6 +711,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             (PencurianTbsFormModel item) => <String, Object?>{
                   'id': item.id,
                   'tanggal': item.tanggal,
+                  'mobileCreatedAt': item.mobileCreatedAt,
                   'unitKerja': item.unitKerja,
                   'afd': item.afd,
                   'foto': item.foto,
@@ -742,6 +743,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
         'SELECT * FROM t_pencurian_tbs WHERE tanggal = ?1',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
             tanggal: row['tanggal'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,
@@ -763,6 +765,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
     return _queryAdapter.queryList('SELECT * FROM t_pencurian_tbs',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
             tanggal: row['tanggal'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
             blok: row['blok'] as String?,

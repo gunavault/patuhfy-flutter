@@ -2,7 +2,7 @@ import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
-import 'package:patuhfy/pages/forms/pencurian_tbs/form_pencurian_tbs.dart';
+import 'package:patuhfy/pages/forms/pencurian_tbs/list_pencurian_tbs.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -14,23 +14,12 @@ class PencurianTbsCard extends StatelessWidget {
       {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
   final bool isToday;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PencurianTbsCardCubit, PencurianTbsCardState>(
       builder: (context, state) {
         if (state is IsPencurianTbsAswered) {
-          void timesheetAddPopUp(context) {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return PencurianTbsDetailCard(
-                  dataForm: state.dataForm,
-                );
-              },
-            );
-          }
-
           return Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
             child: Column(
@@ -43,7 +32,7 @@ class PencurianTbsCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormPencurianTbs(
+                              builder: (context) => ListPencurianTbs(
                                 selectedDate: selectedDate,
                               ),
                             ),
@@ -59,7 +48,14 @@ class PencurianTbsCard extends StatelessWidget {
                           );
                         }
                       } else {
-                        timesheetAddPopUp(context);
+                        // timesheetAddPopUp(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ListPencurianTbs(
+                              selectedDate: selectedDate,
+                            ),
+                          ),
+                        );
                       }
                     },
                     child: Container(

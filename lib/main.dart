@@ -15,6 +15,7 @@ import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_form/lap_kerusakan_for
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
+import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
@@ -123,6 +124,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               PencurianTbsFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              PencurianTbsListCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>

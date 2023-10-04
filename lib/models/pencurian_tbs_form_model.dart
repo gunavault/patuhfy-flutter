@@ -5,7 +5,7 @@ class PencurianTbsFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;
   String? tanggal;
-  // String? company;
+  String? mobileCreatedAt;
   String? unitKerja;
   String? afd;
   String? foto;
@@ -21,7 +21,7 @@ class PencurianTbsFormModel {
 
   PencurianTbsFormModel(
       {this.tanggal,
-      // this.company,
+      this.mobileCreatedAt,
       this.unitKerja,
       this.afd,
       this.blok,
@@ -36,9 +36,8 @@ class PencurianTbsFormModel {
       this.isSend});
 
   PencurianTbsFormModel.fromJson(Map<String, dynamic> json) {
-    // print('afd ga ${json["afdeling"]}');
     tanggal = json["TANGGAL"];
-    // company = json["COMPANY"];
+    mobileCreatedAt = json["MOBILE_CREATED_AT"];
     unitKerja = json["UNIT_KERJA"];
     afd = json["AFDELING"];
     blok = json["BLOK"];
@@ -56,7 +55,7 @@ class PencurianTbsFormModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
-    // data["COMPANY"] = company;
+    data["MOBILE_CREATED_AT"] = mobileCreatedAt;
     data["UNIT_KERJA"] = unitKerja;
     data["AFDELING"] = afd;
     data["BLOK"] = blok;
