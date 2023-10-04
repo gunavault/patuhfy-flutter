@@ -12,11 +12,11 @@ class SelectboxMandorWidget extends StatelessWidget {
       {super.key,
       this.titleName,
       this.isTitleName,
-      required this.kodeMandorController});
+      required this.onChangeFunc});
 
   final String? titleName;
   final bool? isTitleName;
-  final TextEditingController kodeMandorController;
+  final Function? onChangeFunc;
   // final Function onUpdateBlokFunc;
 
   @override
@@ -73,10 +73,7 @@ class SelectboxMandorWidget extends StatelessWidget {
             return null;
           },
           onChanged: (value) {
-            kodeMandorController.text = value!.toString();
-            print('apa ini di mandor ${value}');
-            BlocProvider.of<SelectboxPemanenCubit>(context)
-                .setParam(value!.toString());
+            onChangeFunc!(value);
           },
           asyncItems: (String? filter) =>
               BlocProvider.of<SelectboxMandorCubit>(context).getData(),

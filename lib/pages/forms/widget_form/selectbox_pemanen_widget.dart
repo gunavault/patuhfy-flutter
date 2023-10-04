@@ -11,11 +11,12 @@ class SelectboxPemanenWidget extends StatelessWidget {
       {super.key,
       this.titleName,
       this.isTitleName,
-      required this.fieldController});
+      required this.onChangeFunc});
 
   final String? titleName;
   final bool? isTitleName;
-  final TextEditingController fieldController;
+  // final TextEditingController fieldController;
+  final Function? onChangeFunc;
   // final String parameterController;
 
   @override
@@ -77,7 +78,7 @@ class SelectboxPemanenWidget extends StatelessWidget {
                   return null;
                 },
                 onChanged: (value) {
-                  fieldController.text = value!.nikSapPemanen.toString();
+                  onChangeFunc!(value);
                 },
                 asyncItems: (String? filter) =>
                     BlocProvider.of<SelectboxPemanenCubit>(context)

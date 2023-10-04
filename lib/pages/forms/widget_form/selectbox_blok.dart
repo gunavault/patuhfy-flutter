@@ -11,14 +11,11 @@ class SelectboxBlok extends StatelessWidget {
       {super.key,
       this.titleName,
       this.isTitleName,
-      required this.filledController,
-      required this.fieldController});
+      required this.onChangeFunc});
 
   final String? titleName;
   final bool? isTitleName;
-  final TextEditingController filledController;
-  final TextEditingController fieldController;
-  // final String parameterController;
+  final Function? onChangeFunc;
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +75,7 @@ class SelectboxBlok extends StatelessWidget {
                   return null;
                 },
                 onChanged: (value) {
-                  filledController.text = value!.tahunTanam.toString();
-                  fieldController.text = value.kodeBlok.toString();
+                  onChangeFunc!(value);
                 },
                 asyncItems: (String? filter) =>
                     BlocProvider.of<SelectboxBlokCubit>(context)

@@ -2,9 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
-import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
-import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 
@@ -13,12 +11,11 @@ class SelectboxAfdelingNew extends StatelessWidget {
       {super.key,
       this.titleName,
       this.isTitleName,
-      required this.kodeAfdelingController});
+      required this.onChangeFunc});
 
   final String? titleName;
   final bool? isTitleName;
-  final TextEditingController kodeAfdelingController;
-  // final Function onUpdateBlokFunc;
+  final Function? onChangeFunc;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +70,7 @@ class SelectboxAfdelingNew extends StatelessWidget {
             return null;
           },
           onChanged: (value) {
-            kodeAfdelingController.text = value!.toString();
-            BlocProvider.of<SelectboxBlokCubit>(context)
-                .setParam(value!.toString());
+            onChangeFunc!(value);
           },
           asyncItems: (String? filter) =>
               BlocProvider.of<SelectboxAfdelingCubit>(context).getDataNew(),
