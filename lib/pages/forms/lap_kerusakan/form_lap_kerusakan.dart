@@ -9,7 +9,7 @@ import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_form/lap_kerusakan_for
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -55,6 +55,9 @@ class FormLapKerusakan extends StatelessWidget {
       } else {
         // setState(() => _autovalidate = true);
       }
+    }
+      void onChangeSelectboxAfdeling(value) {
+      kodeAfdelingController.text = value!.toString();
     }
 
     return GestureDetector(
@@ -138,10 +141,10 @@ class FormLapKerusakan extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxAfdeling(
+                        SelectboxAfdelingNew(
                           titleName: "Afdeling",
                           isTitleName: true,
-                          kodeAfdelingController: kodeAfdelingController,
+                          onChangeFunc: onChangeSelectboxAfdeling,
                         ),
                         TextFormFieldWidgetForm(
                           fieldText: 'Keterangan',
