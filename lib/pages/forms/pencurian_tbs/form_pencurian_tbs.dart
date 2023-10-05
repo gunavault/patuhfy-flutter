@@ -32,6 +32,7 @@ class FormPencurianTbs extends StatelessWidget {
         TextEditingController();
     TextEditingController rtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
+    TextEditingController brondolanController = TextEditingController();
 
     // File pickedImage;
 
@@ -47,6 +48,8 @@ class FormPencurianTbs extends StatelessWidget {
                   int.parse(realisasiPencurianTbsTandanController.text),
               realisasiPencurianTbsKg:
                   int.parse(realisasiPencurianTbsKgController.text),
+              brondolan:
+                  int.parse(brondolanController.text),
               rtl: rtlController.text,
               foto: fotoController.text,
             ),
@@ -194,6 +197,12 @@ class FormPencurianTbs extends StatelessWidget {
                           fieldKeterangan: 'TBS (Kg)',
                           fieldType: 'number',
                           fieldController: realisasiPencurianTbsKgController,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Brondolan (Kg)',
+                          fieldKeterangan: 'Brondolan (Kg)',
+                          fieldType: 'number',
+                          fieldController: brondolanController,
                         ),
                         TextFormFieldWidgetForm(
                           fieldText: 'Rencana Tindak Lanjut',
