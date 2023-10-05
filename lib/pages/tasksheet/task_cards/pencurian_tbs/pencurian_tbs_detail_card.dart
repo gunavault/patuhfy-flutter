@@ -170,6 +170,10 @@ class PencurianTbsDetailCard extends StatelessWidget {
                 fieldValue: dataForm!.realisasiPencurianTbsKg,
               ),
               textFieldWidget(
+                fieldText: 'Brondolan (Kg)',
+                fieldValue: dataForm!.brondolan,
+              ),
+              textFieldWidget(
                 fieldText: 'Rencana Tindak Lanjut',
                 fieldValue: dataForm!.rtl,
               ),

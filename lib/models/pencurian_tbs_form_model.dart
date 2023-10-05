@@ -13,6 +13,7 @@ class PencurianTbsFormModel {
   int? tahunTanam;
   int? realisasiPencurianTbsTandan;
   int? realisasiPencurianTbsKg;
+  int? brondolan;
   String? rtl;
   String? createdBy;
   String? long;
@@ -28,6 +29,7 @@ class PencurianTbsFormModel {
       this.tahunTanam,
       this.realisasiPencurianTbsTandan,
       this.realisasiPencurianTbsKg,
+      this.brondolan,
       this.foto,
       this.rtl,
       this.createdBy,
@@ -44,6 +46,7 @@ class PencurianTbsFormModel {
     tahunTanam = json["TAHUN_TANAM"];
     realisasiPencurianTbsTandan = json["REALISASI_PENCURIAN_TBS_TANDAN"];
     realisasiPencurianTbsKg = json["REALISASI_PENCURIAN_TBS_KG"];
+    brondolan = json["BRONDOLAN_KG"];
     foto = json["FOTO"];
     rtl = json["RTL"];
     createdBy = json["CREATED_BY"];
@@ -62,6 +65,7 @@ class PencurianTbsFormModel {
     data["TAHUN_TANAM"] = tahunTanam;
     data["REALISASI_PENCURIAN_TBS_TANDAN"] = realisasiPencurianTbsTandan;
     data["REALISASI_PENCURIAN_TBS_KG"] = realisasiPencurianTbsKg;
+    data["BRONDOLAN_KG"] = brondolan;
     data["FOTO"] = foto;
     data["RTL"] = rtl;
     data["CREATED_BY"] = createdBy;

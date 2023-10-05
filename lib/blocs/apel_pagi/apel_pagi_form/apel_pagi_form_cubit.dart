@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
+import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -20,8 +21,8 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
   storedOffline(ApelPagiFormModel dataForm) async {
     // set lat and long jika gak ada signal
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    dataForm.lat = prefs.getString('lat');
-    dataForm.long = prefs.getString('long');
+    dataForm.lat = prefs.getString(lat);
+    dataForm.long = prefs.getString(long);
     dataForm.isSend = 0;
 
     List<ApelPagiFormModel> cek_length;
@@ -80,7 +81,7 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
       emit(LoadingApelPagiFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       DateTime dateToday = new DateTime.now();
-      String today = dateToday.toString().substring(0, 10);
+      String today = dateToday.toString().substring(0, 19);
 
       UserModel userModel = await localDataSource.getCurrentUser();
       dataForm.createdBy = userModel.nik_sap;
