@@ -1,12 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class InspeksiHancaDetailCard extends StatelessWidget {
@@ -30,7 +27,7 @@ class InspeksiHancaDetailCard extends StatelessWidget {
           height: 10,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {

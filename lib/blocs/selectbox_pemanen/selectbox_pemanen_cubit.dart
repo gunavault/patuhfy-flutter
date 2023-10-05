@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
-import 'package:patuhfy/models/user_model.dart';
 
 part 'selectbox_pemanen_state.dart';
 
@@ -18,7 +17,7 @@ class SelectboxPemanenCubit extends Cubit<SelectboxPemanenState> {
   Future<List<PemanenModel>> getData(String kodeMandor) async {
     List<PemanenModel> data;
     data = await localDataSource.getPemanenByMandor(kodeMandor);
-    print('kodemandor di getData ${kodeMandor}');
+    print('kodemandor di getData $kodeMandor');
     return data;
   }
 

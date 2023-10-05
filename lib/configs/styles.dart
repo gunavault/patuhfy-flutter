@@ -36,11 +36,11 @@ const Color PRIMARY_COLORv2 = Color(0xFF07ac12);
 const Color appBarBackgroundColor = Colors.white;
 PreferredSizeWidget bottomAppBar() {
   return PreferredSize(
+      preferredSize: const Size.fromHeight(1.0),
       child: Container(
         color: Colors.grey[100],
         height: 1.0,
-      ),
-      preferredSize: Size.fromHeight(1.0));
+      ));
 }
 
 const Color BLACK77 = Color(0xFF777777);
@@ -71,24 +71,24 @@ var body1 = GoogleFonts.raleway(
   fontWeight: FontWeight.bold,
 );
 
-var fontProductNameKonfirmasiSO = TextStyle(fontSize: 12, color: CHARCOAL);
-var fontProductDescKonfirmasiSO = TextStyle(fontSize: 12, color: CHARCOAL);
+var fontProductNameKonfirmasiSO = const TextStyle(fontSize: 12, color: CHARCOAL);
+var fontProductDescKonfirmasiSO = const TextStyle(fontSize: 12, color: CHARCOAL);
 
-var fontProductNameSO = TextStyle(
+var fontProductNameSO = const TextStyle(
   fontSize: 12,
   color: CHARCOAL,
   fontWeight: FontWeight.bold,
 );
 
-var fontItemProduct = TextStyle(fontSize: 12, color: CHARCOAL);
-var fontItemProductDesc = TextStyle(fontSize: 12, color: CHARCOAL);
+var fontItemProduct = const TextStyle(fontSize: 12, color: CHARCOAL);
+var fontItemProductDesc = const TextStyle(fontSize: 12, color: CHARCOAL);
 
-var fontItemProductName = TextStyle(
+var fontItemProductName = const TextStyle(
   fontSize: 15,
   color: CHARCOAL,
   fontWeight: FontWeight.bold,
 );
-var fontProductDescSO = TextStyle(fontSize: 12, color: CHARCOAL);
+var fontProductDescSO = const TextStyle(fontSize: 12, color: CHARCOAL);
 
 var appBarText = GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 20);
 var body1Black = GoogleFonts.raleway(color: Colors.black);

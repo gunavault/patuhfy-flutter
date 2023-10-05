@@ -116,7 +116,7 @@ class FormInspeksiHanca extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   // duration: Duration(seconds: 4),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,7 +146,7 @@ class FormInspeksiHanca extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(inspeksiHancaFormState.message),
-                      Icon(Icons.error)
+                      const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
@@ -159,7 +159,7 @@ class FormInspeksiHanca extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(inspeksiHancaFormState.message.toString()),
-                    Icon(Icons.error)
+                    const Icon(Icons.error)
                   ],
                 ),
                 backgroundColor: Colors.red,

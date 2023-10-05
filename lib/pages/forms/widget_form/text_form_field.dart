@@ -34,7 +34,7 @@ class TextFormFieldWidgetForm extends StatelessWidget {
           height: 10,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
             enabled: isEnabled == null ? true : false,
             controller: fieldController,

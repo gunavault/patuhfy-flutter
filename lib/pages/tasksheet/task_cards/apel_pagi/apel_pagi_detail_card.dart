@@ -5,7 +5,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
-import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class ApelPagiDetailCard extends StatelessWidget {
@@ -29,7 +28,7 @@ class ApelPagiDetailCard extends StatelessWidget {
           height: 10,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {
@@ -90,7 +89,7 @@ class ApelPagiDetailCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "Evidence Apel Pagi",
           style: TextStyle(
             fontSize: 18,

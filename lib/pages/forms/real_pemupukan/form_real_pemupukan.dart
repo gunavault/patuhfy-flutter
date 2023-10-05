@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
-import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
-import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
+import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
+import 'package:patuhfy/models/blok_model.dart';
+import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/pages/forms/widget_form/butuh_tindak_lanjut_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
-import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -17,8 +18,8 @@ import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
-class FormPencurianTbs extends StatelessWidget {
-  FormPencurianTbs({Key? key, required this.selectedDate}) : super(key: key);
+class FormRealPemupukan extends StatelessWidget {
+  FormRealPemupukan({Key? key, required this.selectedDate}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
@@ -26,40 +27,42 @@ class FormPencurianTbs extends StatelessWidget {
     TextEditingController kodeAfdelingController = TextEditingController();
     TextEditingController kodeBlokController = TextEditingController();
     TextEditingController tahunTanamController = TextEditingController();
-    TextEditingController realisasiPencurianTbsTandanController =
+    TextEditingController luasController = TextEditingController();
+    TextEditingController rencanaLuasPemupukanController =
         TextEditingController();
-    TextEditingController realisasiPencurianTbsKgController =
+    TextEditingController realisasiLuasPemupukanController =
         TextEditingController();
+    TextEditingController penyebabController = TextEditingController();
     TextEditingController rtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
+    // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
+    //     TextEditingController();
+    // TextEditingController pelepahTidakDipotongTigaController =
+    //     TextEditingController();
+    // TextEditingController pelepahTidakDiturunkanController =
+    //     TextEditingController();
 
     // File pickedImage;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
+      //, rencanaLuasPemupukan: int.parse(rencanaLuasPemupukanController.text), realisasiLuasPemupukan: int.parse(realisasiLuasPemupukanController.text),
 
-      context.read<PencurianTbsFormCubit>().submitToDatabase(
-            PencurianTbsFormModel(
-              afd: kodeAfdelingController.text,
+      context.read<RealPemupukanFormCubit>().submitToDatabase(
+          RealPemupukanFormModel(
+              afdeling: kodeAfdelingController.text,
               blok: kodeBlokController.text,
               tahunTanam: int.parse(tahunTanamController.text),
-              realisasiPencurianTbsTandan:
-                  int.parse(realisasiPencurianTbsTandanController.text),
-              realisasiPencurianTbsKg:
-                  int.parse(realisasiPencurianTbsKgController.text),
+              luas: int.parse(luasController.text.replaceAll('.', '')),
+              rencanaLuasPemupukan:
+                  int.parse(rencanaLuasPemupukanController.text),
+              realisasiLuasPemupukan:
+                  int.parse(realisasiLuasPemupukanController.text),
+              penyebab: penyebabController.text,
               rtl: rtlController.text,
-              foto: fotoController.text,
-            ),
-          );
+              foto: fotoController.text));
 
       // _loginBloc.add(LoginPressed(_loginData));
-    }
-
-    void _updateBLocAfterSuccess() {
-      BlocProvider.of<PencurianTbsCardCubit>(context)
-          .checkIsAnwered(selectedDate);
-
-      BlocProvider.of<PencurianTbsListCubit>(context).getData(selectedDate);
     }
 
     void _submit() {
@@ -80,18 +83,19 @@ class FormPencurianTbs extends StatelessWidget {
       BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
     }
 
-    void onChangeSelectboxBlok(value) {
-      tahunTanamController.text = value!.tahunTanam.toString();
+    void onChangeSelectboxBlok(BlokModel value) {
+      tahunTanamController.text = value.tahunTanam.toString();
       kodeBlokController.text = value.kodeBlok.toString();
+      luasController.text = value.luasArealTanam.toString();
     }
 
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<PencurianTbsFormCubit, PencurianTbsFormState>(
-        listener: (context, PencurianTbsFormState) {
-          if (PencurianTbsFormState is LoadingPencurianTbsFormState) {
+      child: BlocListener<RealPemupukanFormCubit, RealPemupukanFormState>(
+        listener: (context, RealPemupukanFormState) {
+          if (RealPemupukanFormState is LoadingRealPemupukanFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -107,14 +111,16 @@ class FormPencurianTbs extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (PencurianTbsFormState is SuccessPencurianTbsFormState) {
+          } else if (RealPemupukanFormState is SuccessRealPemupukanFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, PencurianTbsFormState.message,
+            showAlertSuccessOkActionV2(context, RealPemupukanFormState.message,
                 () {
-              _updateBLocAfterSuccess();
+              BlocProvider.of<RealPemupukanCardCubit>(context)
+                  .checkIsAnwered(selectedDate);
               Navigator.pop(context);
             });
-          } else if (PencurianTbsFormState is DuplicatedPencurianTbsFormState) {
+          } else if (RealPemupukanFormState
+              is DuplicatedRealPemupukanFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -123,20 +129,20 @@ class FormPencurianTbs extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(PencurianTbsFormState.message),
+                      Text(RealPemupukanFormState.message),
                       const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (PencurianTbsFormState is ErrorPencurianTbsFormState) {
+          } else if (RealPemupukanFormState is ErrorRealPemupukanFormState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(PencurianTbsFormState.message.toString()),
+                    Text(RealPemupukanFormState.message.toString()),
                     const Icon(Icons.error)
                   ],
                 ),
@@ -151,7 +157,7 @@ class FormPencurianTbs extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Pencurian TBS",
+              title: "Form Realisasi Pemupukan",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
@@ -181,31 +187,44 @@ class FormPencurianTbs extends StatelessWidget {
                             fieldKeterangan: 'Tahun Tanam',
                             fieldType: 'number',
                             fieldController: tahunTanamController,
-                            isEnabled: true),
+                            isEnabled: false),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Relisasi Pencurian TBS (Tandan)',
-                          fieldKeterangan: 'TBS (Tandan)',
+                            fieldText: 'Luas Areal (ha)',
+                            fieldKeterangan: 'Luas Areal (ha)',
+                            fieldType: 'number',
+                            fieldController: luasController,
+                            isEnabled: false),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Rencana Luas Pemupukan',
+                          fieldKeterangan: 'Rencana Luas Pemupukan',
                           fieldType: 'number',
-                          fieldController:
-                              realisasiPencurianTbsTandanController,
+                          fieldController: rencanaLuasPemupukanController,
                         ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Realisasi Pencurian TBS (Kg)',
-                          fieldKeterangan: 'TBS (Kg)',
+                          fieldText: 'Realisasi Luas Pemupukan',
+                          fieldKeterangan: 'Realisasi Luas Pemupukan',
                           fieldType: 'number',
-                          fieldController: realisasiPencurianTbsKgController,
+                          fieldController: realisasiLuasPemupukanController,
                         ),
                         TextFormFieldWidgetForm(
+                          fieldText: 'Penyebab',
+                          fieldKeterangan: 'Penyebab',
+                          fieldType: 'text',
+                          fieldController: penyebabController,
+                        ),
+                        UploadFoto(
+                          fieldName: 'Evidence Pemupukan',
+                          imageNameController: fotoController,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        ButuhTindakLanjutWidgetForm(
                           fieldText: 'Rencana Tindak Lanjut',
                           fieldKeterangan: 'Rencana Tindak Lanjut',
                           fieldType: 'text',
-                          fieldController: rtlController,
+                          tindakLanjutController: rtlController,
                         ),
-                        UploadFoto(
-                          fieldName: 'Evidence Pencurian Tbs',
-                          imageNameController: fotoController,
-                        ),
-                        const SizedBox(height: 20.0),
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 30),
                           child: SizedBox(

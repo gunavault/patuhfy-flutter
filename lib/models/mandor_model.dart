@@ -10,9 +10,9 @@ class MandorModel {
   MandorModel({this.nikSap, this.namaMandor, this.kodeAfd});
 
   MandorModel.fromJson(Map<String, dynamic> json) {
-    this.nikSap = json["nik_sap"];
-    this.namaMandor = json["nama"];
-    this.kodeAfd = json["afdeling"];
+    nikSap = json["nik_sap"];
+    namaMandor = json["nama"];
+    kodeAfd = json["afdeling"];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +27,7 @@ class MandorModel {
   @override
   String toString() => nikSap.toString();
   String userAsString() {
-    return '${this.nikSap} ${this.namaMandor}';
+    return '$nikSap $namaMandor';
   }
 }
 

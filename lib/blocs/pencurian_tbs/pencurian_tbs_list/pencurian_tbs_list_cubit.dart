@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
@@ -18,7 +17,7 @@ class PencurianTbsListCubit extends Cubit<PencurianTbsListState> {
     List<PencurianTbsFormModel> data;
     print('dihit nih');
     data = await localDataSource.getDataPencurianTbsByTanggal(tanggal);
-    print('data pencurian tsb ${data}');
+    print('data pencurian tsb $data');
     emit(SuccessPencurianTbsListState(data));
   }
 }

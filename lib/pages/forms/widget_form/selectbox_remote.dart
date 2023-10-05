@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
@@ -22,8 +20,8 @@ class SelectboxRemote extends StatelessWidget {
     List<String> _getSuggestions(String query, List<AfdelingModel> data) {
       List<String> matches = <String>[];
 
-      List<String> data_afd = data.map((e) => e.kodeAfd.toString()).toList();
-      matches.addAll(data_afd);
+      List<String> dataAfd = data.map((e) => e.kodeAfd.toString()).toList();
+      matches.addAll(dataAfd);
 
       matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
       return matches;
@@ -46,7 +44,7 @@ class SelectboxRemote extends StatelessWidget {
           height: 10,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           child: TypeAheadFormField(
               validator: (value) {
                 if (value!.isEmpty) {

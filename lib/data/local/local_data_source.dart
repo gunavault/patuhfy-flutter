@@ -8,6 +8,7 @@ import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
 import 'package:patuhfy/data/local/dao/t_lap_kerusakan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_pemupukan_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
@@ -19,6 +20,7 @@ import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +35,7 @@ class LocalDataSource {
   final TLapKerusakanDao tLapKerusakanDao;
   final MandorDao mandorDao;
   final PemanenDao pemanenDao;
+  final TRealPemupukanDao tRealPemupukanDao;
 
   LocalDataSource(
       this.userDao,
@@ -44,25 +47,26 @@ class LocalDataSource {
       this.tPencurianTbsDao,
       this.tLapKerusakanDao,
       this.mandorDao,
-      this.pemanenDao);
+      this.pemanenDao,
+      this.tRealPemupukanDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
 
   getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var nik_sap = prefs.getString(keyNikSap) ?? "";
-    return await userDao.getUserByNikSAP(nik_sap);
+    var nikSap = prefs.getString(keyNikSap) ?? "";
+    return await userDao.getUserByNikSAP(nikSap);
   }
 
   Future<List<AfdelingModel>> getAllAfdeling() async {
     return await afdelingDao.getAllAfd();
   }
 
-  deleteUser(String nik_sap) async {
+  deleteUser(String nikSap) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var nik_sap = prefs.getString(keyNikSap) ?? "";
-    return await userDao.deleteUserByNikSAP(nik_sap);
+    var nikSap = prefs.getString(keyNikSap) ?? "";
+    return await userDao.deleteUserByNikSAP(nikSap);
   }
 
   //afdeling
@@ -133,7 +137,7 @@ class LocalDataSource {
     List<ApelPagiFormModel> dataForm;
     dataForm = await tApelPagiDao.getDataApelPagiByTanggal(tanggal);
 
-    if (dataForm.length == 0) {
+    if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
 
@@ -141,7 +145,7 @@ class LocalDataSource {
           .getDataApelPagiByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
 
-      if (response.dataForm.length != 0) {
+      if (response.dataForm.isNotEmpty) {
         await addDataApelPagi(response.dataForm.first);
         return response.dataForm;
       } else {
@@ -176,7 +180,7 @@ class LocalDataSource {
     // cek off line dlu
     List<InspeksiHancaFormModel> dataForm;
     dataForm = await tInspeksiHancaDao.getDataInspeksiHancaByTanggal(tanggal);
-    if (dataForm.length == 0) {
+    if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
 
@@ -184,7 +188,7 @@ class LocalDataSource {
           .getDataInspeksiHancaByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
 
-      if (response.dataForm.length != 0) {
+      if (response.dataForm.isNotEmpty) {
         await addDataInspeksiHanca(response.dataForm.first);
         return response.dataForm;
       } else {
@@ -219,7 +223,7 @@ class LocalDataSource {
     // cek off line dlu
     List<InspeksiTphFormModel> dataForm;
     dataForm = await tInspeksiTphDao.getDataInspeksiTphByTanggal(tanggal);
-    if (dataForm.length == 0) {
+    if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
 
@@ -227,7 +231,7 @@ class LocalDataSource {
           .getDataInspeksiTphByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
 
-      if (response.dataForm.length != 0) {
+      if (response.dataForm.isNotEmpty) {
         await addDataInspeksiTph(response.dataForm.first);
         return response.dataForm;
       } else {
@@ -262,14 +266,16 @@ class LocalDataSource {
     // cek off line dlu
     List<PencurianTbsFormModel> dataForm;
     dataForm = await tPencurianTbsDao.getDataPencurianTbsByTanggal(tanggal);
-    if (dataForm.length == 0) {
+    if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
       PencurianTbsFormModelSelectResponse response = await RemoteDataSource()
           .getDataPencurianTbsByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
-      if (response.dataForm.length != 0) {
-        response.dataForm.forEach((data) => addDataPencurianTbs(data));
+      if (response.dataForm.isNotEmpty) {
+        for (var data in response.dataForm) {
+          addDataPencurianTbs(data);
+        }
 
         return response.dataForm;
       } else {
@@ -305,7 +311,7 @@ class LocalDataSource {
     List<LapKerusakanFormModel> dataForm;
     dataForm = await tLapKerusakanDao.getDataLapKerusakanByTanggal(tanggal);
 
-    if (dataForm.length == 0) {
+    if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
 
@@ -313,7 +319,7 @@ class LocalDataSource {
           .getDataLapKerusakanByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
 
-      if (response.dataForm.length != 0) {
+      if (response.dataForm.isNotEmpty) {
         await addDataLapKerusakan(response.dataForm.first);
         return response.dataForm;
       } else {
@@ -330,5 +336,49 @@ class LocalDataSource {
 
   deleteDataLapKerusakanByDate(String tanggal) async {
     return await tLapKerusakanDao.deleteDataLapKerusakanByDate(tanggal);
+  }
+
+  // Transaksi Pemupukan
+  addDataRealPemupukan(RealPemupukanFormModel dataForm) =>
+      tRealPemupukanDao.insertDataRealPemupukan(dataForm);
+
+  getAllDataRealPemupukan() async {
+    return await tRealPemupukanDao.getAllRealPemupukan();
+  }
+
+  getDataRealPemupukanByTanggal(String tanggal) async {
+    return await tRealPemupukanDao.getDataRealPemupukanByTanggal(tanggal);
+  }
+
+  getDataRealPemupukanByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<RealPemupukanFormModel> dataForm;
+    dataForm = await tRealPemupukanDao.getDataRealPemupukanByTanggal(tanggal);
+    if (dataForm.isEmpty) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+      RealPemupukanFormModelSelectResponse response = await RemoteDataSource()
+          .getDataRealPemupukanByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+      if (response.dataForm.isNotEmpty) {
+        for (var data in response.dataForm) {
+          addDataRealPemupukan(data);
+        }
+
+        return response.dataForm;
+      } else {
+        return dataForm;
+      }
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllRealPemupukan() async {
+    return await tRealPemupukanDao.deleteDataRealPemupukan();
+  }
+
+  deleteDataRealPemupukanByDate(String tanggal) async {
+    return await tRealPemupukanDao.deleteDataRealPemupukanByDate(tanggal);
   }
 }

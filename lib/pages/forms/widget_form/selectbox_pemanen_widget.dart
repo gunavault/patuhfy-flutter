@@ -24,7 +24,7 @@ class SelectboxPemanenWidget extends StatelessWidget {
     Widget _customPopupItemBuilderExample2(
         BuildContext context, PemanenModel item, bool isSelected) {
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
             ? null
             : BoxDecoration(
@@ -36,7 +36,7 @@ class SelectboxPemanenWidget extends StatelessWidget {
           selected: isSelected,
           title: Text(
               '${item.namaPemanen.toString()} (${item.nikSapPemanen.toString()})'),
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             radius: 13,
             child: Icon(
               size: 12,
@@ -72,7 +72,7 @@ class SelectboxPemanenWidget extends StatelessWidget {
               ),
               DropdownSearch<PemanenModel>(
                 validator: (value) {
-                  if (value is Null) {
+                  if (value == null) {
                     return 'Pemanen Tidak Boleh kosong';
                   }
                   return null;
@@ -139,7 +139,7 @@ class SelectboxPemanenWidget extends StatelessWidget {
           );
         }
 
-        return Text('Loading..');
+        return const Text('Loading..');
       },
     );
   }

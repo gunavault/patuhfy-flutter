@@ -16,6 +16,8 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
+import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
@@ -48,10 +50,11 @@ Future<void> main() async {
       database.tPencurianTbsDao,
       database.tLapKerusakanDao,
       database.mandorDao,
-      database.pemanenDao);
+      database.pemanenDao,
+      database.tRealPemupukanDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
-  DateTime dateToday = new DateTime.now();
+  DateTime dateToday = DateTime.now();
   String today = dateToday.toString().substring(0, 10);
   runApp(
     MultiBlocProvider(
@@ -138,6 +141,15 @@ Future<void> main() async {
           create: (BuildContext context) =>
               LapKerusakanFormCubit(localDataSource, remoteDataSource),
         ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RealPemupukanFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RealPemupukanCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
+        ),
       ],
       child: MyApp(
         localDataSource: localDataSource,
@@ -171,7 +183,7 @@ class MyApp extends StatelessWidget {
       initialRoute: MyRouters.home,
       routes: {
         MyRouters.home: (context) {
-          return MainPage();
+          return const MainPage();
         },
       },
     );

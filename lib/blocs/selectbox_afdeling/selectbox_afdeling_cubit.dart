@@ -25,7 +25,7 @@ class SelectboxAfdelingCubit extends Cubit<SelectboxAfdelingState> {
   Future<List<AfdelingModel>> getDataNew() async {
     List<AfdelingModel> data;
     data = await localDataSource.getAllAfdeling();
-    print('data apa nih11 ${data}');
+    print('data apa nih11 $data');
 
     return data;
   }

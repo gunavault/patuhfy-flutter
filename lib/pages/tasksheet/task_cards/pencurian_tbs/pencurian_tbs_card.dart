@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/pages/forms/pencurian_tbs/list_pencurian_tbs.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -140,7 +139,7 @@ class PencurianTbsCard extends StatelessWidget {
           );
         }
 
-        return Disconnected();
+        return const Disconnected();
       },
     );
   }

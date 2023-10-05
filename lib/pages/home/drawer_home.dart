@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +40,7 @@ class DrawerHome extends StatelessWidget {
                                       width: 45,
                                       fit: BoxFit.cover,
                                     )
-                                  : Text('wew'),
+                                  : const Text('wew'),
                             ),
                           ),
                         ),

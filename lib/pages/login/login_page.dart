@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
@@ -19,11 +18,11 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController nikSapController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
-    final GlobalKey<FormFieldState<String>> _passwordKey =
+    final formKey = GlobalKey<FormState>();
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<FormFieldState<String>> passwordKey =
         GlobalKey<FormFieldState<String>>();
-    final GlobalKey<FormFieldState<String>> _userIdKey =
+    final GlobalKey<FormFieldState<String>> userIdKey =
         GlobalKey<FormFieldState<String>>();
 
     void _login() {
@@ -40,7 +39,7 @@ class LoginPage extends StatelessWidget {
     }
 
     void _submit() {
-      final form = _formKey.currentState;
+      final form = formKey.currentState;
       if (form!.validate()) {
         form.save();
         _login();
@@ -50,7 +49,7 @@ class LoginPage extends StatelessWidget {
     }
 
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: LoaderOverlay(
@@ -64,7 +63,7 @@ class LoginPage extends StatelessWidget {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 // duration: Duration(seconds: 4),
                                 content: Row(
                                   mainAxisAlignment:
@@ -90,7 +89,7 @@ class LoginPage extends StatelessWidget {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -110,7 +109,7 @@ class LoginPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(authUserState.message.toString()),
-                                  Icon(Icons.error)
+                                  const Icon(Icons.error)
                                 ],
                               ),
                               backgroundColor: Colors.red,
@@ -248,7 +247,7 @@ class LoginPage extends StatelessWidget {
                                     color: kSubTitleColor),
                                 suffixIcon: IconButton(
                                   onPressed: () {},
-                                  icon: Icon(
+                                  icon: const Icon(
                                       false
                                           ? Icons.visibility_off
                                           : Icons.visibility,

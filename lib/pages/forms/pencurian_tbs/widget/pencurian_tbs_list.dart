@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -11,7 +9,7 @@ class PencurianTbsListView extends StatelessWidget {
   final String? titleText;
   final Function? onTap;
 
-  PencurianTbsListView({this.titleText, this.onTap, Key? key})
+  const PencurianTbsListView({this.titleText, this.onTap, Key? key})
       : super(key: key);
 
   void timesheetAddPopUp(context, data) {
@@ -48,7 +46,7 @@ class PencurianTbsListView extends StatelessWidget {
         BlocBuilder<PencurianTbsListCubit, PencurianTbsListState>(
           builder: (context, state) {
             if (state is LoadingPencurianTbsListState) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
 
             if (state is SuccessPencurianTbsListState) {
@@ -89,7 +87,7 @@ class PencurianTbsListView extends StatelessWidget {
                                     padding: const EdgeInsets.all(2),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.warning,
                                           color: CommonColors.redColor,
                                         )),
@@ -103,7 +101,7 @@ class PencurianTbsListView extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Pencurian TBS : ${state.dataForm[index].realisasiPencurianTbsKg.toString()} Kg & ${state.dataForm[index].realisasiPencurianTbsTandan.toString()} Tandan' ??
+                                        'Pencurian TBS : ${state.dataForm[index].realisasiPencurianTbsKg.toString()} Kg (${state.dataForm[index].realisasiPencurianTbsTandan.toString()} Tandan)' ??
                                             "",
                                         textAlign: TextAlign.start,
                                         style: CommonStyle.getRalewayFont(
@@ -134,29 +132,29 @@ class PencurianTbsListView extends StatelessWidget {
                                       const SizedBox(height: 12),
                                       Row(
                                         children: [
-                                          Icon(Icons.location_pin,
+                                          const Icon(Icons.location_pin,
                                               color: Color(0xFFe75f3f),
                                               size: 15),
-                                          SizedBox(width: 2),
+                                          const SizedBox(width: 2),
                                           Text(
                                               '${state.dataForm[index].afd} (${state.dataForm[index].blok})',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 13,
                                                 color: CommonColors.textColor,
                                               )),
-                                          SizedBox(width: 8),
-                                          Icon(Icons.calendar_month_outlined,
+                                          const SizedBox(width: 8),
+                                          const Icon(Icons.calendar_month_outlined,
                                               color:
                                                   CommonColors.containerTextG,
                                               size: 15),
-                                          SizedBox(width: 2),
+                                          const SizedBox(width: 2),
                                           Text(
                                               '${state.dataForm[index].mobileCreatedAt}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 13,
                                                 color: CommonColors.textColor,
                                               )),
-                                          SizedBox(width: 8),
+                                          const SizedBox(width: 8),
                                         ],
                                       ),
                                     ],
@@ -185,7 +183,7 @@ class PencurianTbsListView extends StatelessWidget {
                 },
               );
             }
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ],

@@ -63,25 +63,25 @@ class RealRestanFormModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ROWSTAMP'] = this.rOWSTAMP;
-    data['TANGGAL'] = this.tANGGAL;
-    data['UNIT_KERJA'] = this.uNITKERJA;
-    data['AFDELING'] = this.aFDELING;
-    data['BLOK'] = this.bLOK;
-    data['TAHUN_TANAM'] = this.tAHUNTANAM;
-    data['ROTASI_PANEN'] = this.rOTASIPANEN;
-    data['NORMA_PUSINGAN'] = this.nORMAPUSINGAN;
-    data['PUSINGAN_9_HARI'] = this.pUSINGAN9HARI;
-    data['PUSINGAN_10_HARI'] = this.pUSINGAN10HARI;
-    data['PUSINGAN_11_HARI'] = this.pUSINGAN11HARI;
-    data['PUSINGAN_12_HARI_LEBIH'] = this.pUSINGAN12HARILEBIH;
-    data['PENYEBAB'] = this.pENYEBAB;
-    data['RTL'] = this.rTL;
-    data['LAT'] = this.lAT;
-    data['LONG'] = this.lONG;
-    data['MOBILE_CREATED_AT'] = this.mOBILECREATEDAT;
-    data['CREATED_BY'] = this.cREATEDBY;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ROWSTAMP'] = rOWSTAMP;
+    data['TANGGAL'] = tANGGAL;
+    data['UNIT_KERJA'] = uNITKERJA;
+    data['AFDELING'] = aFDELING;
+    data['BLOK'] = bLOK;
+    data['TAHUN_TANAM'] = tAHUNTANAM;
+    data['ROTASI_PANEN'] = rOTASIPANEN;
+    data['NORMA_PUSINGAN'] = nORMAPUSINGAN;
+    data['PUSINGAN_9_HARI'] = pUSINGAN9HARI;
+    data['PUSINGAN_10_HARI'] = pUSINGAN10HARI;
+    data['PUSINGAN_11_HARI'] = pUSINGAN11HARI;
+    data['PUSINGAN_12_HARI_LEBIH'] = pUSINGAN12HARILEBIH;
+    data['PENYEBAB'] = pENYEBAB;
+    data['RTL'] = rTL;
+    data['LAT'] = lAT;
+    data['LONG'] = lONG;
+    data['MOBILE_CREATED_AT'] = mOBILECREATEDAT;
+    data['CREATED_BY'] = cREATEDBY;
     return data;
   }
 }

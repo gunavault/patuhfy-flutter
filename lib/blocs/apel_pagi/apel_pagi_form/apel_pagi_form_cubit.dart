@@ -24,11 +24,11 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     dataForm.long = prefs.getString('long');
     dataForm.isSend = 0;
 
-    List<ApelPagiFormModel> cek_length;
-    cek_length = await localDataSource
+    List<ApelPagiFormModel> cekLength;
+    cekLength = await localDataSource
         .getDataApelPagiByTanggal(dataForm.tanggal.toString());
 
-    if (cek_length.length == 0) {
+    if (cekLength.isEmpty) {
       //Check duplikat
       await localDataSource.addDataApelPagi(dataForm);
     }
@@ -36,7 +36,7 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     emit(SuccessApelPagiFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
 
-    print('bepraisi data ${cek_length.length}');
+    print('bepraisi data ${cekLength.length}');
   }
 
   storedOnline(ApelPagiFormModel dataForm, UserModel userModel) async {
@@ -48,30 +48,30 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
-    ApelPagiFormModelResponse res_from_api =
+    ApelPagiFormModelResponse resFromApi =
         await remoteDataSource.createApelPagi(
       userModel.token,
       dataForm,
     );
 
-    if (res_from_api.status_code == 200) {
+    if (resFromApi.status_code == 200) {
       // Simpen dulu yang offline
-      List<ApelPagiFormModel> cek_length;
-      cek_length = await localDataSource
+      List<ApelPagiFormModel> cekLength;
+      cekLength = await localDataSource
           .getDataApelPagiByTanggal(dataForm.tanggal.toString());
 
-      if (cek_length.length == 0) {
+      if (cekLength.isEmpty) {
         //Check duplikat
         await localDataSource.addDataApelPagi(dataForm);
       }
 
       emit(SuccessApelPagiFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     } else {
       emit(DuplicatedApelPagiFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     }
   }
 
@@ -79,7 +79,7 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     try {
       emit(LoadingApelPagiFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
-      DateTime dateToday = new DateTime.now();
+      DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 10);
 
       UserModel userModel = await localDataSource.getCurrentUser();

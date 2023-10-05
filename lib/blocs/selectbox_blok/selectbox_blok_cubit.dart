@@ -18,7 +18,7 @@ class SelectboxBlokCubit extends Cubit<SelectboxBlokState> {
   Future<List<BlokModel>> getData(kodeAfd) async {
     List<BlokModel> data;
     UserModel userModel = await localDataSource.getCurrentUser();
-    print('aww kodeAfd ${kodeAfd}');
+    print('aww kodeAfd $kodeAfd');
     data = await localDataSource.getAllBlokByKodeAfd(
         userModel.psa.toString(), kodeAfd);
 

@@ -40,11 +40,11 @@ class MainPage extends StatelessWidget {
         ],
         child: BlocBuilder<PageCubit, PageState>(
           builder: (context, pageState) {
-            print('pageState ${pageState}');
+            print('pageState $pageState');
             if (pageState is OnBoardingPageState) {
-              return OnBoardingPage();
+              return const OnBoardingPage();
             } else if (pageState is LoginPageState) {
-              return LoginPage();
+              return const LoginPage();
             } else if (pageState is HomePageState) {
               // return LaporPage();
               return BlocProvider(
@@ -52,7 +52,7 @@ class MainPage extends StatelessWidget {
                 child: HomePageV2(),
               );
             } else {
-              return SplashPage();
+              return const SplashPage();
             }
           },
         ));

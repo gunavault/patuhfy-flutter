@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
-import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -50,6 +48,7 @@ class FormApelPagi extends StatelessWidget {
         // setState(() => _autovalidate = true);
       }
     }
+
     void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
     }
@@ -65,7 +64,7 @@ class FormApelPagi extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   // duration: Duration(seconds: 4),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,7 +92,7 @@ class FormApelPagi extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(apelPagiFormState.message),
-                      Icon(Icons.error)
+                      const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
@@ -106,7 +105,7 @@ class FormApelPagi extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(apelPagiFormState.message.toString()),
-                    Icon(Icons.error)
+                    const Icon(Icons.error)
                   ],
                 ),
                 backgroundColor: Colors.red,

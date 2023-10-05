@@ -22,7 +22,7 @@ class SelectboxBlok extends StatelessWidget {
     Widget _customPopupItemBuilderExample2(
         BuildContext context, BlokModel item, bool isSelected) {
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
             ? null
             : BoxDecoration(
@@ -35,7 +35,7 @@ class SelectboxBlok extends StatelessWidget {
           title: Text(
               'Kode : ${item.kodeBlok.toString()} (${item.namaBlok.toString()})'),
           subtitle: Text('Tahun Tanam: ${item.tahunTanam}'),
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             radius: 15,
             child: Icon(
               Icons.add,
@@ -69,7 +69,7 @@ class SelectboxBlok extends StatelessWidget {
               ),
               DropdownSearch<BlokModel>(
                 validator: (value) {
-                  if (value is Null) {
+                  if (value == null) {
                     return 'Blok Tidak Boleh kosong';
                   }
                   return null;
@@ -135,7 +135,7 @@ class SelectboxBlok extends StatelessWidget {
           );
         }
 
-        return Text('Loading..');
+        return const Text('Loading..');
       },
     );
   }

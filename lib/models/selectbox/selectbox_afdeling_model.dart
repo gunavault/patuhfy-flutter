@@ -4,7 +4,7 @@ class SelectboxAfdelingModel {
   SelectboxAfdelingModel({required this.kodeAfd});
 
   SelectboxAfdelingModel.fromJson(Map<String, dynamic> json) {
-    this.kodeAfd = json["afdeling"];
+    kodeAfd = json["afdeling"];
   }
 
   Map<String, dynamic> toJson() {

@@ -8,7 +8,7 @@ class AfdelingModel {
   AfdelingModel({this.kodeAfd});
 
   AfdelingModel.fromJson(Map<String, dynamic> json) {
-    this.kodeAfd = json["afdeling"];
+    kodeAfd = json["afdeling"];
   }
 
   Map<String, dynamic> toJson() {

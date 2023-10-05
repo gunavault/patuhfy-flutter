@@ -24,11 +24,11 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     dataForm.long = prefs.getString('long');
     dataForm.isSend = 0;
 
-    List<InspeksiTphFormModel> cek_length;
-    cek_length = await localDataSource
+    List<InspeksiTphFormModel> cekLength;
+    cekLength = await localDataSource
         .getDataInspeksiTphByTanggal(dataForm.tanggal.toString());
 
-    if (cek_length.length == 0) {
+    if (cekLength.isEmpty) {
       //Check duplikat
       await localDataSource.addDataInspeksiTph(dataForm);
     }
@@ -36,7 +36,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     emit(SuccessInspeksiTphFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
 
-    print('bepraisi data ${cek_length.length}');
+    print('bepraisi data ${cekLength.length}');
   }
 
   storedOnline(InspeksiTphFormModel dataForm, UserModel userModel) async {
@@ -48,30 +48,30 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     dataForm.isSend = 1;
 
     // simpen ke database holding
-    InspeksiTphFormModelResponse res_from_api =
+    InspeksiTphFormModelResponse resFromApi =
         await remoteDataSource.createInspeksiTph(
       userModel.token,
       dataForm,
     );
 
-    if (res_from_api.status_code == 200) {
+    if (resFromApi.status_code == 200) {
       // Simpen dulu yang offline
-      List<InspeksiTphFormModel> cek_length;
-      cek_length = await localDataSource
+      List<InspeksiTphFormModel> cekLength;
+      cekLength = await localDataSource
           .getDataInspeksiTphByTanggal(dataForm.tanggal.toString());
 
-      if (cek_length.length == 0) {
+      if (cekLength.isEmpty) {
         //Check duplikat
         await localDataSource.addDataInspeksiTph(dataForm);
       }
 
       emit(SuccessInspeksiTphFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     } else {
       emit(DuplicatedInspeksiTphFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     }
   }
 
@@ -79,7 +79,7 @@ class InspeksiTphFormCubit extends Cubit<InspeksiTphFormState> {
     try {
       emit(LoadingInspeksiTphFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
-      DateTime dateToday = new DateTime.now();
+      DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 10);
 
       UserModel userModel = await localDataSource.getCurrentUser();

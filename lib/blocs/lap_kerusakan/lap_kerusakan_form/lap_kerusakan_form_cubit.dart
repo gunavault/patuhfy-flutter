@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,11 +24,11 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
     dataForm.long = prefs.getString('long');
     dataForm.isSend = 0;
 
-    List<LapKerusakanFormModel> cek_length;
-    cek_length = await localDataSource
+    List<LapKerusakanFormModel> cekLength;
+    cekLength = await localDataSource
         .getDataLapKerusakanByTanggal(dataForm.tanggal.toString());
 
-    if (cek_length.length == 0) {
+    if (cekLength.isEmpty) {
       //Check duplikat
       await localDataSource.addDataLapKerusakan(dataForm);
     }
@@ -37,7 +36,7 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
     emit(SuccessLapKerusakanFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
 
-    print('bepraisi data ${cek_length.length}');
+    print('bepraisi data ${cekLength.length}');
   }
 
   storedOnline(LapKerusakanFormModel dataForm, UserModel userModel) async {
@@ -49,30 +48,30 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
     dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
-    LapKerusakanFormModelResponse res_from_api =
+    LapKerusakanFormModelResponse resFromApi =
         await remoteDataSource.createLapKerusakan(
       userModel.token,
       dataForm,
     );
 
-    if (res_from_api.status_code == 200) {
+    if (resFromApi.status_code == 200) {
       // Simpen dulu yang offline
-      List<LapKerusakanFormModel> cek_length;
-      cek_length = await localDataSource
+      List<LapKerusakanFormModel> cekLength;
+      cekLength = await localDataSource
           .getDataLapKerusakanByTanggal(dataForm.tanggal.toString());
 
-      if (cek_length.length == 0) {
+      if (cekLength.isEmpty) {
         //Check duplikat
         await localDataSource.addDataLapKerusakan(dataForm);
       }
 
       emit(SuccessLapKerusakanFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     } else {
       emit(DuplicatedLapKerusakanFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     }
   }
 
@@ -80,7 +79,7 @@ class LapKerusakanFormCubit extends Cubit<LapKerusakanFormState> {
     try {
       emit(LoadingLapKerusakanFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
-      DateTime dateToday = new DateTime.now();
+      DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 10);
 
       UserModel userModel = await localDataSource.getCurrentUser();

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
-import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
 import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_card/lap_kerusakan_card_cubit.dart';
 import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_form/lap_kerusakan_form_cubit.dart';
 
 import 'package:patuhfy/configs/styles.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
@@ -71,7 +68,7 @@ class FormLapKerusakan extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   // duration: Duration(seconds: 4),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -99,7 +96,7 @@ class FormLapKerusakan extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(LapKerusakanFormState.message),
-                      Icon(Icons.error)
+                      const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
@@ -112,7 +109,7 @@ class FormLapKerusakan extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(LapKerusakanFormState.message.toString()),
-                    Icon(Icons.error)
+                    const Icon(Icons.error)
                   ],
                 ),
                 backgroundColor: Colors.red,

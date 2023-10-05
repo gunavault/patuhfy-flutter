@@ -7,7 +7,7 @@ class ApprovalForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-      child: Text('Under Development Approval Form'),
+      child: const Text('Under Development Approval Form'),
     ));
   }
 }

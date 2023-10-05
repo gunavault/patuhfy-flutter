@@ -22,7 +22,7 @@ class ApelPagiCardCubit extends Cubit<ApelPagiCardState> {
     if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
           .getDataApelPagiByTanggalOnlineOrOffline(taskDate.toString());
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsApelPagiAswered(false, null));
       } else {
         emit(IsApelPagiAswered(true, cekData.first));
@@ -32,7 +32,7 @@ class ApelPagiCardCubit extends Cubit<ApelPagiCardState> {
       cekData =
           await localDataSource.getDataApelPagiByTanggal(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsApelPagiAswered(false, null));
       } else {
         emit(IsApelPagiAswered(true, cekData.first));

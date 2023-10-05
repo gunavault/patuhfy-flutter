@@ -3,9 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
-import 'package:patuhfy/models/user_model.dart';
 
 part 'lap_kerusakan_card_state.dart';
 
@@ -25,7 +23,7 @@ class LapKerusakanCardCubit extends Cubit<LapKerusakanCardState> {
       cekData = await localDataSource
           .getDataLapKerusakanByTanggalOnlineOrOffline(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsLapKerusakanAswered(false, null));
       } else {
         // Send to Database Server Holding
@@ -35,7 +33,7 @@ class LapKerusakanCardCubit extends Cubit<LapKerusakanCardState> {
       cekData = await localDataSource
           .getDataLapKerusakanByTanggal(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsLapKerusakanAswered(false, null));
       } else {
         emit(IsLapKerusakanAswered(true, cekData.first));

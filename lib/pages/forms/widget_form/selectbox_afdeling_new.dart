@@ -23,7 +23,7 @@ class SelectboxAfdelingNew extends StatelessWidget {
     Widget _customPopupItemBuilderExample2(
         BuildContext context, AfdelingModel item, bool isSelected) {
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
             ? null
             : BoxDecoration(
@@ -34,7 +34,7 @@ class SelectboxAfdelingNew extends StatelessWidget {
         child: ListTile(
           selected: isSelected,
           title: Text(item.kodeAfd.toString()),
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             radius: 13,
             child: Icon(
               size: 12,
@@ -64,7 +64,7 @@ class SelectboxAfdelingNew extends StatelessWidget {
         ),
         DropdownSearch<AfdelingModel>(
           validator: (value) {
-            if (value is Null) {
+            if (value == null) {
               return 'Afdeling Tidak Boleh kosong';
             }
             return null;

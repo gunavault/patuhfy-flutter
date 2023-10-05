@@ -81,6 +81,8 @@ class _$AppDatabase extends AppDatabase {
 
   PemanenDao? _pemanenDaoInstance;
 
+  TRealPemupukanDao? _tRealPemupukanDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -107,7 +109,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_afdeling` (`kodeAfd` TEXT, PRIMARY KEY (`kodeAfd`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, `luasArealTanam` TEXT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
@@ -115,13 +117,15 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `brondolan` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_mandor` (`nikSap` TEXT, `namaMandor` TEXT, `kodeAfd` TEXT, PRIMARY KEY (`nikSap`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_pemanen` (`nikSapPemanen` TEXT, `namaPemanen` TEXT, `nikSapMandor` TEXT, PRIMARY KEY (`nikSapPemanen`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `luas` INTEGER, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -182,6 +186,12 @@ class _$AppDatabase extends AppDatabase {
   PemanenDao get pemanenDao {
     return _pemanenDaoInstance ??= _$PemanenDao(database, changeListener);
   }
+
+  @override
+  TRealPemupukanDao get tRealPemupukanDao {
+    return _tRealPemupukanDaoInstance ??=
+        _$TRealPemupukanDao(database, changeListener);
+  }
 }
 
 class _$UserDao extends UserDao {
@@ -220,7 +230,7 @@ class _$UserDao extends UserDao {
   final InsertionAdapter<UserModel> _userModelInsertionAdapter;
 
   @override
-  Future<UserModel?> getUserByNikSAP(String nik_sap) async {
+  Future<UserModel?> getUserByNikSAP(String nikSap) async {
     return _queryAdapter.query('SELECT * FROM user WHERE nik_sap = ?1',
         mapper: (Map<String, Object?> row) => UserModel(
             id: row['id'] as int?,
@@ -239,14 +249,14 @@ class _$UserDao extends UserDao {
             hasTebu: row['hasTebu'] as int?,
             hasKopi: row['hasKopi'] as int?,
             hasTeh: row['hasTeh'] as int?),
-        arguments: [nik_sap]);
+        arguments: [nikSap]);
   }
 
   @override
-  Future<bool?> deleteUserByNikSAP(String nik_sap) async {
+  Future<bool?> deleteUserByNikSAP(String nikSap) async {
     return _queryAdapter.query('DELETE FROM user WHERE nik_sap=?1',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
-        arguments: [nik_sap]);
+        arguments: [nikSap]);
   }
 
   @override
@@ -315,7 +325,8 @@ class _$BlokDao extends BlokDao {
                   'kodeAfd': item.kodeAfd,
                   'kodeBlok': item.kodeBlok,
                   'namaBlok': item.namaBlok,
-                  'tahunTanam': item.tahunTanam
+                  'tahunTanam': item.tahunTanam,
+                  'luasArealTanam': item.luasArealTanam
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -334,7 +345,8 @@ class _$BlokDao extends BlokDao {
             kodeAfd: row['kodeAfd'] as String?,
             kodeBlok: row['kodeBlok'] as String?,
             namaBlok: row['namaBlok'] as String?,
-            tahunTanam: row['tahunTanam'] as String?),
+            tahunTanam: row['tahunTanam'] as String?,
+            luasArealTanam: row['luasArealTanam'] as String?),
         arguments: [psa]);
   }
 
@@ -350,7 +362,8 @@ class _$BlokDao extends BlokDao {
             kodeAfd: row['kodeAfd'] as String?,
             kodeBlok: row['kodeBlok'] as String?,
             namaBlok: row['namaBlok'] as String?,
-            tahunTanam: row['tahunTanam'] as String?),
+            tahunTanam: row['tahunTanam'] as String?,
+            luasArealTanam: row['luasArealTanam'] as String?),
         arguments: [psa, afd]);
   }
 
@@ -362,7 +375,7 @@ class _$BlokDao extends BlokDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM m_blok WHERE kodePsa = ?1 and kodeAfd = ?2 and kodeBlok like %?3%',
-        mapper: (Map<String, Object?> row) => BlokModel(kodePsa: row['kodePsa'] as String?, kodeAfd: row['kodeAfd'] as String?, kodeBlok: row['kodeBlok'] as String?, namaBlok: row['namaBlok'] as String?, tahunTanam: row['tahunTanam'] as String?),
+        mapper: (Map<String, Object?> row) => BlokModel(kodePsa: row['kodePsa'] as String?, kodeAfd: row['kodeAfd'] as String?, kodeBlok: row['kodeBlok'] as String?, namaBlok: row['namaBlok'] as String?, tahunTanam: row['tahunTanam'] as String?, luasArealTanam: row['luasArealTanam'] as String?),
         arguments: [psa, afd, filter]);
   }
 
@@ -374,7 +387,8 @@ class _$BlokDao extends BlokDao {
             kodeAfd: row['kodeAfd'] as String?,
             kodeBlok: row['kodeBlok'] as String?,
             namaBlok: row['namaBlok'] as String?,
-            tahunTanam: row['tahunTanam'] as String?));
+            tahunTanam: row['tahunTanam'] as String?,
+            luasArealTanam: row['luasArealTanam'] as String?));
   }
 
   @override
@@ -675,7 +689,6 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
                   'realisasiPencurianTbsTandan':
                       item.realisasiPencurianTbsTandan,
                   'realisasiPencurianTbsKg': item.realisasiPencurianTbsKg,
-                  'brondolan': item.brondolan,
                   'rtl': item.rtl,
                   'createdBy': item.createdBy,
                   'long': item.long,
@@ -697,7 +710,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(tanggal: row['tanggal'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, realisasiPencurianTbsTandan: row['realisasiPencurianTbsTandan'] as int?, realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?, brondolan: row['brondolan'] as int?, foto: row['foto'] as String?, rtl: row['rtl'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(tanggal: row['tanggal'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, realisasiPencurianTbsTandan: row['realisasiPencurianTbsTandan'] as int?, realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?, foto: row['foto'] as String?, rtl: row['rtl'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -714,7 +727,6 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             realisasiPencurianTbsTandan:
                 row['realisasiPencurianTbsTandan'] as int?,
             realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
-            brondolan: row['brondolan'] as int?,
             foto: row['foto'] as String?,
             rtl: row['rtl'] as String?,
             createdBy: row['createdBy'] as String?,
@@ -965,5 +977,94 @@ class _$PemanenDao extends PemanenDao {
   Future<void> insertPemanen(PemanenModel pemanen) async {
     await _pemanenModelInsertionAdapter.insert(
         pemanen, OnConflictStrategy.replace);
+  }
+}
+
+class _$TRealPemupukanDao extends TRealPemupukanDao {
+  _$TRealPemupukanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _realPemupukanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_real_pemupukan',
+            (RealPemupukanFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'createdBy': item.createdBy,
+                  'unitKerja': item.unitKerja,
+                  'afdeling': item.afdeling,
+                  'blok': item.blok,
+                  'tahunTanam': item.tahunTanam,
+                  'luas': item.luas,
+                  'rencanaLuasPemupukan': item.rencanaLuasPemupukan,
+                  'realisasiLuasPemupukan': item.realisasiLuasPemupukan,
+                  'penyebab': item.penyebab,
+                  'rtl': item.rtl,
+                  'foto': item.foto,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'mobileCreatedAt': item.mobileCreatedAt,
+                  'isSend': item.isSend
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RealPemupukanFormModel>
+      _realPemupukanFormModelInsertionAdapter;
+
+  @override
+  Future<List<RealPemupukanFormModel>> getDataRealPemupukanByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, luas: row['luas'] as int?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<RealPemupukanFormModel>> getAllRealPemupukan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_real_pemupukan',
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afdeling: row['afdeling'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            luas: row['luas'] as int?,
+            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
+            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataRealPemupukan() async {
+    return _queryAdapter.query('DELETE FROM t_real_pemupukan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataRealPemupukanByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataRealPemupukan(RealPemupukanFormModel data) async {
+    await _realPemupukanFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
   }
 }

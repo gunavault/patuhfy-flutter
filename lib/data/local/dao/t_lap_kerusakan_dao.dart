@@ -1,5 +1,4 @@
 import 'package:floor/floor.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 
 @dao

@@ -19,20 +19,18 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
   File? pickedImage;
   String? pickedImageBase64Image;
   Future getFoto(ImageSource src) async {
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: src);
-    final File? file = File(image!.path);
+    final ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: src);
+    final File file = File(image!.path);
 
     List<int> imageBytes = await image.readAsBytes();
     String base64Image = base64Encode(imageBytes);
-    if (image != null) {
-      setState(() {
-        pickedImage = file;
-        pickedImageBase64Image = base64Image;
+    setState(() {
+      pickedImage = file;
+      pickedImageBase64Image = base64Image;
 
-        widget.imageNameController.text = base64Image;
-      });
-    }
+      widget.imageNameController.text = base64Image;
+    });
   }
 
   @override
@@ -46,7 +44,7 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
           children: [
             Text(
               widget.fieldName != null ? "${widget.fieldName}" : "Evidence",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: CommonColors.blackColor,
@@ -54,7 +52,7 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
             ),
             IconButton(
               icon:
-                  Icon(Icons.add_a_photo, color: CommonColors.bottomIconColor),
+                  const Icon(Icons.add_a_photo, color: CommonColors.bottomIconColor),
               iconSize: 30,
               onPressed: () {
                 // getFoto();
@@ -62,21 +60,21 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
                     context: context,
                     builder: (BuildContext context) {
                       return SimpleDialog(
-                        title: Text('Kamera/Galeri'),
+                        title: const Text('Kamera/Galeri'),
                         children: [
                           SimpleDialogOption(
                               onPressed: () async {
                                 Navigator.pop(context);
                                 getFoto(ImageSource.gallery);
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Icon(Icons.folder_open,
                                       size: 36.0, color: Colors.orange),
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.only(
+                                    padding: EdgeInsetsDirectional.only(
                                         start: 16.0),
                                     child: Text('Pilih Dari Galeri'),
                                   ),
@@ -87,7 +85,7 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
                               Navigator.pop(context);
                               getFoto(ImageSource.camera);
                             },
-                            child: Row(
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -95,7 +93,7 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
                                     size: 36.0,
                                     color: CommonColors.bottomIconColor),
                                 Padding(
-                                  padding: const EdgeInsetsDirectional.only(
+                                  padding: EdgeInsetsDirectional.only(
                                       start: 16.0),
                                   child: Text('Ambil Gambar'),
                                 ),
@@ -111,11 +109,11 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
         ),
         pickedImage == null
             ? Container(height: 0)
-            : Container(
+            : SizedBox(
                 width: 100,
                 height: 200,
                 child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
                     child: Image.file(pickedImage!))),
         const SizedBox(
           height: 10,

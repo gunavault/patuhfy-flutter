@@ -24,7 +24,7 @@ class SelectboxMandorWidget extends StatelessWidget {
     Widget _customPopupItemBuilderExample2(
         BuildContext context, MandorModel item, bool isSelected) {
       return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
             ? null
             : BoxDecoration(
@@ -36,7 +36,7 @@ class SelectboxMandorWidget extends StatelessWidget {
           selected: isSelected,
           title:
               Text('${item.namaMandor.toString()} (${item.nikSap.toString()})'),
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             radius: 13,
             child: Icon(
               size: 12,
@@ -66,7 +66,7 @@ class SelectboxMandorWidget extends StatelessWidget {
         ),
         DropdownSearch<MandorModel>(
           validator: (value) {
-            if (value is Null) {
+            if (value == null) {
               return 'Mandor Tidak Boleh kosong';
             }
             return null;

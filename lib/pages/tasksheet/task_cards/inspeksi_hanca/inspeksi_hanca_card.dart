@@ -145,7 +145,7 @@ class InspeksiHancaCard extends StatelessWidget {
           );
         }
 
-        return Disconnected();
+        return const Disconnected();
       },
     );
   }

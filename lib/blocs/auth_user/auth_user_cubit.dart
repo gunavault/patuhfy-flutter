@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/configs/constants.dart';
@@ -68,16 +69,26 @@ class AuthUserCubit extends Cubit<AuthUserState> {
             mandorModelResponse.mandorModel ?? MandorModel();
         List<PemanenModel> pemanenModel =
             pemanenModelResponse.pemanenModel ?? PemanenModel();
-        // Simpen NIK SAP ke sharedpreferences
+        // Simpen NIK SAP dan GeoLocation ke sharedpreferences
+        final connectivityResult = await (Connectivity().checkConnectivity());
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString(keyNikSap, userModel.nik_sap ?? "");
 
         // insert ke lokal database
         await localDataSource.addUser(userModel);
-        afdelingModel.forEach((afd) => localDataSource.addAfdeling(afd));
-        blokModel.forEach((blok) => localDataSource.addBlok(blok));
-        mandorModel.forEach((mandor) => localDataSource.addMandor(mandor));
-        pemanenModel.forEach((pemanen) => localDataSource.addPemanen(pemanen));
+        for (var afd in afdelingModel) {
+          localDataSource.addAfdeling(afd);
+        }
+        for (var blok in blokModel) {
+          localDataSource.addBlok(blok);
+        }
+        for (var mandor in mandorModel) {
+          localDataSource.addMandor(mandor);
+        }
+        for (var pemanen in pemanenModel) {
+          localDataSource.addPemanen(pemanen);
+        }
 
         print('sukses nih ${userModelRespone.userModel!.role}');
         print('sukses nih userModel ${userModelRespone.userModel}');

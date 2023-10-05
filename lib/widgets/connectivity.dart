@@ -17,11 +17,11 @@ class ConnectivityWidget extends StatelessWidget {
           if (state.connection) {
             return child;
           } else {
-            return Disconnected();
+            return const Disconnected();
           }
         }
 
-        return Disconnected();
+        return const Disconnected();
       },
     );
   }

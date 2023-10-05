@@ -4,7 +4,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ConnectionUtil {
   //This creates the single instance by calling the `_internal` constructor specified below
-  static final ConnectionUtil _singleton = new ConnectionUtil._internal();
+  static final ConnectionUtil _singleton = ConnectionUtil._internal();
   ConnectionUtil._internal();
   //This is what's used to retrieve the instance through the app
   static ConnectionUtil getInstance() => _singleton;

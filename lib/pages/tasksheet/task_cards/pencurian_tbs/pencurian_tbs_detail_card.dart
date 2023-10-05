@@ -19,7 +19,7 @@ class PencurianTbsDetailCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "Evidence Pencurian TBS",
           style: TextStyle(
             fontSize: 18,
@@ -57,7 +57,7 @@ class PencurianTbsDetailCard extends StatelessWidget {
           height: 10,
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
+          margin: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
             validator: (value) {
               if (value!.isEmpty) {

@@ -23,7 +23,7 @@ class PencurianTbsCardCubit extends Cubit<PencurianTbsCardState> {
     if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
           .getDataPencurianTbsByTanggalOnlineOrOffline(taskDate.toString());
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsPencurianTbsAswered(false, null));
       } else {
         // Send to Database Server Holding
@@ -33,7 +33,7 @@ class PencurianTbsCardCubit extends Cubit<PencurianTbsCardState> {
       cekData = await localDataSource
           .getDataPencurianTbsByTanggal(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsPencurianTbsAswered(false, null));
       } else {
         emit(IsPencurianTbsAswered(true, cekData.first));

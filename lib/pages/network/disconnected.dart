@@ -19,21 +19,21 @@ class Disconnected extends StatelessWidget {
                 height: 250,
                 width: 250,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              Text(
+              const Text(
                 'No Internet',
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
-              Text(
+              const Text(
                 'Coba cek sinyal hapemu yah.',
                 style: TextStyle(fontSize: 14),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
             ],

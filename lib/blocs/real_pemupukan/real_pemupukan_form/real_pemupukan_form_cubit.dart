@@ -4,32 +4,42 @@ import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'pencurian_tbs_form_state.dart';
+part 'real_pemupukan_form_state.dart';
 
-class PencurianTbsFormCubit extends Cubit<PencurianTbsFormState> {
+class RealPemupukanFormCubit extends Cubit<RealPemupukanFormState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  PencurianTbsFormCubit(this.localDataSource, this.remoteDataSource)
-      : super(InitialPencurianTbsFormState());
+  RealPemupukanFormCubit(this.localDataSource, this.remoteDataSource)
+      : super(InitialRealPemupukanFormState());
 
-  storedOffline(PencurianTbsFormModel dataForm) async {
+  storedOffline(RealPemupukanFormModel dataForm) async {
     // set lat and long jika gak ada signal
     SharedPreferences prefs = await SharedPreferences.getInstance();
     dataForm.lat = prefs.getString('lat');
     dataForm.long = prefs.getString('long');
     dataForm.isSend = 0;
-    await localDataSource.addDataPencurianTbs(dataForm);
 
-    emit(SuccessPencurianTbsFormState(
+    List<RealPemupukanFormModel> cekLength;
+    cekLength = await localDataSource
+        .getDataRealPemupukanByTanggal(dataForm.tanggal.toString());
+
+    if (cekLength.isEmpty) {
+      //Check duplikat
+      await localDataSource.addDataRealPemupukan(dataForm);
+    }
+
+    emit(SuccessRealPemupukanFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
+
+    print('bepraisi data ${cekLength.length}');
   }
 
-  storedOnline(PencurianTbsFormModel dataForm, UserModel userModel) async {
+  storedOnline(RealPemupukanFormModel dataForm, UserModel userModel) async {
     // set lat and long jika ada sinyal
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -38,27 +48,36 @@ class PencurianTbsFormCubit extends Cubit<PencurianTbsFormState> {
     dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
-    PencurianTbsFormModelResponse resFromApi =
-        await remoteDataSource.createPencurianTbs(
+    RealPemupukanFormModelResponse resFromApi =
+        await remoteDataSource.createRealPemupukan(
       userModel.token,
       dataForm,
     );
 
     if (resFromApi.status_code == 200) {
-      await localDataSource.addDataPencurianTbs(dataForm);
-      emit(SuccessPencurianTbsFormState(
+      // Simpen dulu yang offline
+      List<RealPemupukanFormModel> cekLength;
+      cekLength = await localDataSource
+          .getDataRealPemupukanByTanggal(dataForm.tanggal.toString());
+
+      if (cekLength.isEmpty) {
+        //Check duplikat
+        await localDataSource.addDataRealPemupukan(dataForm);
+      }
+
+      emit(SuccessRealPemupukanFormState(
           status_code: resFromApi.status_code,
           message: resFromApi.message));
     } else {
-      emit(DuplicatedPencurianTbsFormState(
+      emit(DuplicatedRealPemupukanFormState(
           status_code: resFromApi.status_code,
           message: resFromApi.message));
     }
   }
 
-  submitToDatabase(PencurianTbsFormModel dataForm) async {
+  submitToDatabase(RealPemupukanFormModel dataForm) async {
     try {
-      emit(LoadingPencurianTbsFormState());
+      emit(LoadingRealPemupukanFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 10);
@@ -81,21 +100,20 @@ class PencurianTbsFormCubit extends Cubit<PencurianTbsFormState> {
             dataForm); // By Default saved local database (offlinemode)
       }
     } catch (err) {
-      print('kesini error');
       final connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult != ConnectivityResult.none) {
-        localDataSource.deleteDataPencurianTbsByDate(
+        localDataSource.deleteDataRealPemupukanByDate(
             dataForm.tanggal.toString()); //Hapus data di Lokal By Date
-        emit(ErrorPencurianTbsFormState(err.toString())); //Emit Error State
+        emit(ErrorRealPemupukanFormState(err.toString())); //Emit Error State
       } else {
-        print('error apa nih $err');
-        emit(ErrorPencurianTbsFormState('error'));
+        emit(SuccessRealPemupukanFormState(
+            status_code: 200, message: 'Inserted to Lokal Database'));
       }
     }
   }
 
-  // createPencurianTbs(
-  //     PencurianTbsFormModel dataFormPencurianTbs, String kode_sales_order) async {
+  // createRealPemupukan(
+  //     RealPemupukanFormModel dataFormRealPemupukan, String kode_sales_order) async {
 
   // }
 }

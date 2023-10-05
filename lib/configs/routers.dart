@@ -9,10 +9,10 @@ class MyRouters {
   static const pjpPenjualanListPage = "pjpPenjualanListPage";
   static const pjpPenjualanFormtPage = "pjpPenjualanFormtPage";
 
-  static final salesOrder = "SalesOrder";
-  static final salesOrderList = "SalesOrderList";
-  static final salesOrderDetail = "SalesOrderDetail";
-  static final SalesOrderChosenProduct = "SalesOrderChosenProduct";
+  static const salesOrder = "SalesOrder";
+  static const salesOrderList = "SalesOrderList";
+  static const salesOrderDetail = "SalesOrderDetail";
+  static const SalesOrderChosenProduct = "SalesOrderChosenProduct";
 
   static const salesmanList = "salesman";
 

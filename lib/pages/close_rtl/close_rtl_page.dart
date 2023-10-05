@@ -29,7 +29,7 @@ class _CloseRTLState extends State<CloseRTL> {
   Widget _customDropDownExampleMultiSelection(
       BuildContext context, List<UserModelDropdown> selectedItems) {
     if (selectedItems.isEmpty) {
-      return ListTile(
+      return const ListTile(
         contentPadding: EdgeInsets.all(0),
         leading: CircleAvatar(),
         title: Text("No item selected"),
@@ -42,7 +42,7 @@ class _CloseRTLState extends State<CloseRTL> {
           padding: const EdgeInsets.all(4.0),
           child: Container(
             child: ListTile(
-              contentPadding: EdgeInsets.all(0),
+              contentPadding: const EdgeInsets.all(0),
               leading: CircleAvatar(
                 backgroundImage: NetworkImage(e.avatar.toString()),
               ),
@@ -60,7 +60,7 @@ class _CloseRTLState extends State<CloseRTL> {
   Widget _customPopupItemBuilderExample2(
       BuildContext context, UserModelDropdown item, bool isSelected) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
       decoration: !isSelected
           ? null
           : BoxDecoration(
@@ -72,7 +72,7 @@ class _CloseRTLState extends State<CloseRTL> {
         selected: isSelected,
         title: Text(item.name.toString()),
         subtitle: Text(item.createdAt.toString()),
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
             // backgroundImage: NetworkImage(item.avatar.toString()),
             ),
       ),
@@ -83,14 +83,14 @@ class _CloseRTLState extends State<CloseRTL> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("[DropDownSearch builder examples]"),
-        SizedBox(
+        const Text("[DropDownSearch builder examples]"),
+        const SizedBox(
           height: 50,
         ),
-        Divider(),
+        const Divider(),
         Row(
           children: [
-            Padding(padding: EdgeInsets.all(4)),
+            const Padding(padding: EdgeInsets.all(4)),
             Expanded(
               child: DropdownSearch<UserModelDropdown>(
                 asyncItems: (String? filter) => getData(filter),
@@ -175,7 +175,7 @@ class UserModelDropdown {
 
   ///this method will prevent the override of toString
   String userAsString() {
-    return '#${this.id} ${this.name}';
+    return '#$id $name';
   }
 
   // ///this method will prevent the override of toString

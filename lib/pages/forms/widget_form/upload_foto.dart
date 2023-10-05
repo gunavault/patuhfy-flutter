@@ -20,9 +20,9 @@ class _UploadFotoState extends State<UploadFoto> {
   File? pickedImage;
   String? pickedImageBase64Image;
   Future getFoto(ImageSource src) async {
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: src);
-    final File? file = File(image!.path);
+    final ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: src);
+    final File file = File(image!.path);
 
     // List<int> imageBytes = await image.readAsBytes();
     // String base64Image = base64Encode(imageBytes);
@@ -44,7 +44,7 @@ class _UploadFotoState extends State<UploadFoto> {
       children: [
         Text(
           widget.fieldName != null ? "${widget.fieldName}" : "Evidence",
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: CommonColors.blackColor,
@@ -56,9 +56,10 @@ class _UploadFotoState extends State<UploadFoto> {
               const InputDecoration(labelText: 'Lampirkan Bukti Kegiatan'),
           name: "CupertinoActionSheet",
           validator: (v) {
-            if (v == null || v.length == 0) {
+            if (v == null || v.isEmpty) {
               return 'Tolong lampirkan bukti kegiatan';
             }
+            return null;
           },
           onChanged: (val) async {
             XFile? selectedImg = val!.first;

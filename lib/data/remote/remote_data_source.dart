@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -12,7 +9,7 @@ import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
-import 'package:patuhfy/models/selectbox/selectbox_afdeling_model.dart';
+import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
 class RemoteDataSource {
@@ -28,11 +25,11 @@ class RemoteDataSource {
     return Options(headers: {"Authorization": "Bearer $token"});
   }
 
-  Future<UserModelResponse> login(nik_sap, password) async {
+  Future<UserModelResponse> login(nikSap, password) async {
     try {
       var dio = Dio();
       var response = await dio.post("$baseUrl/login",
-          data: {"nik_sap": nik_sap, "password": password});
+          data: {"nik_sap": nikSap, "password": password});
       return UserModelResponse(userModel: UserModel.fromJson(response.data));
     } on DioError catch (err) {
       return UserModelResponse(message: err.response.toString());
@@ -52,7 +49,7 @@ class RemoteDataSource {
           afdelingModel: parsedData
               .map((value) => AfdelingModel.fromJson(value))
               .toList());
-    } on DioError catch (err) {
+    } on DioError {
       return [];
       // return err.response.toString();
     }
@@ -63,14 +60,14 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/masterdata/get-blok-by-psa?psa=$kodePsa&&company=${company}",
+          "$baseUrl/masterdata/get-blok-by-psa?psa=$kodePsa&&company=$company",
           options: optionAuth(token));
       print('data blok nih ${response.data['data']}');
       List<dynamic> parsedData = response.data['data'];
       return BlokModelResponse(
           blokModel:
               parsedData.map((value) => BlokModel.fromJson(value)).toList());
-    } on DioError catch (err) {
+    } on DioError {
       return [];
       // return err.response.toString();
     }
@@ -88,7 +85,7 @@ class RemoteDataSource {
       return MandorModelResponse(
           mandorModel:
               parsedData.map((value) => MandorModel.fromJson(value)).toList());
-    } on DioError catch (err) {
+    } on DioError {
       return [];
       // return err.response.toString();
     }
@@ -106,7 +103,7 @@ class RemoteDataSource {
       return PemanenModelResponse(
           pemanenModel:
               parsedData.map((value) => PemanenModel.fromJson(value)).toList());
-    } on DioError catch (err) {
+    } on DioError {
       return [];
       // return err.response.toString();
     }
@@ -134,9 +131,9 @@ class RemoteDataSource {
       var dio = Dio();
 
       print(
-          'cek apel pagi $baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}');
+          'cek apel pagi $baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy');
       var response = await dio.get(
-          "$baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          "$baseUrl/tasksheet/apel-pagi/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -179,7 +176,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/inspeksi-hanca/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          "$baseUrl/tasksheet/inspeksi-hanca/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -224,7 +221,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/inspeksi-tph/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          "$baseUrl/tasksheet/inspeksi-tph/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -252,7 +249,7 @@ class RemoteDataSource {
       var response = await dio.post("$baseUrl/tasksheet/pencurian-tbs",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
-      print('callback ${callback}');
+      print('callback $callback');
       return PencurianTbsFormModelResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg']);
@@ -269,7 +266,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/pencurian-tbs/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          "$baseUrl/tasksheet/pencurian-tbs/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -312,7 +309,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/lap-kerusakan/get-data-by-date-createdby?tanggal=${tanggal}&createdBy=${createdBy}",
+          "$baseUrl/tasksheet/lap-kerusakan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -328,6 +325,49 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [LapKerusakanFormModel()]);
+    }
+  }
+
+  //Realisasi Pemupukan
+  Future<RealPemupukanFormModelResponse> createRealPemupukan(
+      token, RealPemupukanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data pemupukan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-pemupukan",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPemupukanFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPemupukanFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPemupukanFormModelSelectResponse> getDataRealPemupukanByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-pemupukan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return RealPemupukanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPemupukanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPemupukanFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPemupukanFormModel()]);
     }
   }
 }

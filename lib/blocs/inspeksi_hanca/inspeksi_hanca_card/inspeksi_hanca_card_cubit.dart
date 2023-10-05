@@ -3,9 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
-import 'package:patuhfy/models/user_model.dart';
 
 part 'inspeksi_hanca_card_state.dart';
 
@@ -26,7 +24,7 @@ class InspeksiHancaCardCubit extends Cubit<InspeksiHancaCardState> {
       cekData = await localDataSource
           .getDataInspeksiHancaByTanggalOnlineOrOffline(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsInspeksiHancaAswered(false, null));
       } else {
         emit(IsInspeksiHancaAswered(
@@ -36,7 +34,7 @@ class InspeksiHancaCardCubit extends Cubit<InspeksiHancaCardState> {
       cekData = await localDataSource
           .getDataInspeksiHancaByTanggal(taskDate.toString());
 
-      if (cekData.length == 0) {
+      if (cekData.isEmpty) {
         emit(IsInspeksiHancaAswered(false, null));
       } else {
         emit(IsInspeksiHancaAswered(true, cekData.first));

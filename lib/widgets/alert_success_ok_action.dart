@@ -62,13 +62,13 @@ contentBox(context, message, Function okAction) {
   return Stack(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.only(left: 20, top: 65, right: 20, bottom: 20),
-        margin: EdgeInsets.only(top: 45),
+        padding: const EdgeInsets.only(left: 20, top: 65, right: 20, bottom: 20),
+        margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                   color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
             ]),
@@ -78,17 +78,17 @@ contentBox(context, message, Function okAction) {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Text(
+            const Text(
               'Tekan tombol OK untuk kembali',
               style: TextStyle(fontSize: 14),
               textAlign: TextAlign.center,
             ),
-            SizedBox(
+            const SizedBox(
               height: 22,
             ),
             Align(
@@ -98,8 +98,8 @@ contentBox(context, message, Function okAction) {
                     okAction();
                     Navigator.pop(context);
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Text('Ok', style: TextStyle(fontSize: 18)),
                   )),
             ),
@@ -113,7 +113,7 @@ contentBox(context, message, Function okAction) {
           backgroundColor: Colors.transparent,
           radius: 45,
           child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(45)),
+              borderRadius: const BorderRadius.all(Radius.circular(45)),
               child: Lottie.asset('assets/animation/success_check.json')),
         ),
       ),

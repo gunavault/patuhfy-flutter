@@ -19,18 +19,22 @@ class ListPencurianTbs extends StatelessWidget {
       overlayOpacity: 0.4,
       overlayColor: Colors.black.withOpacity(0.4),
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add), //child widget inside this button
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => FormPencurianTbs(
-                  selectedDate: selectedDate,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 30.0, right: 10),
+          child: FloatingActionButton(
+            elevation: 1,
+            child: const Icon(Icons.add), //child widget inside this button
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FormPencurianTbs(
+                    selectedDate: selectedDate,
+                  ),
                 ),
-              ),
-            );
-            //task to execute when this button is pressed
-          },
+              );
+              //task to execute when this button is pressed
+            },
+          ),
         ),
         backgroundColor: CommonColors.whiteColor,
         appBar: AppBarView(

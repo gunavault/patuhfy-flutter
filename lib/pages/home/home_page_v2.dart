@@ -1,13 +1,10 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/pages/approval_form/approval_form.dart';
 import 'package:patuhfy/pages/close_rtl/close_rtl_page.dart';
-import 'package:patuhfy/pages/home/drawer_home.dart';
 import 'package:patuhfy/pages/lapor/lapor_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
 import 'package:patuhfy/pages/user_page/user_page.dart';
@@ -21,14 +18,14 @@ class HomePageV2 extends StatelessWidget {
 
   // static const List<Widget> _widgetOptions = <Widget>[
   Widget _activeScreen(activeTab) {
-    print('disin apa ${activeTab}');
+    print('disin apa $activeTab');
     if (activeTab == TabState.profile) {
-      return UserProfilePage(
+      return const UserProfilePage(
         key: PageStorageKey('profile'),
       );
     } else if (activeTab == TabState.tasksheet) {
       return Tasksheet(
-        key: PageStorageKey('tasksheet'),
+        key: const PageStorageKey('tasksheet'),
       );
     } else if (activeTab == TabState.approval) {
       return const ApprovalForm(
@@ -44,7 +41,7 @@ class HomePageV2 extends StatelessWidget {
       );
     }
 
-    return Center(child: Text('error'));
+    return const Center(child: Text('error'));
   }
 
   @override
@@ -94,9 +91,9 @@ class HomePageV2 extends StatelessWidget {
               ),
             ],
             onTap: (int index) {
-              print('aww ${activeTab}');
+              print('aww $activeTab');
               context.read<TabCubit>().setTab(TabState.values[index]);
-              print('ini print indexc kah ${index}');
+              print('ini print indexc kah $index');
               // setState(() => _currentPage = index);
             },
             currentIndex: activeTab.index,

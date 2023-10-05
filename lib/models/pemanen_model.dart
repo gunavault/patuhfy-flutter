@@ -10,9 +10,9 @@ class PemanenModel {
   PemanenModel({this.nikSapPemanen, this.namaPemanen, this.nikSapMandor});
 
   PemanenModel.fromJson(Map<String, dynamic> json) {
-    this.nikSapPemanen = json["nik_pemanen"];
-    this.namaPemanen = json["nama_pemanen"];
-    this.nikSapMandor = json["nik_mandor"];
+    nikSapPemanen = json["nik_pemanen"];
+    namaPemanen = json["nama_pemanen"];
+    nikSapMandor = json["nik_mandor"];
   }
 
   Map<String, dynamic> toJson() {
@@ -27,7 +27,7 @@ class PemanenModel {
   @override
   String toString() => nikSapPemanen.toString();
   String userAsString() {
-    return '${this.nikSapPemanen} ${this.namaPemanen}';
+    return '$nikSapPemanen $namaPemanen';
   }
 }
 

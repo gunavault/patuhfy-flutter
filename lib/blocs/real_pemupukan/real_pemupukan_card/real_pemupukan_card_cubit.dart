@@ -3,41 +3,41 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 
-part 'inspeksi_tph_card_state.dart';
+part 'real_pemupukan_card_state.dart';
 
-class InspeksiTphCardCubit extends Cubit<InspeksiTphCardState> {
+class RealPemupukanCardCubit extends Cubit<RealPemupukanCardState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  InspeksiTphCardCubit(this.localDataSource, this.remoteDataSource)
-      : super(IsInspeksiTphAswered(false, null));
+  RealPemupukanCardCubit(this.localDataSource, this.remoteDataSource)
+      : super(IsRealPemupukanAswered(false, null));
 
   checkIsAnwered(String taskDate) async {
-    List<InspeksiTphFormModel> cekData;
+    List<RealPemupukanFormModel> cekData;
 
     final connectivityResult = await (Connectivity()
         .checkConnectivity()); // cCheck if there is connection post to local and database
 
     if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
-          .getDataInspeksiTphByTanggalOnlineOrOffline(taskDate.toString());
+          .getDataRealPemupukanByTanggalOnlineOrOffline(taskDate.toString());
 
       if (cekData.isEmpty) {
-        emit(IsInspeksiTphAswered(false, null));
+        emit(IsRealPemupukanAswered(false, null));
       } else {
-        emit(IsInspeksiTphAswered(
+        emit(IsRealPemupukanAswered(
             true, cekData.first)); // Send to Database Server Holding
       }
     } else {
       cekData = await localDataSource
-          .getDataInspeksiTphByTanggal(taskDate.toString());
+          .getDataRealPemupukanByTanggal(taskDate.toString());
 
       if (cekData.isEmpty) {
-        emit(IsInspeksiTphAswered(false, null));
+        emit(IsRealPemupukanAswered(false, null));
       } else {
-        emit(IsInspeksiTphAswered(true, cekData.first));
+        emit(IsRealPemupukanAswered(true, cekData.first));
       }
     }
   }

@@ -145,7 +145,7 @@ class InspeksiTphCard extends StatelessWidget {
           );
         }
 
-        return Disconnected();
+        return const Disconnected();
       },
     );
   }

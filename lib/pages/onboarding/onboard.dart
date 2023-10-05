@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
-import 'package:patuhfy/pages/login/login_page.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 

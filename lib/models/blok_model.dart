@@ -9,20 +9,23 @@ class BlokModel {
   String? kodeBlok;
   String? namaBlok;
   String? tahunTanam;
+  String? luasArealTanam;
 
   BlokModel(
       {this.kodePsa,
       this.kodeAfd,
       this.kodeBlok,
       this.namaBlok,
-      this.tahunTanam});
+      this.tahunTanam,
+      this.luasArealTanam});
 
   BlokModel.fromJson(Map<String, dynamic> json) {
-    this.kodePsa = json["unit_kerja"];
-    this.kodeAfd = json["afdeling"];
-    this.kodeBlok = json["kode_blok_sap"];
-    this.namaBlok = json["nama_blok"];
-    this.tahunTanam = json["tahun_tanam"];
+    kodePsa = json["unit_kerja"];
+    kodeAfd = json["afdeling"];
+    kodeBlok = json["kode_blok_sap"];
+    namaBlok = json["nama_blok"];
+    tahunTanam = json["tahun_tanam"];
+    luasArealTanam = json["luas_tanam_ha"];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,15 +35,16 @@ class BlokModel {
     data["kodeBlok"] = kodeBlok;
     data["namaBlok"] = namaBlok;
     data["tahunTanam"] = tahunTanam;
+    data["luas_tanam_ha"] = luasArealTanam;
     return data;
   }
-String userAsString() {
-    return 'Kode AFD : ${this.kodeBlok} - ${this.kodeAfd}';
+
+  String userAsString() {
+    return 'Kode AFD : $kodeBlok - $kodeAfd';
   }
 
   @override
   String toString() => kodeBlok.toString();
-  
 }
 
 class BlokModelResponse {

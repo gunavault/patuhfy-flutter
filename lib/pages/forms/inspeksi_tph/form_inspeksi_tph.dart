@@ -7,7 +7,6 @@ import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_mandor_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_pemanen_widget.dart';
@@ -119,7 +118,7 @@ class FormInspeksiTph extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   // duration: Duration(seconds: 4),
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +142,7 @@ class FormInspeksiTph extends StatelessWidget {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -161,7 +160,7 @@ class FormInspeksiTph extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(InspeksiTphFormState.message.toString()),
-                    Icon(Icons.error)
+                    const Icon(Icons.error)
                   ],
                 ),
                 backgroundColor: Colors.red,

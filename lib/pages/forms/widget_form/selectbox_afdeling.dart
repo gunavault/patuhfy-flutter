@@ -24,8 +24,8 @@ class SelectboxAfdeling extends StatelessWidget {
     List<String> _getSuggestions(String query, List<AfdelingModel> data) {
       List<String> matches = <String>[];
 
-      List<String> data_afd = data.map((e) => e.kodeAfd.toString()).toList();
-      matches.addAll(data_afd);
+      List<String> dataAfd = data.map((e) => e.kodeAfd.toString()).toList();
+      matches.addAll(dataAfd);
 
       matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
       return matches;
@@ -33,9 +33,9 @@ class SelectboxAfdeling extends StatelessWidget {
 
     return BlocBuilder<SelectboxAfdelingCubit, SelectboxAfdelingState>(
       builder: (context, state) {
-        print('state dari selectbox ${state}');
+        print('state dari selectbox $state');
         if (state is LoadingState) {
-          return Center(
+          return const Center(
             child: Text('Loading..'),
           );
         }
@@ -59,7 +59,7 @@ class SelectboxAfdeling extends StatelessWidget {
                 height: 10,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
+                margin: const EdgeInsets.symmetric(vertical: 8),
                 child: TypeAheadFormField(
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -127,7 +127,7 @@ class SelectboxAfdeling extends StatelessWidget {
           );
         }
 
-        return Center(child: Text('Error'));
+        return const Center(child: Text('Error'));
       },
     );
   }

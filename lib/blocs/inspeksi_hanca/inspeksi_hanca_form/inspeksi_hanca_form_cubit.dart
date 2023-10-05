@@ -24,11 +24,11 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     dataForm.long = prefs.getString('long');
     dataForm.isSend = 0;
 
-    List<InspeksiHancaFormModel> cek_length;
-    cek_length = await localDataSource
+    List<InspeksiHancaFormModel> cekLength;
+    cekLength = await localDataSource
         .getDataInspeksiHancaByTanggal(dataForm.tanggal.toString());
 
-    if (cek_length.length == 0) {
+    if (cekLength.isEmpty) {
       //Check duplikat
       await localDataSource.addDataInspeksiHanca(dataForm);
     }
@@ -36,7 +36,7 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     emit(SuccessInspeksiHancaFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
 
-    print('bepraisi data ${cek_length.length}');
+    print('bepraisi data ${cekLength.length}');
   }
 
   storedOnline(InspeksiHancaFormModel dataForm, UserModel userModel) async {
@@ -48,30 +48,30 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
-    InspeksiHancaFormModelResponse res_from_api =
+    InspeksiHancaFormModelResponse resFromApi =
         await remoteDataSource.createInspeksiHanca(
       userModel.token,
       dataForm,
     );
 
-    if (res_from_api.status_code == 200) {
+    if (resFromApi.status_code == 200) {
       // Simpen dulu yang offline
-      List<InspeksiHancaFormModel> cek_length;
-      cek_length = await localDataSource
+      List<InspeksiHancaFormModel> cekLength;
+      cekLength = await localDataSource
           .getDataInspeksiHancaByTanggal(dataForm.tanggal.toString());
 
-      if (cek_length.length == 0) {
+      if (cekLength.isEmpty) {
         //Check duplikat
         await localDataSource.addDataInspeksiHanca(dataForm);
       }
 
       emit(SuccessInspeksiHancaFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     } else {
       emit(DuplicatedInspeksiHancaFormState(
-          status_code: res_from_api.status_code,
-          message: res_from_api.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message));
     }
   }
 
@@ -79,7 +79,7 @@ class InspeksiHancaFormCubit extends Cubit<InspeksiHancaFormState> {
     try {
       emit(LoadingInspeksiHancaFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
-      DateTime dateToday = new DateTime.now();
+      DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 10);
 
       UserModel userModel = await localDataSource.getCurrentUser();
