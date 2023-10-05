@@ -115,7 +115,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `brondolan` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
         await database.execute(
@@ -421,16 +421,8 @@ class _$TApelPagiDao extends TApelPagiDao {
   Future<List<ApelPagiFormModel>> getDataApelPagiByTanggal(
       String tanggal) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM t_apel_pagi WHERE tanggal = ?1',
-        mapper: (Map<String, Object?> row) => ApelPagiFormModel(
-            tanggal: row['tanggal'] as String?,
-            unitKerja: row['unitKerja'] as String?,
-            afd: row['afd'] as String?,
-            foto: row['foto'] as String?,
-            createdBy: row['createdBy'] as String?,
-            long: row['long'] as String?,
-            lat: row['lat'] as String?,
-            isSend: row['isSend'] as int?),
+        'SELECT * FROM t_apel_pagi WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => ApelPagiFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -456,7 +448,8 @@ class _$TApelPagiDao extends TApelPagiDao {
 
   @override
   Future<bool?> deleteDataAPelPagiByDate(String tanggal) async {
-    return _queryAdapter.query('DELETE FROM t_apel_pagi where tanggal = ?1',
+    return _queryAdapter.query(
+        'DELETE FROM t_apel_pagi WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }
@@ -514,28 +507,8 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
   Future<List<InspeksiHancaFormModel>> getDataInspeksiHancaByTanggal(
       String tanggal) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM t_inspeksi_hanca WHERE tanggal = ?1',
-        mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
-            tanggal: row['tanggal'] as String?,
-            unitKerja: row['unitKerja'] as String?,
-            afd: row['afd'] as String?,
-            blok: row['blok'] as String?,
-            tahunTanam: row['tahunTanam'] as int?,
-            kapveld: row['kapveld'] as int?,
-            mandor: row['mandor'] as String?,
-            pemanen: row['pemanen'] as String?,
-            brondolanTidakDikutip: row['brondolanTidakDikutip'] as int?,
-            buahBusuk: row['buahBusuk'] as int?,
-            buahLewatMarangTidakDipanen:
-                row['buahLewatMarangTidakDipanen'] as int?,
-            buahLewatMatangTidakDiangkutKeTph:
-                row['buahLewatMatangTidakDiangkutKeTph'] as int?,
-            pelepahTidakDipotongTiga: row['pelepahTidakDipotongTiga'] as int?,
-            pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?,
-            createdBy: row['createdBy'] as String?,
-            long: row['long'] as String?,
-            lat: row['lat'] as String?,
-            isSend: row['isSend'] as int?),
+        'SELECT * FROM t_inspeksi_hanca WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, brondolanTidakDikutip: row['brondolanTidakDikutip'] as int?, buahBusuk: row['buahBusuk'] as int?, buahLewatMarangTidakDipanen: row['buahLewatMarangTidakDipanen'] as int?, buahLewatMatangTidakDiangkutKeTph: row['buahLewatMatangTidakDiangkutKeTph'] as int?, pelepahTidakDipotongTiga: row['pelepahTidakDipotongTiga'] as int?, pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -574,7 +547,7 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
   @override
   Future<bool?> deleteDataInspeksiHancaByDate(String tanggal) async {
     return _queryAdapter.query(
-        'DELETE FROM t_inspeksi_hanca where tanggal = ?1',
+        'DELETE FROM t_inspeksi_hanca WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }
@@ -631,27 +604,8 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
   Future<List<InspeksiTphFormModel>> getDataInspeksiTphByTanggal(
       String tanggal) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM t_inspeksi_tph WHERE tanggal = ?1',
-        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
-            tanggal: row['tanggal'] as String?,
-            unitKerja: row['unitKerja'] as String?,
-            afd: row['afd'] as String?,
-            blok: row['blok'] as String?,
-            tahunTanam: row['tahunTanam'] as int?,
-            kapveld: row['kapveld'] as int?,
-            mandor: row['mandor'] as String?,
-            pemanen: row['pemanen'] as String?,
-            noTph: row['noTph'] as int?,
-            panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
-            tbsBusuk: row['tbsBusuk'] as int?,
-            gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
-            tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?,
-            tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
-            tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
-            createdBy: row['createdBy'] as String?,
-            long: row['long'] as String?,
-            lat: row['lat'] as String?,
-            isSend: row['isSend'] as int?),
+        'SELECT * FROM t_inspeksi_tph WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, noTph: row['noTph'] as int?, panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?, tbsBusuk: row['tbsBusuk'] as int?, gagangTandanPanjang: row['gagangTandanPanjang'] as int?, tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?, tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?, tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -688,7 +642,8 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
 
   @override
   Future<bool?> deleteDataInspeksiTphByDate(String tanggal) async {
-    return _queryAdapter.query('DELETE FROM t_inspeksi_tph where tanggal = ?1',
+    return _queryAdapter.query(
+        'DELETE FROM t_inspeksi_tph WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }
@@ -720,6 +675,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
                   'realisasiPencurianTbsTandan':
                       item.realisasiPencurianTbsTandan,
                   'realisasiPencurianTbsKg': item.realisasiPencurianTbsKg,
+                  'brondolan': item.brondolan,
                   'rtl': item.rtl,
                   'createdBy': item.createdBy,
                   'long': item.long,
@@ -740,23 +696,8 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   Future<List<PencurianTbsFormModel>> getDataPencurianTbsByTanggal(
       String tanggal) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM t_pencurian_tbs WHERE tanggal = ?1',
-        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
-            tanggal: row['tanggal'] as String?,
-            mobileCreatedAt: row['mobileCreatedAt'] as String?,
-            unitKerja: row['unitKerja'] as String?,
-            afd: row['afd'] as String?,
-            blok: row['blok'] as String?,
-            tahunTanam: row['tahunTanam'] as int?,
-            realisasiPencurianTbsTandan:
-                row['realisasiPencurianTbsTandan'] as int?,
-            realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
-            foto: row['foto'] as String?,
-            rtl: row['rtl'] as String?,
-            createdBy: row['createdBy'] as String?,
-            long: row['long'] as String?,
-            lat: row['lat'] as String?,
-            isSend: row['isSend'] as int?),
+        'SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(tanggal: row['tanggal'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, realisasiPencurianTbsTandan: row['realisasiPencurianTbsTandan'] as int?, realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?, brondolan: row['brondolan'] as int?, foto: row['foto'] as String?, rtl: row['rtl'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -773,6 +714,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
             realisasiPencurianTbsTandan:
                 row['realisasiPencurianTbsTandan'] as int?,
             realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
+            brondolan: row['brondolan'] as int?,
             foto: row['foto'] as String?,
             rtl: row['rtl'] as String?,
             createdBy: row['createdBy'] as String?,
@@ -789,7 +731,8 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
 
   @override
   Future<bool?> deleteDataPencurianTbsByDate(String tanggal) async {
-    return _queryAdapter.query('DELETE FROM t_pencurian_tbs where tanggal = ?1',
+    return _queryAdapter.query(
+        'DELETE FROM t_pencurian_tbs WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }
@@ -836,18 +779,8 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
   Future<List<LapKerusakanFormModel>> getDataLapKerusakanByTanggal(
       String tanggal) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM t_lap_kerusakan WHERE tanggal = ?1',
-        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
-            tanggal: row['tanggal'] as String?,
-            unitKerja: row['unitKerja'] as String?,
-            afd: row['afd'] as String?,
-            foto: row['foto'] as String?,
-            createdBy: row['createdBy'] as String?,
-            long: row['long'] as String?,
-            lat: row['lat'] as String?,
-            keterangan: row['keterangan'] as String?,
-            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?,
-            isSend: row['isSend'] as int?),
+        'SELECT * FROM t_lap_kerusakan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, keterangan: row['keterangan'] as String?, rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -875,7 +808,8 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
 
   @override
   Future<bool?> deleteDataLapKerusakanByDate(String tanggal) async {
-    return _queryAdapter.query('DELETE FROM t_lap_kerusakan where tanggal = ?1',
+    return _queryAdapter.query(
+        'DELETE FROM t_lap_kerusakan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }

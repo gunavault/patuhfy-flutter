@@ -6,7 +6,7 @@ abstract class TApelPagiDao {
   // @Query('SELECT * FROM t_apel_pagi WHERE nik_sap = :id')
   // Future<TApelPagiEntity?> getAfdById(int id);
 
-  @Query('SELECT * FROM t_apel_pagi WHERE tanggal = :tanggal')
+  @Query('SELECT * FROM t_apel_pagi WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<List<ApelPagiFormModel>> getDataApelPagiByTanggal(String tanggal);
 
   @Query('SELECT * FROM t_apel_pagi')
@@ -19,7 +19,7 @@ abstract class TApelPagiDao {
   @Query('DELETE FROM t_apel_pagi')
   Future<bool?> deleteDataAPelPagi();
 
-  @Query('DELETE FROM t_apel_pagi where tanggal = :tanggal')
+  @Query('DELETE FROM t_apel_pagi WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<bool?> deleteDataAPelPagiByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)

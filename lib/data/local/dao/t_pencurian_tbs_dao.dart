@@ -6,7 +6,7 @@ abstract class TPencurianTbsDao {
   // @Query('SELECT * FROM t_pencurian_tbs WHERE nik_sap = :id')
   // Future<TPencurianTbsEntity?> getAfdById(int id);
 
-  @Query('SELECT * FROM t_pencurian_tbs WHERE tanggal = :tanggal')
+  @Query('SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<List<PencurianTbsFormModel>> getDataPencurianTbsByTanggal(
       String tanggal);
 
@@ -20,7 +20,7 @@ abstract class TPencurianTbsDao {
   @Query('DELETE FROM t_pencurian_tbs')
   Future<bool?> deleteDataPencurianTbs();
 
-  @Query('DELETE FROM t_pencurian_tbs where tanggal = :tanggal')
+  @Query('DELETE FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<bool?> deleteDataPencurianTbsByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)
