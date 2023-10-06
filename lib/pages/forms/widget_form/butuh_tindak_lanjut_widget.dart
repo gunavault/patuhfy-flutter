@@ -10,12 +10,14 @@ class ButuhTindakLanjutWidgetForm extends StatefulWidget {
       required this.fieldKeterangan,
       required this.fieldType,
       required this.tindakLanjutController,
+      required this.hasRtlController,
       this.isEnabled});
 
   final String fieldText;
   final String fieldKeterangan;
   final String fieldType;
   final TextEditingController tindakLanjutController;
+  final TextEditingController hasRtlController;
   final bool? isEnabled;
 
   @override
@@ -26,6 +28,17 @@ class ButuhTindakLanjutWidgetForm extends StatefulWidget {
 class _ButuhTindakLanjutWidgetFormState
     extends State<ButuhTindakLanjutWidgetForm> {
   bool isActive = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    widget.hasRtlController.text = 0.toString();
+    super.initState();
+  }
+
+  void SetValueRtlController(value) {
+    widget.hasRtlController.text = value ? 1.toString() : 0.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,6 +66,7 @@ class _ButuhTindakLanjutWidgetFormState
               onChanged: (bool value) {
                 setState(() {
                   isActive = value;
+                  SetValueRtlController(value);
                 });
               },
             ),

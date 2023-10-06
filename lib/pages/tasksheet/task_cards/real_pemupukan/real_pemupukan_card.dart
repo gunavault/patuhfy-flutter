@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/pages/forms/real_pemupukan/form_real_pemupukan.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/real_pemupukan/real_pemupukan_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -24,10 +25,10 @@ class RealPemupukanCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                return const Text('aw');
-                // return RealPemupukanDetailCard(
-                //   dataForm: state.dataForm,
-                // );
+                // return const Text('aw');
+                return RealPemupukanDetailCard(
+                  dataForm: state.dataForm,
+                );
               },
             );
           }

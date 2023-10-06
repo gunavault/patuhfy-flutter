@@ -34,6 +34,7 @@ class FormRealPemupukan extends StatelessWidget {
         TextEditingController();
     TextEditingController penyebabController = TextEditingController();
     TextEditingController rtlController = TextEditingController();
+    TextEditingController hasRtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
     // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
     //     TextEditingController();
@@ -60,7 +61,8 @@ class FormRealPemupukan extends StatelessWidget {
                   int.parse(realisasiLuasPemupukanController.text),
               penyebab: penyebabController.text,
               rtl: rtlController.text,
-              foto: fotoController.text));
+              foto: fotoController.text,
+              hasRtl: int.parse(hasRtlController.text)));
 
       // _loginBloc.add(LoginPressed(_loginData));
     }
@@ -224,6 +226,7 @@ class FormRealPemupukan extends StatelessWidget {
                           fieldKeterangan: 'Rencana Tindak Lanjut',
                           fieldType: 'text',
                           tindakLanjutController: rtlController,
+                          hasRtlController: hasRtlController,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 30),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -74,7 +73,7 @@ class HomePageV2 extends StatelessWidget {
 
               BottomNavigationBarItem(
                 icon: Icon(IconlyLight.document),
-                label: "Approval Form",
+                label: "RTL",
               ),
 
               BottomNavigationBarItem(

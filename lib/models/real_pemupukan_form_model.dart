@@ -20,6 +20,7 @@ class RealPemupukanFormModel {
   String? mobileCreatedAt;
   int? isSend;
   String? foto;
+  int? hasRtl;
 
   RealPemupukanFormModel(
       {this.tanggal,
@@ -37,7 +38,8 @@ class RealPemupukanFormModel {
       this.long,
       this.mobileCreatedAt,
       this.isSend,
-      this.foto});
+      this.foto,
+      this.hasRtl});
 
   RealPemupukanFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
@@ -56,10 +58,12 @@ class RealPemupukanFormModel {
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
     foto = json["FOTO"];
+    hasRtl = json['HAS_RTL'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    print('data111 hasRtl ${hasRtl}');
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
@@ -71,6 +75,7 @@ class RealPemupukanFormModel {
     data["REALISASI_LUAS_PEMUPUKAN"] = realisasiLuasPemupukan;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
+    data["HAS_RTL"] = hasRtl;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;

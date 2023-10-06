@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
+import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
@@ -20,8 +21,8 @@ class RealPemupukanFormCubit extends Cubit<RealPemupukanFormState> {
   storedOffline(RealPemupukanFormModel dataForm) async {
     // set lat and long jika gak ada signal
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    dataForm.lat = prefs.getString('lat');
-    dataForm.long = prefs.getString('long');
+    dataForm.lat = prefs.getString(lat);
+    dataForm.long = prefs.getString(long);
     dataForm.isSend = 0;
 
     List<RealPemupukanFormModel> cekLength;
@@ -66,12 +67,10 @@ class RealPemupukanFormCubit extends Cubit<RealPemupukanFormState> {
       }
 
       emit(SuccessRealPemupukanFormState(
-          status_code: resFromApi.status_code,
-          message: resFromApi.message));
+          status_code: resFromApi.status_code, message: resFromApi.message));
     } else {
       emit(DuplicatedRealPemupukanFormState(
-          status_code: resFromApi.status_code,
-          message: resFromApi.message));
+          status_code: resFromApi.status_code, message: resFromApi.message));
     }
   }
 
