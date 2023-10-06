@@ -5,6 +5,7 @@ import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/pages/approval_form/approval_form.dart';
 import 'package:patuhfy/pages/close_rtl/close_rtl_page.dart';
 import 'package:patuhfy/pages/lapor/lapor_page.dart';
+import 'package:patuhfy/pages/rtl/rtl_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
 import 'package:patuhfy/pages/user_page/user_page.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -27,7 +28,7 @@ class HomePageV2 extends StatelessWidget {
         key: const PageStorageKey('tasksheet'),
       );
     } else if (activeTab == TabState.approval) {
-      return const ApprovalForm(
+      return const RtlPage(
         key: PageStorageKey('approval'),
       );
     } else if (activeTab == TabState.lapor) {

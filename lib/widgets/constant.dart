@@ -28,6 +28,24 @@ LinearGradient kPrimaryGradiant = const LinearGradient(
   ],
 );
 
+LinearGradient kPrimaryGradiantNew = const LinearGradient(
+  begin: Alignment.bottomLeft,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromARGB(255, 167, 225, 241),
+    Color.fromARGB(255, 76, 205, 241),
+  ],
+);
+
+LinearGradient kPrimaryGradiantGG = const LinearGradient(
+  begin: Alignment.bottomLeft,
+  end: Alignment.bottomRight,
+  colors: [
+    Color.fromARGB(255, 255, 255, 255),
+    Color.fromARGB(255, 255, 255, 255),
+  ],
+);
+
 final kTextStyle = GoogleFonts.poppins(
   color: kNeutralColor,
 );
