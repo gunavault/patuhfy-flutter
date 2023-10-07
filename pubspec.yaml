@@ -60,6 +60,7 @@ dependencies:
   form_builder_image_picker: ^4.0.0
   floating_snackbar: ^1.0.3+1
   dropdown_search: ^5.0.6 
+  jiffy: ^6.2.1
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,7 @@ import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
 class RemoteDataSource {
@@ -368,6 +369,34 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [RealPemupukanFormModel()]);
+    }
+  }
+
+  // RTL LIST
+
+  Future<RtlListModelSelectResponse> getDataListRtlByPsaAndKodeJabatan(
+      psa, nik_sap, status, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/rtl/get-rtl-by-psa-jabatan-submitter?psa=$psa&nik_sap=$nik_sap&status=$status",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('parsedData ${callback['status_code']}');
+
+      return RtlListModelSelectResponse(
+          status_code: callback['status_code'],
+          message: callback['msg'],
+          dataForm:
+              parsedData.map((value) => RtlListModel.fromJson(value)).toList());
+    } on DioError catch (err) {
+      return RtlListModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RtlListModel()]);
     }
   }
 }
