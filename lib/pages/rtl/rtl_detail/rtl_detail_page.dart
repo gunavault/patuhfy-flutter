@@ -10,7 +10,7 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 
 class RtlDetailPage extends StatelessWidget {
-  RtlDetailPage(
+  const RtlDetailPage(
       {super.key, required this.dataRtl, required this.dataRtlDetail});
   final RtlListModel dataRtl;
   final List<RtlDetailListModel> dataRtlDetail;
@@ -102,7 +102,7 @@ class RtlDetailPage extends StatelessWidget {
                         color: CommonMethods.colorBadge(dataRtl.status),
                         boxShadow: const [BoxShadow(color: Colors.transparent)],
                         border: Border.all(
-                            color: Color.fromARGB(255, 237, 236, 236)),
+                            color: const Color.fromARGB(255, 237, 236, 236)),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),
                       ),

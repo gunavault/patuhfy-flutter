@@ -376,12 +376,12 @@ class RemoteDataSource {
   // RTL LIST
 
   Future<RtlListModelSelectResponse> getDataListRtlByPsaAndKodeJabatan(
-      psa, nik_sap, status, token) async {
+      psa, nikSap, status, token) async {
     try {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/rtl/get-rtl-by-psa-jabatan-submitter?psa=$psa&nik_sap=$nik_sap&status=$status",
+          "$baseUrl/rtl/get-rtl-by-psa-jabatan-submitter?psa=$psa&nik_sap=$nikSap&status=$status",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -413,7 +413,7 @@ class RemoteDataSource {
           status_code: int.parse(callback['status_code']),
           message: callback['msg']);
     } on DioError catch (err) {
-      print('aww error ${err}');
+      print('aww error $err');
       return RtlDetailFormModelResponse(message: 'error', status_code: 500);
     }
   }
@@ -422,7 +422,7 @@ class RemoteDataSource {
       rowstampAcuan, token) async {
     try {
       var dio = Dio();
-      print('adas rowstamp ${rowstampAcuan}');
+      print('adas rowstamp $rowstampAcuan');
       var response = await dio.get(
           "$baseUrl/rtl/get-rtl-detail-by-rowstamp-acuan?ROWSTAMP_ACUAN=$rowstampAcuan",
           options: optionAuth(token));

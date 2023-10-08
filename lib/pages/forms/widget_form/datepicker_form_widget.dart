@@ -24,7 +24,7 @@ class _DatepickerFormWidgetState extends State<DatepickerFormWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${widget.fieldText}',
+            widget.fieldText,
             style: CommonStyle.getRalewayFont(
               color: CommonColors.blackColor,
               fontWeight: FontWeight.w700,
@@ -49,13 +49,13 @@ class _DatepickerFormWidgetState extends State<DatepickerFormWidget> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 isDense: true,
-                suffixIconConstraints: BoxConstraints(
+                suffixIconConstraints: const BoxConstraints(
                   minWidth: 25,
                   minHeight: 25,
                 ),
                 suffixIcon: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.calendar_month,
                           size: 25, color: CommonColors.bottomIconColor),
                     ),
@@ -101,15 +101,15 @@ class _DatepickerFormWidgetState extends State<DatepickerFormWidget> {
     );
   }
 
-  Future<Null> _selectDateOrder(BuildContext context) async {
-    DateTime _selectedDate = DateTime.now(), initialDate = DateTime.now();
+  Future<void> _selectDateOrder(BuildContext context) async {
+    DateTime selectedDate = DateTime.now(), initialDate = DateTime.now();
     var firstDate =
         DateTime(initialDate.year, initialDate.month - 3, initialDate.day);
     var lastDate =
         DateTime(initialDate.year, initialDate.month, initialDate.day + 7);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: selectedDate,
       firstDate: firstDate,
       lastDate: lastDate,
       builder: (BuildContext context, Widget? child) {
@@ -117,18 +117,18 @@ class _DatepickerFormWidgetState extends State<DatepickerFormWidget> {
           data: ThemeData.light().copyWith(
             primaryColor: Colors.blue,
             colorScheme:
-                ColorScheme.light(primary: Colors.blue, secondary: Colors.blue),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                const ColorScheme.light(primary: Colors.blue, secondary: Colors.blue),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
       },
     );
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        _selectedDate = picked;
+        selectedDate = picked;
         widget.fieldController.text =
-            _selectedDate.toLocal().toString().split(' ')[0];
+            selectedDate.toLocal().toString().split(' ')[0];
       });
     }
   }

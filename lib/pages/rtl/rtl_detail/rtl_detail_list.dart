@@ -8,7 +8,7 @@ import 'package:patuhfy/pages/rtl/rtl_detail/rtl_detail_page.dart';
 import 'widget/rtl_detail_no_data.dart';
 
 class RtlDetailList extends StatelessWidget {
-  RtlDetailList({super.key, required this.dataForm});
+  const RtlDetailList({super.key, required this.dataForm});
 
   final RtlListModel dataForm;
 

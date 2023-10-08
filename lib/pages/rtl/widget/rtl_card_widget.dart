@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/configs/global_styles.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -90,7 +89,7 @@ class RtlCard extends StatelessWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    margin: EdgeInsets.only(right: 10, left: 10, top: 10),
+                    margin: const EdgeInsets.only(right: 10, left: 10, top: 10),
                     decoration: BoxDecoration(
                       color: CommonMethods.colorBadge(data.status),
                       boxShadow: const [BoxShadow(color: Colors.transparent)],

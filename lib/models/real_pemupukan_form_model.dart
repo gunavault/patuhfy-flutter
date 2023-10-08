@@ -63,7 +63,7 @@ class RealPemupukanFormModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    print('data111 hasRtl ${hasRtl}');
+    print('data111 hasRtl $hasRtl');
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;

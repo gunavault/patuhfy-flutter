@@ -14,7 +14,7 @@ class RtlPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _onChangeMenu(menu) {
-      print('menu awal ${menu}');
+      print('menu awal $menu');
       BlocProvider.of<RtlListCubit>(context).getData(menu);
     }
 
@@ -53,18 +53,18 @@ class RtlPage extends StatelessWidget {
                 RtlMenuWidget(
                   onChangeMenu: _onChangeMenu,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 BlocBuilder<RtlListCubit, RtlListState>(
                   builder: (context, state) {
                     if (state is LoadingRtlListListState) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
 
                     if (state is SuccessRtlListListState) {
-                      if (state.dataForm.length == 0) {
-                        return NotFoundWidget();
+                      if (state.dataForm.isEmpty) {
+                        return const NotFoundWidget();
                       }
                       return ListView.builder(
                         padding: EdgeInsets.zero,
@@ -83,7 +83,7 @@ class RtlPage extends StatelessWidget {
                       );
                     }
 
-                    return Center(child: Text('Error'));
+                    return const Center(child: Text('Error'));
                   },
                 ),
               ],

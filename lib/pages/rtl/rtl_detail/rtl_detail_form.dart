@@ -6,11 +6,9 @@ import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dar
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/rtl_detail_form_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/date_picker_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/datepicker_form_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_file_field.dart';
-import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/widgets/alert_success_ok_action.dart';

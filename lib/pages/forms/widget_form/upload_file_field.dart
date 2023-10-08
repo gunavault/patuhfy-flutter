@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_file_picker/form_builder_file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -24,7 +21,7 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
   late String pickedFileBase64Image;
   late Uint8List fileBytes;
   // final _formKey = GlobalKey<FormBuilderState>();
-  bool _useCustomFileViewer = false;
+  final bool _useCustomFileViewer = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +51,7 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
           ),
           maxFiles: 1,
           allowMultiple: false,
-          allowedExtensions: ['pdf', 'doc'],
+          allowedExtensions: const ['pdf', 'doc'],
           previewImages: false,
           onChanged: (val) async {
             _onLoadFile(val);
@@ -75,7 +72,7 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
             children: children,
           ),
           onFileLoading: (val) {
-            print('val ${val}');
+            print('val $val');
             debugPrint(val.toString());
           },
           customFileViewerBuilder: _useCustomFileViewer
@@ -103,7 +100,7 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () {
-                    print('files ${files}');
+                    print('files $files');
                     files.removeAt(index);
                     setter.call([...files]);
                   },

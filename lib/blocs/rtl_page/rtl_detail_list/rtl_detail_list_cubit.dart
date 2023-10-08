@@ -22,7 +22,7 @@ class RtlDetailListCubit extends Cubit<RtlDetailListState> {
         await remoteDataSource.getDataListRtlDetailByRowstampAcuan(
             dataFormRtl.rowstamp.toString(), userModel.token);
 
-    if (data.dataForm.length == 0) {
+    if (data.dataForm.isEmpty) {
       emit(NoDataRtlDetailListListState(dataFormRtl));
     } else {
       emit(SuccessRtlDetailListListState(dataFormRtl, data.dataForm));

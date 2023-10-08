@@ -87,7 +87,7 @@ class _DatePickerViewState extends State<DatePickerView> {
                   initialDateTime: DateTime.now(),
                   onDateTimeChanged: (val) {
                     setState(() {
-                      print('awww ${val}');
+                      print('awww $val');
                       //_chosenDateTime = val;
                     });
                   }),

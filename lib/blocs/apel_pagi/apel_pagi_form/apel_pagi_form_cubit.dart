@@ -78,7 +78,7 @@ class ApelPagiFormCubit extends Cubit<ApelPagiFormState> {
     try {
       emit(LoadingApelPagiFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
-      DateTime dateToday = new DateTime.now();
+      DateTime dateToday = DateTime.now();
       String today = dateToday.toString().substring(0, 19);
 
       UserModel userModel = await localDataSource.getCurrentUser();

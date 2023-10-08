@@ -230,7 +230,7 @@ class _$UserDao extends UserDao {
   final InsertionAdapter<UserModel> _userModelInsertionAdapter;
 
   @override
-  Future<UserModel?> getUserByNikSAP(String nik_sap) async {
+  Future<UserModel?> getUserByNikSAP(String nikSap) async {
     return _queryAdapter.query('SELECT * FROM user WHERE nik_sap = ?1',
         mapper: (Map<String, Object?> row) => UserModel(
             id: row['id'] as int?,
@@ -249,14 +249,14 @@ class _$UserDao extends UserDao {
             hasTebu: row['hasTebu'] as int?,
             hasKopi: row['hasKopi'] as int?,
             hasTeh: row['hasTeh'] as int?),
-        arguments: [nik_sap]);
+        arguments: [nikSap]);
   }
 
   @override
-  Future<bool?> deleteUserByNikSAP(String nik_sap) async {
+  Future<bool?> deleteUserByNikSAP(String nikSap) async {
     return _queryAdapter.query('DELETE FROM user WHERE nik_sap=?1',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
-        arguments: [nik_sap]);
+        arguments: [nikSap]);
   }
 
   @override
