@@ -42,6 +42,7 @@ class RealPemupukanFormModel {
       this.hasRtl});
 
   RealPemupukanFormModel.fromJson(Map<String, dynamic> json) {
+    print('data json ${json}');
     tanggal = json["TANGGAL"];
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
@@ -53,8 +54,8 @@ class RealPemupukanFormModel {
     realisasiLuasPemupukan = json["REALISASI_LUAS_PEMUPUKAN"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    lat = json["LAT"];
-    long = json["LONG"];
+    lat = json["LAT"].toString();
+    long = json["LONG"].toString();
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
     foto = json["FOTO"];

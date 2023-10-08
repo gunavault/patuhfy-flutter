@@ -1,15 +1,25 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
+import 'package:patuhfy/utils/pdf_reader.dart';
 import 'package:patuhfy/utils/text_style.dart';
+
+import 'pdf_reader_screen.dart';
 
 class RtlDetailCard extends StatelessWidget {
   const RtlDetailCard({super.key, required this.dataRtlDetail});
   final List<RtlDetailListModel> dataRtlDetail;
+  // PDFDocument? document;
 
   @override
   Widget build(BuildContext context) {
+    // PDFDocument? document;
+
     return Padding(
       padding: const EdgeInsets.only(left: 26, right: 26, bottom: 10),
       child: Column(
@@ -139,7 +149,26 @@ class RtlDetailCard extends StatelessWidget {
                                   child: MaterialButton(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 1, horizontal: 2),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      String inMy = await PdfReader.getPath(
+                                          dataRtlDetail[index]
+                                              .evidence
+                                              .toString(),
+                                          dataRtlDetail[index].rowstamp);
+
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PDFScreen(
+                                            path: inMy,
+                                          ),
+                                        ),
+                                      );
+
+                                      // pdfReader(doc);
+                                      // print('docc $doc');
+                                    },
                                     color: CommonColors.bottomIconColor,
                                     shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
@@ -150,7 +179,7 @@ class RtlDetailCard extends StatelessWidget {
                                     child: const Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text(' Evidence',
+                                      child: Text('Buka Evidence',
                                           style:
                                               TextStyle(color: Colors.white)),
                                     ),

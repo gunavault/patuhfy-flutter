@@ -27,16 +27,16 @@ class MainPage extends StatelessWidget {
               }
             },
           ),
-          BlocListener<AuthUserCubit, AuthUserState>(
-            listener: (context, state) {
-              if (state is AuthUserSuccessState) {
-                print('kesini gan bos');
-                // context.read<TypeUserCubit>().setTypeUser(state.typeUserState);
-                // context.read<AuthSessionCubit>().getUser();
-                print('kesini gan bos 2');
-              }
-            },
-          ),
+          // BlocListener<AuthUserCubit, AuthUserState>(
+          //   listener: (context, state) {
+          //     if (state is AuthUserSuccessState) {
+          //       print('kesini gan bos');
+          //       // context.read<TypeUserCubit>().setTypeUser(state.typeUserState);
+          //       // context.read<AuthSessionCubit>().getUser();
+          //       print('kesini gan bos 2');
+          //     }
+          //   },
+          // ),
         ],
         child: BlocBuilder<PageCubit, PageState>(
           builder: (context, pageState) {

@@ -59,12 +59,13 @@ class LoginPage extends StatelessWidget {
                   listeners: [
                     BlocListener<AuthUserCubit, AuthUserState>(
                       listener: (context, authUserState) {
+                        print('apa ini state ${authUserState}');
                         if (authUserState is AuthUserLoadingState) {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
                               const SnackBar(
-                                // duration: Duration(seconds: 4),
+                                duration: Duration(seconds: 10),
                                 content: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -76,6 +77,21 @@ class LoginPage extends StatelessWidget {
                               ),
                             );
                         } else if (authUserState is AuthUserSuccessState) {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              const SnackBar(
+                                // duration: Duration(seconds: 4),
+                                content: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Menggambil Data..'),
+                                    CircularProgressIndicator(),
+                                  ],
+                                ),
+                              ),
+                            );
                           context
                               .read<TypeUserCubit>()
                               .setTypeUser(authUserState.typeUserState);

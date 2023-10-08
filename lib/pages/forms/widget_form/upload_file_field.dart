@@ -27,6 +27,7 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
   Widget build(BuildContext context) {
     void _onLoadFile(val) async {
       PlatformFile value = val!.first;
+      print('value $value');
       XFile file = XFile(value.path.toString());
       fileBytes = await file.readAsBytes();
       pickedFileBase64Image = base64Encode(fileBytes);
@@ -51,7 +52,8 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
           ),
           maxFiles: 1,
           allowMultiple: false,
-          allowedExtensions: const ['pdf', 'doc'],
+          allowedExtensions: const ['pdf'],
+          // allowedExtensions: const ['pdf', 'doc'],
           previewImages: false,
           onChanged: (val) async {
             _onLoadFile(val);

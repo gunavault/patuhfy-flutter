@@ -168,12 +168,6 @@ class FormRtlDetailForm extends StatelessWidget {
                           fieldKeterangan: 'Tanggal Realisasi',
                           fieldText: 'Tanggal Realisasi',
                         ),
-                        // TextFormFieldWidgetForm(
-                        //   fieldText: 'TANGGAL REALISASI',
-                        //   fieldKeterangan: 'Tanggal Realisasi',
-                        //   fieldType: 'text',
-                        //   fieldController: tanggalRealisasiController,
-                        // ),
                         UploadFileFieldWidget(
                           fieldName: 'Evidence',
                           fileController: evidenceController,

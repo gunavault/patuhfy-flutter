@@ -362,7 +362,7 @@ class LocalDataSource {
               tanggal, userModel.nik_sap, userModel.token);
       if (response.dataForm.isNotEmpty) {
         for (var data in response.dataForm) {
-          addDataRealPemupukan(data);
+          await addDataRealPemupukan(data);
         }
 
         return response.dataForm;
