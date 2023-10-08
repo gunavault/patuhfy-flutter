@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  community_material_icon:
+    dependency: transitive
+    description:
+      name: community_material_icon
+      sha256: bb389689f6278158d7b9d9b0c9433e603933283104fea226594590f61503fd08
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.55"
   connectivity_plus:
     dependency: "direct main"
     description:
@@ -337,6 +345,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      sha256: be325344c1f3070354a1d84a231a1ba75ea85d413774ec4bdf444c023342e030
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.5.0"
   file_selector_linux:
     dependency: transitive
     description:
@@ -544,6 +560,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_builder_file_picker:
+    dependency: "direct main"
+    description:
+      name: form_builder_file_picker
+      sha256: "4d115d0c2d7754576866d7a4d4e364bd095bf368297c40a66209ac70bd2e3d0f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   form_builder_image_picker:
     dependency: "direct main"
     description:
@@ -800,14 +824,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  jiffy:
-    dependency: "direct main"
-    description:
-      name: jiffy
-      sha256: cc1d4b75016a9156c29b5d61f0c9176c3e0fb0580cc5a0e0422b5d2cab3fbfff
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.2.1"
   js:
     dependency: transitive
     description:

@@ -76,7 +76,7 @@ class _DatePickerViewState extends State<DatePickerView> {
     showCupertinoModalPopup(
       context: ctx,
       builder: (_) => Container(
-        height: 200,
+        height: 250,
         color: const Color.fromARGB(255, 255, 255, 255),
         child: Column(
           children: [
@@ -87,14 +87,15 @@ class _DatePickerViewState extends State<DatePickerView> {
                   initialDateTime: DateTime.now(),
                   onDateTimeChanged: (val) {
                     setState(() {
+                      print('awww ${val}');
                       //_chosenDateTime = val;
                     });
                   }),
             ),
-            // CupertinoButton(
-            //   child: const Text('OK'),
-            //   onPressed: () {},
-            // )
+            CupertinoButton(
+              child: const Text('OK'),
+              onPressed: () {},
+            )
           ],
         ),
       ),

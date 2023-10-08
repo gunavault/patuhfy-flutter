@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
+import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/pages/network/notfound.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/rtl_detail_list.dart';
 import 'package:patuhfy/pages/rtl/widget/rtl_card_widget.dart';
 import 'package:patuhfy/pages/rtl/widget/rtl_menu_widget.dart';
-import 'package:patuhfy/utils/common_colors.dart';
-import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class RtlPage extends StatelessWidget {
@@ -16,12 +15,16 @@ class RtlPage extends StatelessWidget {
   Widget build(BuildContext context) {
     void _onChangeMenu(menu) {
       print('menu awal ${menu}');
-      BlocProvider.of<RtlListListCubit>(context).getData(menu);
+      BlocProvider.of<RtlListCubit>(context).getData(menu);
     }
 
-    void _onClickFunction() {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const RtlDetailList()));
+    void _onClickFunction(RtlListModel data) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RtlDetailList(
+                    dataForm: data,
+                  )));
     }
 
     return Scaffold(
@@ -53,7 +56,7 @@ class RtlPage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                BlocBuilder<RtlListListCubit, RtlListListState>(
+                BlocBuilder<RtlListCubit, RtlListState>(
                   builder: (context, state) {
                     if (state is LoadingRtlListListState) {
                       return CircularProgressIndicator();
@@ -72,7 +75,9 @@ class RtlPage extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           return RtlCard(
                             data: state.dataForm[index],
-                            onClickFunction: _onClickFunction,
+                            onClickFunction: () {
+                              _onClickFunction(state.dataForm[index]);
+                            },
                           );
                         },
                       );

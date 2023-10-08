@@ -9,13 +9,15 @@ class TextFormFieldWidgetForm extends StatelessWidget {
       required this.fieldKeterangan,
       required this.fieldType,
       required this.fieldController,
-      this.isEnabled});
+      this.isEnabled,
+      this.maxLines});
 
   final String fieldText;
   final String fieldKeterangan;
   final String fieldType;
   final TextEditingController fieldController;
   final bool? isEnabled;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class TextFormFieldWidgetForm extends StatelessWidget {
         Container(
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
+            maxLines: maxLines ?? 1,
             enabled: isEnabled == null ? true : false,
             controller: fieldController,
             validator: (value) {

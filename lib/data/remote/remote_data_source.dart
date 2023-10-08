@@ -10,6 +10,8 @@ import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/rtl_detail_form_model.dart';
+import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
@@ -63,7 +65,6 @@ class RemoteDataSource {
       var response = await dio.get(
           "$baseUrl/masterdata/get-blok-by-psa?psa=$kodePsa&&company=$company",
           options: optionAuth(token));
-      print('data blok nih ${response.data['data']}');
       List<dynamic> parsedData = response.data['data'];
       return BlokModelResponse(
           blokModel:
@@ -397,6 +398,50 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [RtlListModel()]);
+    }
+  }
+
+  Future<RtlDetailFormModelResponse> createRtlDetail(
+      token, RtlDetailFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('cek data sblm dikirim ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/rtl/insert-detail",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RtlDetailFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('aww error ${err}');
+      return RtlDetailFormModelResponse(message: 'error', status_code: 500);
+    }
+  }
+
+  Future<RtlDetailListModelSelectResponse> getDataListRtlDetailByRowstampAcuan(
+      rowstampAcuan, token) async {
+    try {
+      var dio = Dio();
+      print('adas rowstamp ${rowstampAcuan}');
+      var response = await dio.get(
+          "$baseUrl/rtl/get-rtl-detail-by-rowstamp-acuan?ROWSTAMP_ACUAN=$rowstampAcuan",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('parsedData ${callback['status_code']}');
+
+      return RtlDetailListModelSelectResponse(
+          status_code: callback['status_code'],
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RtlDetailListModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RtlDetailListModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RtlDetailListModel()]);
     }
   }
 }

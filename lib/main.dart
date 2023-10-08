@@ -18,6 +18,8 @@ import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_for
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_form/rtl_detail_form_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
@@ -153,7 +155,15 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
-              RtlListListCubit(localDataSource, remoteDataSource),
+              RtlListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RtlDetailFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RtlDetailListCubit(localDataSource, remoteDataSource),
         ),
       ],
       child: MyApp(

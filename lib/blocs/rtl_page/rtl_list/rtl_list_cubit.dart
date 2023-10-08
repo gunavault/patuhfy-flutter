@@ -7,11 +7,11 @@ import 'package:patuhfy/models/user_model.dart';
 
 part 'rtl_list_state.dart';
 
-class RtlListListCubit extends Cubit<RtlListListState> {
+class RtlListCubit extends Cubit<RtlListState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  RtlListListCubit(this.localDataSource, this.remoteDataSource)
+  RtlListCubit(this.localDataSource, this.remoteDataSource)
       : super(LoadingRtlListListState());
 
   getData(String status) async {

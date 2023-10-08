@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/configs/global_styles.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
+import 'package:patuhfy/utils/common_method.dart';
 
 class RtlCard extends StatelessWidget {
   const RtlCard({super.key, required this.data, required this.onClickFunction});
@@ -22,16 +22,6 @@ class RtlCard extends StatelessWidget {
     final newFormatString = newFormatter.format(result);
 
     return newFormatString;
-  }
-
-  Color _colorBadge(status) {
-    if (status == 'OPEN') {
-      return CommonColors.containerTextG;
-    } else if (status == 'REJECTED') {
-      return CommonColors.redColor;
-    } else {
-      return CommonColors.containerTextB;
-    }
   }
 
   @override
@@ -86,23 +76,12 @@ class RtlCard extends StatelessWidget {
                           const SizedBox(height: 12),
                           Row(
                             children: [
-                              // const Icon(Icons.calendar_month,
-                              //     color: Colors.orange, size: 15),
-                              // const SizedBox(width: 2),
-                              // Text(_changeDateForm(data),
-                              //     style: GlobalStyle.textRatingDistances),
                               const Icon(Icons.local_offer_outlined,
                                   color: Colors.orange, size: 15),
                               const SizedBox(width: 2),
                               Text(data.kategori.toString(),
                                   style: GlobalStyle.textRatingDistances),
                               const SizedBox(width: 6),
-
-                              // const Icon(Icons.location_pin,
-                              //     color: ASSENT_COLOR, size: 15),
-                              // SizedBox(width: 2),
-                              // Text(data.psaApproval.toString(),
-                              //     style: GlobalStyle.textRatingDistances),
                             ],
                           ),
                         ],
@@ -113,7 +92,7 @@ class RtlCard extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     margin: EdgeInsets.only(right: 10, left: 10, top: 10),
                     decoration: BoxDecoration(
-                      color: _colorBadge(data.status),
+                      color: CommonMethods.colorBadge(data.status),
                       boxShadow: const [BoxShadow(color: Colors.transparent)],
                       border: Border.all(color: CommonColors.iconButtonColor),
                       borderRadius: const BorderRadius.all(Radius.circular(15)),

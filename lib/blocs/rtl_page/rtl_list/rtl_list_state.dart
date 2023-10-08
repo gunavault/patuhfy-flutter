@@ -1,11 +1,11 @@
 part of 'rtl_list_cubit.dart';
 
 @immutable
-abstract class RtlListListState {}
+abstract class RtlListState {}
 
-class LoadingRtlListListState extends RtlListListState {}
+class LoadingRtlListListState extends RtlListState {}
 
-class SuccessRtlListListState extends RtlListListState {
+class SuccessRtlListListState extends RtlListState {
   final List<RtlListModel> dataForm;
 
   SuccessRtlListListState(this.dataForm);
