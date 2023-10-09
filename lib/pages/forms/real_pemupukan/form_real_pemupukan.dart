@@ -52,9 +52,6 @@ class FormRealPemupukan extends StatelessWidget {
       context.read<RealPemupukanFormCubit>().submitToDatabase(
           RealPemupukanFormModel(
               afdeling: kodeAfdelingController.text,
-              blok: kodeBlokController.text,
-              tahunTanam: int.parse(tahunTanamController.text),
-              luas: int.parse(luasController.text.replaceAll('.', '')),
               rencanaLuasPemupukan:
                   int.parse(rencanaLuasPemupukanController.text),
               realisasiLuasPemupukan:
@@ -82,14 +79,13 @@ class FormRealPemupukan extends StatelessWidget {
 
     void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
-      BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
     }
 
-    void onChangeSelectboxBlok(BlokModel value) {
-      tahunTanamController.text = value.tahunTanam.toString();
-      kodeBlokController.text = value.kodeBlok.toString();
-      luasController.text = value.luasArealTanam.toString();
-    }
+    // void onChangeSelectboxBlok(BlokModel value) {
+    //   tahunTanamController.text = value.tahunTanam.toString();
+    //   kodeBlokController.text = value.kodeBlok.toString();
+    //   luasController.text = value.luasArealTanam.toString();
+    // }
 
     return GestureDetector(
       onTap: () {
@@ -179,23 +175,6 @@ class FormRealPemupukan extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxAfdeling,
                         ),
-                        SelectboxBlok(
-                          titleName: 'Blok',
-                          isTitleName: true,
-                          onChangeFunc: onChangeSelectboxBlok,
-                        ),
-                        TextFormFieldWidgetForm(
-                            fieldText: 'Tahun Tanam',
-                            fieldKeterangan: 'Tahun Tanam',
-                            fieldType: 'number',
-                            fieldController: tahunTanamController,
-                            isEnabled: false),
-                        TextFormFieldWidgetForm(
-                            fieldText: 'Luas Areal (ha)',
-                            fieldKeterangan: 'Luas Areal (ha)',
-                            fieldType: 'number',
-                            fieldController: luasController,
-                            isEnabled: false),
                         TextFormFieldWidgetForm(
                           fieldText: 'Rencana Luas Pemupukan',
                           fieldKeterangan: 'Rencana Luas Pemupukan',

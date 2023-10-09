@@ -153,18 +153,10 @@ class RealPemupukanDetailCard extends StatelessWidget {
                 fieldText: 'Afdeling',
                 fieldValue: dataForm!.afdeling,
               ),
-              textFieldWidget(
-                fieldText: 'Blok',
-                fieldValue: dataForm!.blok,
-              ),
-              textFieldWidget(
-                fieldText: 'Tahun Tanam',
-                fieldValue: dataForm!.tahunTanam,
-              ),
-              textFieldWidget(
-                fieldText: 'Luas Areal (ha)',
-                fieldValue: dataForm!.luas,
-              ),
+              // textFieldWidget(
+              //   fieldText: 'Luas Areal (ha)',
+              //   fieldValue: dataForm!.luas,
+              // ),
               textFieldWidget(
                 fieldText: 'Rencana Luas Pemupukan',
                 fieldValue: dataForm!.rencanaLuasPemupukan,

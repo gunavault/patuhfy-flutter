@@ -8,9 +8,7 @@ class RealPemupukanFormModel {
   String? createdBy;
   String? unitKerja;
   String? afdeling;
-  String? blok;
-  int? tahunTanam;
-  int? luas;
+  String? luas;
   int? rencanaLuasPemupukan;
   int? realisasiLuasPemupukan;
   String? penyebab;
@@ -27,9 +25,6 @@ class RealPemupukanFormModel {
       this.createdBy,
       this.unitKerja,
       this.afdeling,
-      this.blok,
-      this.tahunTanam,
-      this.luas,
       this.rencanaLuasPemupukan,
       this.realisasiLuasPemupukan,
       this.penyebab,
@@ -47,9 +42,7 @@ class RealPemupukanFormModel {
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
-    blok = json["BLOK"];
-    tahunTanam = json["TAHUN_TANAM"];
-    luas = json["LUAS"];
+    luas = json["LUAS"].toString();
     rencanaLuasPemupukan = json["RENCANA_LUAS_PEMUPUKAN"];
     realisasiLuasPemupukan = json["REALISASI_LUAS_PEMUPUKAN"];
     penyebab = json["PENYEBAB"];
@@ -69,8 +62,6 @@ class RealPemupukanFormModel {
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
     data["UNIT_KERJA"] = unitKerja;
-    data["BLOK"] = blok;
-    data["TAHUN_TANAM"] = tahunTanam;
     data["LUAS"] = luas;
     data["RENCANA_LUAS_PEMUPUKAN"] = rencanaLuasPemupukan;
     data["REALISASI_LUAS_PEMUPUKAN"] = realisasiLuasPemupukan;
