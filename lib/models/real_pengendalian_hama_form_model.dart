@@ -16,7 +16,7 @@ int? id;
   int? realisasiluaspengendalian;
   String? penyebab;
   String? rtl;
-  String? foto64;
+  String? foto;
   double? lat;
   double? long;
   String? mobileCreatedAt;
@@ -34,7 +34,7 @@ this.tanggal,
     this.realisasiluaspengendalian,
     this.penyebab,
     this.rtl,
-    this.foto64,
+    this.foto,
     this.lat,
     this.long,
     this.mobileCreatedAt,
@@ -53,7 +53,7 @@ this.tanggal,
     realisasiluaspengendalian = json["REALISASI_LUAS_PENGENDALIAN"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    foto64 = json["FOTO64"];
+    foto = json["FOTO"];
     lat = json["LAT"];
     long = json["LONG"];
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
@@ -73,7 +73,7 @@ this.tanggal,
     data["REALISASI_LUAS_PENGENDALIAN"] = realisasiluaspengendalian;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
-    data["FOTO64"] = foto64;
+    data["FOTO"] = foto;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;

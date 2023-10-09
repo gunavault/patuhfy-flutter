@@ -382,7 +382,7 @@ class RemoteDataSource {
     try {
       var dio = Dio();
       print('apa ini data pemupukan ${dataForm.toJson()}');
-      var response = await dio.post("$baseUrl/tasksheet/real-pemupukan",
+      var response = await dio.post("$baseUrl/tasksheet/real-penyiangan",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
       return RealPenyianganFormModelResponse(
@@ -400,7 +400,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/real-pemupukan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          "$baseUrl/tasksheet/real-penyiangan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;

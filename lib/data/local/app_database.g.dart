@@ -129,7 +129,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` INTEGER, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto64` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -1033,7 +1033,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1045,6 +1045,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
+            luas: row['luas'] as String?,
             rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
             realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
             penyebab: row['penyebab'] as String?,
@@ -1097,7 +1098,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
                   'realisasiLuasPenyiangan': item.realisasiLuasPenyiangan,
                   'penyebab': item.penyebab,
                   'rtl': item.rtl,
-                  'foto64': item.foto64,
+                  'foto': item.foto,
                   'lat': item.lat,
                   'long': item.long,
                   'mobileCreatedAt': item.mobileCreatedAt,
@@ -1119,7 +1120,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penyiangan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as int?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto64: row['foto64'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1131,12 +1132,12 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
-            luas: row['luas'] as int?,
+            luas: row['luas'] as String?,
             rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?,
             realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
-            foto64: row['foto64'] as String?,
+            foto: row['foto'] as String?,
             lat: row['lat'] as String?,
             long: row['long'] as String?,
             mobileCreatedAt: row['mobileCreatedAt'] as String?,

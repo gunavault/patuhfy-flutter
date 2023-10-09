@@ -25,6 +25,7 @@ class RealPemupukanFormModel {
       this.createdBy,
       this.unitKerja,
       this.afdeling,
+      this.luas,
       this.rencanaLuasPemupukan,
       this.realisasiLuasPemupukan,
       this.penyebab,

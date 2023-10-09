@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 
 @dao
-abstract class TRealPemeliharaanJalan {
+abstract class TRealPemeliharaanJalanDao {
   // @Query('SELECT * FROM t_apel_pagi WHERE nik_sap = :id')
   // Future<TApelPagiEntity?> getAfdById(int id);
 
