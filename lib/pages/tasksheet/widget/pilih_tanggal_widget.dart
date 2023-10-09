@@ -28,6 +28,28 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
     return weekOfMonth;
   }
 
+  void _onChangeTanggal(context) {
+    BlocProvider.of<TasksheetPageCubit>(context)
+        .setDatePage(selectedDate.toString().substring(0, 10));
+
+    BlocProvider.of<ApelPagiCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
+    BlocProvider.of<InspeksiHancaCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
+    BlocProvider.of<InspeksiTphCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
+    BlocProvider.of<PencurianTbsCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
+    BlocProvider.of<RealPemupukanCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     int weekOfMonth = calculateWeekOfMonth(selectedDate);
@@ -98,36 +120,7 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
                             const SizedBox(width: 10.0),
                             TextButton(
                               onPressed: () {
-                                BlocProvider.of<TasksheetPageCubit>(context)
-                                    .setDatePage(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-
-                                BlocProvider.of<ApelPagiCardCubit>(context)
-                                    .checkIsAnwered(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-
-                                BlocProvider.of<InspeksiHancaCardCubit>(context)
-                                    .checkIsAnwered(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-
-                                BlocProvider.of<InspeksiTphCardCubit>(context)
-                                    .checkIsAnwered(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-
-                                BlocProvider.of<PencurianTbsCardCubit>(context)
-                                    .checkIsAnwered(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-
-                                BlocProvider.of<RealPemupukanCardCubit>(context)
-                                    .checkIsAnwered(selectedDate
-                                        .toString()
-                                        .substring(0, 10));
-                                Navigator.pop(context);
+                                _onChangeTanggal(context);
                               },
                               child: Text(
                                 'Pilih',

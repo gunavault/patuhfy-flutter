@@ -6,10 +6,10 @@ abstract class UserDao {
   // @Query('SELECT * FROM user WHERE nik_sap = :id')
   // Future<UserModel?> getUserById(int id);
 
-  @Query('SELECT * FROM user WHERE nik_sap = :nik_sap')
+  @Query('SELECT * FROM user WHERE nik_sap = :nikSap')
   Future<UserModel?> getUserByNikSAP(String nikSap);
 
-  @Query('DELETE FROM user WHERE nik_sap=:nik_sap')
+  @Query('DELETE FROM user WHERE nik_sap=:nikSap')
   Future<bool?> deleteUserByNikSAP(String nikSap);
 
   @Insert(onConflict: OnConflictStrategy.replace)
