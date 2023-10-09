@@ -19,7 +19,7 @@ int? id;
   int? pusingan12harilebih;
   String? penyebab;
   String? rtl;
-  // String? foto64;
+  // String? foto;
   double? lat;
   double? long;
   String? mobileCreatedAt;
@@ -61,7 +61,7 @@ this.tanggal,
     pusingan12harilebih = json["PUSINGAN_12_HARI_LEBIH"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    // foto64 = json["FOTO64"];
+    // foto = json["FOTO"];
     lat = json["LAT"];
     long = json["LONG"];
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
@@ -84,7 +84,7 @@ this.tanggal,
     data["PUSINGAN_12_HARI_LEBIH"] = pusingan12harilebih;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
-    // data["FOTO64"] = foto64;
+    // data["FOTO"] = foto;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;

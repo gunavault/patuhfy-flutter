@@ -83,6 +83,8 @@ class _$AppDatabase extends AppDatabase {
 
   TRealPemupukanDao? _tRealPemupukanDaoInstance;
 
+  TRealPenyianganDao? _tRealPenyianganDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -126,6 +128,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `m_pemanen` (`nikSapPemanen` TEXT, `namaPemanen` TEXT, `nikSapMandor` TEXT, PRIMARY KEY (`nikSapPemanen`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -191,6 +195,12 @@ class _$AppDatabase extends AppDatabase {
   TRealPemupukanDao get tRealPemupukanDao {
     return _tRealPemupukanDaoInstance ??=
         _$TRealPemupukanDao(database, changeListener);
+  }
+
+  @override
+  TRealPenyianganDao get tRealPenyianganDao {
+    return _tRealPenyianganDaoInstance ??=
+        _$TRealPenyianganDao(database, changeListener);
   }
 }
 
@@ -1023,7 +1033,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1035,6 +1045,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
+            luas: row['luas'] as String?,
             rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
             realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
             penyebab: row['penyebab'] as String?,
@@ -1064,6 +1075,93 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
   @override
   Future<void> insertDataRealPemupukan(RealPemupukanFormModel data) async {
     await _realPemupukanFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TRealPenyianganDao extends TRealPenyianganDao {
+  _$TRealPenyianganDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _realPenyianganFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_real_penyiangan',
+            (RealPenyianganFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'createdBy': item.createdBy,
+                  'afdeling': item.afdeling,
+                  'unitKerja': item.unitKerja,
+                  'luas': item.luas,
+                  'rencanaLuasPenyiangan': item.rencanaLuasPenyiangan,
+                  'realisasiLuasPenyiangan': item.realisasiLuasPenyiangan,
+                  'penyebab': item.penyebab,
+                  'rtl': item.rtl,
+                  'foto': item.foto,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'mobileCreatedAt': item.mobileCreatedAt,
+                  'isSend': item.isSend,
+                  'hasRtl': item.hasRtl
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RealPenyianganFormModel>
+      _realPenyianganFormModelInsertionAdapter;
+
+  @override
+  Future<List<RealPenyianganFormModel>> getDataRealPenyianganByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_penyiangan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<RealPenyianganFormModel>> getAllRealPenyiangan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_real_penyiangan',
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?,
+            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataRealPenyiangan() async {
+    return _queryAdapter.query('DELETE FROM t_real_penyiangan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataRealPenyianganByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_penyiangan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataRealPenyiangan(RealPenyianganFormModel data) async {
+    await _realPenyianganFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }

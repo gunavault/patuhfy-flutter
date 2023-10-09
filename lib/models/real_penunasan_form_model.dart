@@ -5,10 +5,10 @@ class RealPenunasanFormModel {
   @PrimaryKey(autoGenerate: true)
 int? id;
   String? tanggal;
-  int? createdBy;
-  int? afdeling;
+  String? createdBy;
+  String? afdeling;
   // int? company;
-  int? unitKerja;
+  String? unitKerja;
   int? blok;
   int? tahunTanam;
   int? luas;
@@ -16,9 +16,9 @@ int? id;
   int? realisasiLuasPenunasan;
   String? penyebab;
   String? rtl;
-  String? foto64;
-  double? lat;
-  double? long;
+  String? foto;
+  String? lat;
+  String? long;
   String? mobileCreatedAt;
 
   RealPenunasanFormModel({
@@ -34,7 +34,7 @@ this.tanggal,
     this.realisasiLuasPenunasan,
     this.penyebab,
     this.rtl,
-    this.foto64,
+    this.foto,
     this.lat,
     this.long,
     this.mobileCreatedAt,
@@ -53,7 +53,7 @@ this.tanggal,
     realisasiLuasPenunasan = json["REALISASI_LUAS_PENUNASAN"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    foto64 = json["FOTO64"];
+    foto = json["FOTO"];
     lat = json["LAT"];
     long = json["LONG"];
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
@@ -73,7 +73,7 @@ this.tanggal,
     data["REALISASI_LUAS_PENUNASAN"] = realisasiLuasPenunasan;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
-    data["FOTO64"] = foto64;
+    data["FOTO"] = foto;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;
@@ -82,21 +82,21 @@ this.tanggal,
   }
 }
 
-class LapKerusakanFormModelResponse {
+class RealPenunasanFormModelResponse {
   final int status_code;
   final String message;
   final RealPenunasanFormModel? dataForm;
 
-  LapKerusakanFormModelResponse(
+  RealPenunasanFormModelResponse(
       {required this.status_code, required this.message, this.dataForm});
 }
 
-class LapKerusakanFormModelSelectResponse {
+class RealPenunasanFormModelSelectResponse {
   final int status_code;
   final String message;
   final List<RealPenunasanFormModel> dataForm;
 
-  LapKerusakanFormModelSelectResponse(
+  RealPenunasanFormModelSelectResponse(
       {required this.status_code,
       required this.message,
       required this.dataForm});

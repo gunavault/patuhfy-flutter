@@ -10,6 +10,7 @@ import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
@@ -371,6 +372,50 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [RealPemupukanFormModel()]);
+    }
+  }
+
+
+  //Realisasi Pemupukan
+  Future<RealPenyianganFormModelResponse> createRealPenyiangan(
+      token, RealPenyianganFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data pemupukan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-penyiangan",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPenyianganFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPenyianganFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPenyianganFormModelSelectResponse> getDataRealPenyianganByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-penyiangan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return RealPenyianganFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPenyianganFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPenyianganFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPenyianganFormModel()]);
     }
   }
 
