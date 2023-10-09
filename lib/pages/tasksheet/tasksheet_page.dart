@@ -12,7 +12,6 @@ import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_c
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemupukan/real_pemupukan_card.dart';
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
-import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 import 'widget/filter_menu.dart';
@@ -156,15 +155,13 @@ class Tasksheet extends StatelessWidget {
                     );
                   }
 
-                  return Container(
-                    child: const Text('loading'),
-                  );
+                  return const Text('loading');
                 },
               ),
             ),
           ),
           const SizedBox(height: 10.0),
-          FilterMenutaskSheet(),
+          const FilterMenutaskSheet(),
           BlocBuilder<TasksheetPageCubit, TasksheetPageState>(
             builder: (context, state) {
               if (state is SetTasksheetPageState) {

@@ -8,7 +8,7 @@ class RealPemupukanFormModel {
   String? createdBy;
   String? unitKerja;
   String? afdeling;
-  int? luas;
+  String? luas;
   int? rencanaLuasPemupukan;
   int? realisasiLuasPemupukan;
   String? penyebab;
@@ -42,7 +42,7 @@ class RealPemupukanFormModel {
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
-    luas = json["LUAS"];
+    luas = json["LUAS"].toString();
     rencanaLuasPemupukan = json["RENCANA_LUAS_PEMUPUKAN"];
     realisasiLuasPemupukan = json["REALISASI_LUAS_PEMUPUKAN"];
     penyebab = json["PENYEBAB"];
