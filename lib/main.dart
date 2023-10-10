@@ -16,6 +16,8 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
+import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_form/real_pemeliharaan_jalan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
@@ -63,7 +65,8 @@ Future<void> main() async {
       database.tRealPemupukanDao,
       database.tRealPenyianganDao,
       database.tRealPenunasanDao,
-      database.tRealRestanDao);
+      database.tRealRestanDao,
+      database.tRealPemeliharaanJalanDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = DateTime.now();
@@ -160,6 +163,15 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               RealPemupukanCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RealPemeliharaanJalanFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RealPemeliharaanJalanCardCubit(localDataSource, remoteDataSource)
                 ..checkIsAnwered(today.toString()),
         ),
         BlocProvider(

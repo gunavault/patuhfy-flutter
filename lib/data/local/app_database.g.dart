@@ -89,6 +89,8 @@ class _$AppDatabase extends AppDatabase {
 
   TRealRestanDao? _tRealRestanDaoInstance;
 
+  TRealPemeliharaanJalanDao? _tRealPemeliharaanJalanDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -138,6 +140,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` INTEGER, `realisasiLuasPenunasan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_restan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `jmlTandanDipanen` INTEGER, `jmlTandanDiangkut` INTEGER, `restanHi` INTEGER, `restanKemarin` INTEGER, `restanTotal` INTEGER, `ketKendala` TEXT, `ketTindakLanjut` TEXT, `kapasitasAngkutanPerton` INTEGER, `kebutuhanArmadaAngkut` INTEGER, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `createdBy` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_real_pemeliharaan_jalan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `rencanaluaspemeliharaanjalan` INTEGER, `realisasiluaspemeliharaanjalan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `hasRtl` INTEGER, `isSend` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -221,6 +225,12 @@ class _$AppDatabase extends AppDatabase {
   TRealRestanDao get tRealRestanDao {
     return _tRealRestanDaoInstance ??=
         _$TRealRestanDao(database, changeListener);
+  }
+
+  @override
+  TRealPemeliharaanJalanDao get tRealPemeliharaanJalanDao {
+    return _tRealPemeliharaanJalanDaoInstance ??=
+        _$TRealPemeliharaanJalanDao(database, changeListener);
   }
 }
 
@@ -1362,6 +1372,97 @@ class _$TRealRestanDao extends TRealRestanDao {
   @override
   Future<void> insertDataRealRestan(RealRestanFormModel data) async {
     await _realRestanFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
+  _$TRealPemeliharaanJalanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _realPemeliharaanJalanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_real_pemeliharaan_jalan',
+            (RealPemeliharaanJalanFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'createdBy': item.createdBy,
+                  'afdeling': item.afdeling,
+                  'unitKerja': item.unitKerja,
+                  'rencanaluaspemeliharaanjalan':
+                      item.rencanaluaspemeliharaanjalan,
+                  'realisasiluaspemeliharaanjalan':
+                      item.realisasiluaspemeliharaanjalan,
+                  'penyebab': item.penyebab,
+                  'rtl': item.rtl,
+                  'foto': item.foto,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'mobileCreatedAt': item.mobileCreatedAt,
+                  'hasRtl': item.hasRtl,
+                  'isSend': item.isSend
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RealPemeliharaanJalanFormModel>
+      _realPemeliharaanJalanFormModelInsertionAdapter;
+
+  @override
+  Future<List<RealPemeliharaanJalanFormModel>>
+      getDataRealPemeliharaanJalanByTanggal(String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, rencanaluaspemeliharaanjalan: row['rencanaluaspemeliharaanjalan'] as int?, realisasiluaspemeliharaanjalan: row['realisasiluaspemeliharaanjalan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, hasRtl: row['hasRtl'] as int?, isSend: row['isSend'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<RealPemeliharaanJalanFormModel>>
+      getAllRealPemeliharaanJalan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_real_pemeliharaan_jalan',
+        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            rencanaluaspemeliharaanjalan:
+                row['rencanaluaspemeliharaanjalan'] as int?,
+            realisasiluaspemeliharaanjalan:
+                row['realisasiluaspemeliharaanjalan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            hasRtl: row['hasRtl'] as int?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataRealPemeliharaanJalan() async {
+    return _queryAdapter.query('DELETE FROM t_real_pemeliharaan_jalan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataRealPemeliharaanJalanByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataRealPemeliharaanJalan(
+      RealPemeliharaanJalanFormModel data) async {
+    await _realPemeliharaanJalanFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }

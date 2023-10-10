@@ -9,6 +9,7 @@ import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
@@ -509,6 +510,48 @@ class RemoteDataSource {
   }
 
 
+  //Realisasi Pemeliharaan Jalan
+  Future<RealPemeliharaanJalanFormModelResponse> createRealPemeliharaanJalan(
+      token, RealPemeliharaanJalanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data restan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-pemeliharaan-jalan",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPemeliharaanJalanFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPemeliharaanJalanFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPemeliharaanJalanFormModelSelectResponse> getDataRealPemeliharaanJalanByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-pemeliharaan-jalan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return RealPemeliharaanJalanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPemeliharaanJalanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPemeliharaanJalanFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPemeliharaanJalanFormModel()]);
+    }
+  }
   // RTL LIST
   Future<RtlListModelSelectResponse> getDataListRtlByPsaAndKodeJabatan(
       psa, nikSap, status, token) async {

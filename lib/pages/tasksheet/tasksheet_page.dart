@@ -9,6 +9,7 @@ import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/lap_kerusakan/lap_kerusakan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemupukan/real_pemupukan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_penunasan/real_penunasan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_penyiangan/real_penyiangan_card.dart';
@@ -203,6 +204,10 @@ class Tasksheet extends StatelessWidget {
                           isToday: isToday,
                         ),
                         RealPemupukanCard(
+                          selectedDate: state.selectedDate,
+                          isToday: isToday,
+                        ),
+                        RealPemeliharaanJalanCard(
                           selectedDate: state.selectedDate,
                           isToday: isToday,
                         ),

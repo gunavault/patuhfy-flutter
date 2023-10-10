@@ -9,6 +9,7 @@ import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
@@ -54,6 +55,8 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
     BlocProvider.of<RealPenunasanCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
     BlocProvider.of<RealRestanCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+    BlocProvider.of<RealPemeliharaanJalanCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
 
     Navigator.pop(context);
