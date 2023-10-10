@@ -10,8 +10,11 @@ import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
 import 'package:patuhfy/data/local/dao/t_lap_kerusakan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_pemeliharaan_jalan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_pemupukan_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_penunasan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_penyiangan_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_restan_dao.dart';
 import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -22,8 +25,11 @@ import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
+import 'package:patuhfy/models/real_restan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
 import 'package:sqflite/sqflite.dart' as sqflite;
@@ -41,7 +47,10 @@ part 'app_database.g.dart'; // the generated code will be there
   MandorModel,
   PemanenModel,
   RealPemupukanFormModel,
-  RealPenyianganFormModel
+  RealPenyianganFormModel,
+  RealPenunasanFormModel,
+  RealRestanFormModel,
+  RealPemeliharaanJalanFormModel
 ])
 abstract class AppDatabase extends FloorDatabase {
   UserDao get userDao;
@@ -56,4 +65,7 @@ abstract class AppDatabase extends FloorDatabase {
   PemanenDao get pemanenDao;
   TRealPemupukanDao get tRealPemupukanDao;
   TRealPenyianganDao get tRealPenyianganDao;
+  TRealPenunasanDao get tRealPenunasanDao;
+  TRealRestanDao get  tRealRestanDao;
+  TRealPemeliharaanJalanDao get tRealPemeliharaanJalanDao;
 }
