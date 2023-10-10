@@ -85,6 +85,10 @@ class _$AppDatabase extends AppDatabase {
 
   TRealPenyianganDao? _tRealPenyianganDaoInstance;
 
+  TRealPenunasanDao? _tRealPenunasanDaoInstance;
+
+  TRealRestanDao? _tRealRestanDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -130,6 +134,10 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` INTEGER, `realisasiLuasPenunasan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_real_restan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `jmlTandanDipanen` INTEGER, `jmlTandanDiangkut` INTEGER, `restanHi` INTEGER, `restanKemarin` INTEGER, `restanTotal` INTEGER, `ketKendala` TEXT, `ketTindakLanjut` TEXT, `kapasitasAngkutanPerton` INTEGER, `kebutuhanArmadaAngkut` INTEGER, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `createdBy` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -201,6 +209,18 @@ class _$AppDatabase extends AppDatabase {
   TRealPenyianganDao get tRealPenyianganDao {
     return _tRealPenyianganDaoInstance ??=
         _$TRealPenyianganDao(database, changeListener);
+  }
+
+  @override
+  TRealPenunasanDao get tRealPenunasanDao {
+    return _tRealPenunasanDaoInstance ??=
+        _$TRealPenunasanDao(database, changeListener);
+  }
+
+  @override
+  TRealRestanDao get tRealRestanDao {
+    return _tRealRestanDaoInstance ??=
+        _$TRealRestanDao(database, changeListener);
   }
 }
 
@@ -1162,6 +1182,186 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
   @override
   Future<void> insertDataRealPenyiangan(RealPenyianganFormModel data) async {
     await _realPenyianganFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TRealPenunasanDao extends TRealPenunasanDao {
+  _$TRealPenunasanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _realPenunasanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_real_penunasan',
+            (RealPenunasanFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'createdBy': item.createdBy,
+                  'afdeling': item.afdeling,
+                  'unitKerja': item.unitKerja,
+                  'luas': item.luas,
+                  'rencanaLuasPenunasan': item.rencanaLuasPenunasan,
+                  'realisasiLuasPenunasan': item.realisasiLuasPenunasan,
+                  'penyebab': item.penyebab,
+                  'rtl': item.rtl,
+                  'foto': item.foto,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'mobileCreatedAt': item.mobileCreatedAt,
+                  'isSend': item.isSend,
+                  'hasRtl': item.hasRtl
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RealPenunasanFormModel>
+      _realPenunasanFormModelInsertionAdapter;
+
+  @override
+  Future<List<RealPenunasanFormModel>> getDataRealPenunasanByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_penunasan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?, realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<RealPenunasanFormModel>> getAllRealPenunasan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_real_penunasan',
+        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?,
+            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataRealPenunasan() async {
+    return _queryAdapter.query('DELETE FROM t_real_penunasan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataRealPenunasanByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_penunasan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataRealPenunasan(RealPenunasanFormModel data) async {
+    await _realPenunasanFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TRealRestanDao extends TRealRestanDao {
+  _$TRealRestanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _realRestanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_real_restan',
+            (RealRestanFormModel item) => <String, Object?>{
+                  'id': item.id,
+                  'tanggal': item.tanggal,
+                  'unitKerja': item.unitKerja,
+                  'afdeling': item.afdeling,
+                  'jmlTandanDipanen': item.jmlTandanDipanen,
+                  'jmlTandanDiangkut': item.jmlTandanDiangkut,
+                  'restanHi': item.restanHi,
+                  'restanKemarin': item.restanKemarin,
+                  'restanTotal': item.restanTotal,
+                  'ketKendala': item.ketKendala,
+                  'ketTindakLanjut': item.ketTindakLanjut,
+                  'kapasitasAngkutanPerton': item.kapasitasAngkutanPerton,
+                  'kebutuhanArmadaAngkut': item.kebutuhanArmadaAngkut,
+                  'lat': item.lat,
+                  'long': item.long,
+                  'mobileCreatedAt': item.mobileCreatedAt,
+                  'createdBy': item.createdBy,
+                  'isSend': item.isSend,
+                  'hasRtl': item.hasRtl
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<RealRestanFormModel>
+      _realRestanFormModelInsertionAdapter;
+
+  @override
+  Future<List<RealRestanFormModel>> getDataRealRestanByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_restan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => RealRestanFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, jmlTandanDipanen: row['jmlTandanDipanen'] as int?, jmlTandanDiangkut: row['jmlTandanDiangkut'] as int?, restanHi: row['restanHi'] as int?, restanKemarin: row['restanKemarin'] as int?, restanTotal: row['restanTotal'] as int?, ketKendala: row['ketKendala'] as String?, ketTindakLanjut: row['ketTindakLanjut'] as String?, kapasitasAngkutanPerton: row['kapasitasAngkutanPerton'] as int?, kebutuhanArmadaAngkut: row['kebutuhanArmadaAngkut'] as int?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, createdBy: row['createdBy'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<RealRestanFormModel>> getAllRealRestan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_real_restan',
+        mapper: (Map<String, Object?> row) => RealRestanFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afdeling: row['afdeling'] as String?,
+            jmlTandanDipanen: row['jmlTandanDipanen'] as int?,
+            jmlTandanDiangkut: row['jmlTandanDiangkut'] as int?,
+            restanHi: row['restanHi'] as int?,
+            restanKemarin: row['restanKemarin'] as int?,
+            restanTotal: row['restanTotal'] as int?,
+            ketKendala: row['ketKendala'] as String?,
+            ketTindakLanjut: row['ketTindakLanjut'] as String?,
+            kapasitasAngkutanPerton: row['kapasitasAngkutanPerton'] as int?,
+            kebutuhanArmadaAngkut: row['kebutuhanArmadaAngkut'] as int?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            createdBy: row['createdBy'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataRealRestan() async {
+    return _queryAdapter.query('DELETE FROM t_real_restan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataRealRestanByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_restan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataRealRestan(RealRestanFormModel data) async {
+    await _realRestanFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }
