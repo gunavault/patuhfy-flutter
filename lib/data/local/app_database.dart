@@ -12,6 +12,7 @@ import 'package:patuhfy/data/local/dao/t_lap_kerusakan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_pemeliharaan_jalan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_pemupukan_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_pengendalian_hama_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_penunasan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_penyiangan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_restan_dao.dart';
@@ -27,6 +28,7 @@ import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
@@ -50,7 +52,8 @@ part 'app_database.g.dart'; // the generated code will be there
   RealPenyianganFormModel,
   RealPenunasanFormModel,
   RealRestanFormModel,
-  RealPemeliharaanJalanFormModel
+  RealPemeliharaanJalanFormModel,
+  RealPengendalianHamaFormModel
 ])
 abstract class AppDatabase extends FloorDatabase {
   UserDao get userDao;
@@ -68,4 +71,5 @@ abstract class AppDatabase extends FloorDatabase {
   TRealPenunasanDao get tRealPenunasanDao;
   TRealRestanDao get  tRealRestanDao;
   TRealPemeliharaanJalanDao get tRealPemeliharaanJalanDao;
+  TRealPengendalianHamaDao get tRealPengendalianHamaDao;
 }

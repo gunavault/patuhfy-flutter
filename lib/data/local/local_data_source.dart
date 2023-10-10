@@ -10,6 +10,7 @@ import 'package:patuhfy/data/local/dao/t_lap_kerusakan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_pencurian_tbs_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_pemeliharaan_jalan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_pemupukan_dao.dart';
+import 'package:patuhfy/data/local/dao/t_real_pengendalian_hama_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_penunasan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_penyiangan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_real_restan_dao.dart';
@@ -26,6 +27,7 @@ import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
@@ -48,6 +50,7 @@ class LocalDataSource {
   final TRealPenunasanDao tRealPenunasanDao;
   final TRealRestanDao tRealRestanDao;
   final TRealPemeliharaanJalanDao tRealPemeliharaanJalanDao;
+  final TRealPengendalianHamaDao  tRealPengendalianHamaDao;
 
   LocalDataSource(
       this.userDao,
@@ -64,7 +67,8 @@ class LocalDataSource {
       this.tRealPenyianganDao,
       this.tRealPenunasanDao,
       this.tRealRestanDao,
-      this.tRealPemeliharaanJalanDao);
+      this.tRealPemeliharaanJalanDao,
+      this.tRealPengendalianHamaDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -442,6 +446,50 @@ class LocalDataSource {
     return await tRealPemeliharaanJalanDao.deleteDataRealPemeliharaanJalanByDate(tanggal);
   }
 
+
+  // Transaksi Realisasi Pemeliharaan Jalan
+  addDataRealPengendalianHama(RealPengendalianHamaFormModel dataForm) =>
+      tRealPengendalianHamaDao.insertDataRealPengendalianHama(dataForm);
+
+  getAllDataRealPengendalianHama() async {
+    return await tRealPengendalianHamaDao.getAllRealPengendalianHama();
+  }
+
+  getDataRealPengendalianHamaByTanggal(String tanggal) async {
+    return await tRealPengendalianHamaDao.getDataRealPengendalianHamaByTanggal(tanggal);
+  }
+
+  getDataRealPengendalianHamaByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<RealPengendalianHamaFormModel> dataForm;
+    dataForm = await tRealPengendalianHamaDao.getDataRealPengendalianHamaByTanggal(tanggal);
+    if (dataForm.isEmpty) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+      RealPengendalianHamaFormModelSelectResponse response = await RemoteDataSource()
+          .getDataRealPengendalianHamaByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+      if (response.dataForm.isNotEmpty) {
+        for (var data in response.dataForm) {
+          await addDataRealPengendalianHama(data);
+        }
+
+        return response.dataForm;
+      } else {
+        return dataForm;
+      }
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllRealPengendalianHama() async {
+    return await tRealPengendalianHamaDao.deleteDataRealPengendalianHama();
+  }
+
+  deleteDataRealPengendalianHamaByDate(String tanggal) async {
+    return await tRealPengendalianHamaDao.deleteDataRealPengendalianHamaByDate(tanggal);
+  }
 
   // Transaksi Restan
   addDataRealRestan(RealRestanFormModel dataForm) =>

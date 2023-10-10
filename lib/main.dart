@@ -67,7 +67,8 @@ Future<void> main() async {
       database.tRealPenyianganDao,
       database.tRealPenunasanDao,
       database.tRealRestanDao,
-      database.tRealPemeliharaanJalanDao);
+      database.tRealPemeliharaanJalanDao,
+      database.tRealPengendalianHamaDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = DateTime.now();

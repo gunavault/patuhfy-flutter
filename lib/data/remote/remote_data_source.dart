@@ -11,6 +11,7 @@ import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
+import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
@@ -553,6 +554,52 @@ class RemoteDataSource {
           dataForm: [RealPemeliharaanJalanFormModel()]);
     }
   }
+  
+  
+  //Realisasi Pemeliharaan Jalan
+  Future<RealPengendalianHamaFormModelResponse> createRealPengendalianHama(
+      token, RealPengendalianHamaFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data restan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-pengendalian-hama",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPengendalianHamaFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPengendalianHamaFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPengendalianHamaFormModelSelectResponse> getDataRealPengendalianHamaByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-pengendalian-hama/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return RealPengendalianHamaFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPengendalianHamaFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPengendalianHamaFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPengendalianHamaFormModel()]);
+    }
+  }
+  
+
   // RTL LIST
   Future<RtlListModelSelectResponse> getDataListRtlByPsaAndKodeJabatan(
       psa, nikSap, status, token) async {
