@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-
 class UploadFoto extends StatefulWidget {
   UploadFoto(
       {super.key, required this.fieldName, required this.imageNameController});
@@ -64,22 +63,21 @@ class _UploadFotoState extends State<UploadFoto> {
             }
             return null;
           },
-onChanged: (val) async {
-  XFile? selectedImg = val!.first;
-  List<int> imageBytes = await selectedImg!.readAsBytes();
-  Uint8List compressedUint8List = Uint8List.fromList(imageBytes);
-  List<int> compressedBytes = await FlutterImageCompress.compressWithList(
-    
-    compressedUint8List,
-    minHeight: 1920,
-    minWidth: 1080,
-    quality: 70,
-  );
+          onChanged: (val) async {
+            XFile? selectedImg = val!.first;
+            List<int> imageBytes = await selectedImg!.readAsBytes();
+            Uint8List compressedUint8List = Uint8List.fromList(imageBytes);
+            List<int> compressedBytes =
+                await FlutterImageCompress.compressWithList(
+              compressedUint8List,
+              minHeight: 1920,
+              minWidth: 1080,
+              quality: 70,
+            );
 
-
-  pickedImageBase64Image = base64Encode(compressedBytes);
-  widget.imageNameController.text = pickedImageBase64Image.toString();
-},
+            pickedImageBase64Image = base64Encode(compressedBytes);
+            widget.imageNameController.text = pickedImageBase64Image.toString();
+          },
           optionsBuilder: (cameraPicker, galleryPicker) => CupertinoActionSheet(
             title: const Text('Image'),
             message: const Text('Pick an image from given options'),

@@ -10,7 +10,7 @@ class CommonMethods {
 
   static Color colorBadge(status) {
     if (status == 'OPEN') {
-      return CommonColors.containerTextG;
+      return CommonColors.bottomIconColor;
     } else if (status == 'REJECTED') {
       return CommonColors.redColor;
     } else {

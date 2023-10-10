@@ -13,6 +13,7 @@ import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
+import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
@@ -375,7 +376,6 @@ class RemoteDataSource {
     }
   }
 
-
   //Realisasi Pemupukan
   Future<RealPenyianganFormModelResponse> createRealPenyiangan(
       token, RealPenyianganFormModel dataForm) async {
@@ -447,6 +447,32 @@ class RemoteDataSource {
     }
   }
 
+  Future<RtlListModelSelectResponse> getDataListRtlByPsa(
+      psa, nikSap, status, role, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/rtl/get-rtl-by-psa?psa=$psa&nik_sap=$nikSap&status=$status&role=$role",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('parsedData ${callback['status_code']}');
+
+      return RtlListModelSelectResponse(
+          status_code: callback['status_code'],
+          message: callback['msg'],
+          dataForm:
+              parsedData.map((value) => RtlListModel.fromJson(value)).toList());
+    } on DioError catch (err) {
+      return RtlListModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RtlListModel()]);
+    }
+  }
+
   Future<RtlDetailFormModelResponse> createRtlDetail(
       token, RtlDetailFormModel dataForm) async {
     try {
@@ -488,6 +514,25 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [RtlDetailListModel()]);
+    }
+  }
+
+  Future<RtlDetailUpdateStatusFormModelResponse> updateStatusRtlDetail(
+      token, RtlDetailUpdateStatusFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('cek data sblm dikirim ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/rtl/update-status-rtl-detail",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RtlDetailUpdateStatusFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          rowstamp: dataForm.rowstamp);
+    } on DioError catch (err) {
+      print('aww error $err');
+      return RtlDetailUpdateStatusFormModelResponse(
+          message: 'error', status_code: 500);
     }
   }
 }

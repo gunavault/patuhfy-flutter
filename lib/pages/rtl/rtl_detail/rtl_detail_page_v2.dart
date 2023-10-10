@@ -13,8 +13,8 @@ import 'package:patuhfy/widgets/constant.dart';
 
 import 'widget/rtl_update_status_dialog.dart';
 
-class RtlDetailPage extends StatelessWidget {
-  const RtlDetailPage(
+class RtlDetailPageV2 extends StatelessWidget {
+  const RtlDetailPageV2(
       {super.key,
       required this.dataRtl,
       required this.dataRtlDetail,

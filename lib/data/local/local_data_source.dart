@@ -429,6 +429,4 @@ class LocalDataSource {
   deleteDataRealPenyianganByDate(String tanggal) async {
     return await tRealPenyianganDao.deleteDataRealPenyianganByDate(tanggal);
   }
-
-
 }

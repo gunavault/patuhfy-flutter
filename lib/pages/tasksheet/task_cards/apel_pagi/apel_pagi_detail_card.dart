@@ -153,17 +153,6 @@ class ApelPagiDetailCard extends StatelessWidget {
               fieldAfdeling(),
               evidenceApelPagi(context),
               const SizedBox(height: 30.0),
-              // GlobalButton(
-              //   width: MediaQuery.of(context).size.width,
-              //   gradient: kPrimaryGradiant,
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              //   child: Text(
-              //     'Sync ke Database Holding',
-              //     style: kTextStyle.copyWith(color: kWhite),
-              //   ),
-              // ),
             ],
           ),
         ),

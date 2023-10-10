@@ -22,6 +22,7 @@ import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiang
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_form/real_penyiangan_form_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_form/rtl_detail_form_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_update_status_form/rtl_detail_update_status_form_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
@@ -156,7 +157,7 @@ Future<void> main() async {
               RealPemupukanCardCubit(localDataSource, remoteDataSource)
                 ..checkIsAnwered(today.toString()),
         ),
-                BlocProvider(
+        BlocProvider(
           create: (BuildContext context) =>
               RealPenyianganFormCubit(localDataSource, remoteDataSource),
         ),
@@ -176,6 +177,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               RtlDetailListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RtlDetailUpdateStatusFormCubit(localDataSource, remoteDataSource),
         ),
       ],
       child: MyApp(

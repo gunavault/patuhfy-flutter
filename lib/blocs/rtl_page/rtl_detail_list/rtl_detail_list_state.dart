@@ -14,6 +14,8 @@ class NoDataRtlDetailListListState extends RtlDetailListState {
 class SuccessRtlDetailListListState extends RtlDetailListState {
   final RtlListModel dataFormRtl;
   final List<RtlDetailListModel> dataFormRtlDetail;
+  final UserModel userModel;
 
-  SuccessRtlDetailListListState(this.dataFormRtl, this.dataFormRtlDetail);
+  SuccessRtlDetailListListState(
+      this.dataFormRtl, this.dataFormRtlDetail, this.userModel);
 }

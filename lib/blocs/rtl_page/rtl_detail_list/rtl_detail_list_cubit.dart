@@ -25,7 +25,8 @@ class RtlDetailListCubit extends Cubit<RtlDetailListState> {
     if (data.dataForm.isEmpty) {
       emit(NoDataRtlDetailListListState(dataFormRtl));
     } else {
-      emit(SuccessRtlDetailListListState(dataFormRtl, data.dataForm));
+      emit(
+          SuccessRtlDetailListListState(dataFormRtl, data.dataForm, userModel));
     }
     print('data pencurian tsb $data');
   }
