@@ -1,20 +1,95 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
+import 'package:patuhfy/models/rtl_list_model.dart';
+import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_update_status_dialog.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/utils/pdf_reader.dart';
 import 'package:patuhfy/utils/text_style.dart';
+import 'package:patuhfy/widgets/constant.dart';
 
 import 'pdf_reader_screen.dart';
 
 class RtlDetailCard extends StatelessWidget {
-  const RtlDetailCard({super.key, required this.dataRtlDetail});
+  const RtlDetailCard(
+      {super.key,
+      required this.dataRtlDetail,
+      required this.role,
+      required this.dataRtl});
   final List<RtlDetailListModel> dataRtlDetail;
+  final RtlListModel dataRtl;
+  final String role;
   // PDFDocument? document;
+
+  void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext ctx) {
+        // return const Text('aw');
+        return RtlUpdateStatusDialog(
+          status: statusBtn,
+          rowstamp: rowstamp,
+          dataRtl: dataRtl,
+        );
+      },
+    );
+  }
+
+  Widget widgetTombolApproval(context, String rowstamp) {
+    if (role == 'MANAGER') {
+      return Column(
+        children: [
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFFFFE9E4)),
+                    ),
+                    onPressed: () {
+                      actionCloseRtlPopUp(context, 2, rowstamp);
+                    },
+                    label: Text(
+                      'Tolak',
+                      style: kTextStyle.copyWith(color: Colors.red),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.check),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFF51C185)),
+                    ),
+                    onPressed: () {
+                      actionCloseRtlPopUp(context, 1, rowstamp);
+                    },
+                    label: Text(
+                      'Terima',
+                      style: kTextStyle.copyWith(color: kWhite),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +220,7 @@ class RtlDetailCard extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 0, bottom: 10, left: 20),
+                                      top: 0, bottom: 5, left: 20),
                                   child: MaterialButton(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 1, horizontal: 2),
@@ -185,35 +260,10 @@ class RtlDetailCard extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //       top: 0, bottom: 10, left: 20),
-                                //   child: Container(
-                                //     padding:
-                                //         const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                //     margin: EdgeInsets.only(
-                                //         right: 10, left: 10, top: 10),
-                                //     decoration: BoxDecoration(
-                                //       color: CommonMethods.colorBadge(
-                                //           dataRtlDetail[index].status),
-                                //       boxShadow: const [
-                                //         BoxShadow(color: Colors.transparent)
-                                //       ],
-                                //       border: Border.all(
-                                //           color: CommonColors.containerTextB),
-                                //       borderRadius: const BorderRadius.all(
-                                //           Radius.circular(15)),
-                                //     ),
-                                //     child: Text(
-                                //       dataRtlDetail[index].status.toString(),
-                                //       style: const TextStyle(
-                                //           fontSize: 16,
-                                //           color: Color(0XFFFFFFFF)),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
+                            widgetTombolApproval(context,
+                                dataRtlDetail[index].rowstamp.toString())
                           ],
                         ),
                       ),

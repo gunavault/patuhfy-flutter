@@ -14,14 +14,14 @@ class FilterMenutaskSheet extends StatelessWidget {
           width: 1.0,
         )),
       ),
-      padding: EdgeInsets.fromLTRB(16, 0, 16, 12),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       height: kToolbarHeight,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
           FilterChip(
-            label: Text('Kelapa Sawit'),
-            labelStyle: TextStyle(color: true ? Colors.white : Colors.black),
+            label: const Text('Kelapa Sawit'),
+            labelStyle: const TextStyle(color: true ? Colors.white : Colors.black),
             selected: true,
             onSelected: (bool selected) {
               // refreshData();
@@ -35,10 +35,10 @@ class FilterMenutaskSheet extends StatelessWidget {
             selectedColor: CommonColors.containerTextB,
             checkmarkColor: Colors.white,
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           FilterChip(
-            label: Text('Karet'),
-            labelStyle: TextStyle(color: false ? Colors.white : Colors.black),
+            label: const Text('Karet'),
+            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,
@@ -47,10 +47,10 @@ class FilterMenutaskSheet extends StatelessWidget {
             selectedColor: CommonColors.containerTextB,
             checkmarkColor: Colors.white,
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           FilterChip(
-            label: Text('Tebu'),
-            labelStyle: TextStyle(color: false ? Colors.white : Colors.black),
+            label: const Text('Tebu'),
+            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,
@@ -59,10 +59,10 @@ class FilterMenutaskSheet extends StatelessWidget {
             selectedColor: CommonColors.containerTextB,
             checkmarkColor: Colors.white,
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           FilterChip(
-            label: Text('Teh'),
-            labelStyle: TextStyle(color: false ? Colors.white : Colors.black),
+            label: const Text('Teh'),
+            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,

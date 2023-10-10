@@ -26,8 +26,8 @@ class PdfReader {
     final base64str = base64strInput;
     Uint8List bytes = base64.decode(base64str);
     await checkDocumentFolder();
-    String dir = directory!.path + "/" + "aaa" + ".pdf";
-    File file = new File(dir);
+    String dir = "${directory!.path}/aaa.pdf";
+    File file = File(dir);
     if (!file.existsSync()) file.create();
     await file.writeAsBytes(bytes);
     return file;
@@ -37,8 +37,8 @@ class PdfReader {
     final base64str = base64strInput;
     Uint8List bytes = base64.decode(base64str);
     await checkDocumentFolder();
-    String dir = directory!.path + "/" + "$rowstamp" + ".pdf";
-    File file = new File(dir);
+    String dir = "${directory!.path}/$rowstamp.pdf";
+    File file = File(dir);
     if (!file.existsSync()) file.create();
     await file.writeAsBytes(bytes);
     return dir;

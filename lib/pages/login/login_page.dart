@@ -8,6 +8,7 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/form_login_model.dart';
+import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/widgets/button.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
@@ -59,13 +60,13 @@ class LoginPage extends StatelessWidget {
                   listeners: [
                     BlocListener<AuthUserCubit, AuthUserState>(
                       listener: (context, authUserState) {
-                        print('apa ini state ${authUserState}');
+                        print('apa ini state $authUserState');
                         if (authUserState is AuthUserLoadingState) {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
                               const SnackBar(
-                                duration: Duration(seconds: 10),
+                                duration: Duration(seconds: 20),
                                 content: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -77,6 +78,8 @@ class LoginPage extends StatelessWidget {
                               ),
                             );
                         } else if (authUserState is AuthUserSuccessState) {
+                          print('authhhhhhh');
+                          context.read<PageCubit>().setLoginPage();
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(
@@ -90,17 +93,16 @@ class LoginPage extends StatelessWidget {
                                     CircularProgressIndicator(),
                                   ],
                                 ),
+                                backgroundColor: CommonColors.containerTextB,
                               ),
                             );
+                          context.loaderOverlay.hide();
+
                           context
                               .read<TypeUserCubit>()
                               .setTypeUser(authUserState.typeUserState);
-                          context.loaderOverlay.hide();
 
                           // disini set lagi
-
-                          context.read<PageCubit>().setLoginPage();
-                          context.loaderOverlay.hide();
                         } else if (authUserState is AuthUserErrorState) {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()

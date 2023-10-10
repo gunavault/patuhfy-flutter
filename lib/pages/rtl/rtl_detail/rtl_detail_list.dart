@@ -41,6 +41,7 @@ class RtlDetailList extends StatelessWidget {
           return RtlDetailPage(
             dataRtl: state.dataFormRtl,
             dataRtlDetail: state.dataFormRtlDetail,
+            userModel: state.userModel,
           );
         }
 

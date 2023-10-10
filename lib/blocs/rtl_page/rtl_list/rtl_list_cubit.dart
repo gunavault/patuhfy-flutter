@@ -20,10 +20,10 @@ class RtlListCubit extends Cubit<RtlListState> {
     UserModel userModel = await localDataSource.getCurrentUser();
     String nikSap = userModel.nik_sap.toString();
     String psa = userModel.psa.toString();
+    String role = userModel.role.toString();
 
-    RtlListModelSelectResponse data =
-        await remoteDataSource.getDataListRtlByPsaAndKodeJabatan(
-            psa, nikSap, status, userModel.token);
+    RtlListModelSelectResponse data = await remoteDataSource
+        .getDataListRtlByPsa(psa, nikSap, status, role, userModel.token);
 
     print('data pencurian tsb $data');
     emit(SuccessRtlListListState(data.dataForm));

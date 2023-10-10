@@ -97,20 +97,24 @@ class PageCubit extends Cubit<PageState> {
   }
 
   logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(keyIsAuth, false);
-    await localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
-    await localDataSource.deleteAfdeling();
-    await localDataSource.deleteBlok();
-    await localDataSource.deleteMandor();
-    await localDataSource.deletePemanen();
-    await localDataSource.deleteAllInspeksiHanca();
-    await localDataSource.deleteAllInspeksiTph();
-    await localDataSource.deleteAllApelPagi();
-    await localDataSource.deleteAllPencurianTbs();
-    await localDataSource.deleteAllLapKerusakan();
-    await localDataSource.deleteAllRealPemupukan();
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(keyIsAuth, false);
+      await localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
+      await localDataSource.deleteAfdeling();
+      await localDataSource.deleteBlok();
+      await localDataSource.deleteMandor();
+      await localDataSource.deletePemanen();
+      await localDataSource.deleteAllInspeksiHanca();
+      await localDataSource.deleteAllInspeksiTph();
+      await localDataSource.deleteAllApelPagi();
+      await localDataSource.deleteAllPencurianTbs();
+      await localDataSource.deleteAllLapKerusakan();
+      await localDataSource.deleteAllRealPemupukan();
 
-    emit(LoginPageState());
+      emit(LoginPageState());
+    } catch (e) {
+      print('errrprr $e');
+    }
   }
 }
