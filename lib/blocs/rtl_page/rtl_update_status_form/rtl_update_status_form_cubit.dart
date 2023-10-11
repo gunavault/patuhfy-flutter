@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
+import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/rtl_update_status_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
@@ -27,10 +28,16 @@ class RtlUpdateStatusFormCubit extends Cubit<RtlUpdateStatusFormState> {
 
     if (resFromApi.status_code == 200) {
       emit(SuccessRtlUpdateStatusFormState(
-          status_code: resFromApi.status_code, message: resFromApi.message));
+          status_code: resFromApi.status_code,
+          message: resFromApi.message,
+          dataRtl: resFromApi.rtlData));
     } else {
       emit(ErrorRtlUpdateStatusFormState('Oops, Something Wrong!'));
     }
+  }
+
+  resetStatus() {
+    emit(InitialRtlUpdateStatusFormState());
   }
 
   submitToDatabase(RtlUpdateStatusFormModel dataForm) async {

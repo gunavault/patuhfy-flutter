@@ -1,3 +1,5 @@
+import 'package:patuhfy/models/rtl_list_model.dart';
+
 class RtlUpdateStatusFormModel {
   String? rowstamp;
   String? updatedBy;
@@ -29,9 +31,13 @@ class RtlUpdateStatusFormModelResponse {
   final int status_code;
   final String message;
   final String? rowstamp;
+  final RtlListModel rtlData;
 
   RtlUpdateStatusFormModelResponse(
-      {required this.status_code, required this.message, this.rowstamp});
+      {required this.status_code,
+      required this.message,
+      this.rowstamp,
+      required this.rtlData});
 }
 
 // class RtlUpdateStatusFormModelSelectResponse {

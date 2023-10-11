@@ -662,11 +662,12 @@ class RemoteDataSource {
       return RtlUpdateStatusFormModelResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg'],
-          rowstamp: dataForm.rowstamp);
+          rowstamp: dataForm.rowstamp,
+          rtlData: RtlListModel.fromJson(callback['data']));
     } on DioError catch (err) {
       print('aww error $err');
       return RtlUpdateStatusFormModelResponse(
-          message: 'error', status_code: 500);
+          message: 'error', status_code: 500, rtlData: RtlListModel());
     }
   }
 

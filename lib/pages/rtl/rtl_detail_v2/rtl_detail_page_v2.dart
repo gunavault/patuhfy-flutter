@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_update_status_form/rtl_detail_update_status_form_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_update_status_form/rtl_update_status_form_cubit.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/rtl_detail_form.dart';
+import 'package:patuhfy/pages/rtl/rtl_detail/rtl_update_status_form.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/utils/text_style.dart';
@@ -13,8 +17,10 @@ import 'package:patuhfy/widgets/constant.dart';
 import 'widget/rtLdetail_card_v2.dart';
 
 class RtlDetailPageV2 extends StatelessWidget {
-  const RtlDetailPageV2({super.key, required this.dataRtl});
+  const RtlDetailPageV2(
+      {super.key, required this.dataRtl, required this.userModel});
   final RtlListModel dataRtl;
+  final UserModel userModel;
 
   // void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
   //   showDialog(
@@ -34,32 +40,57 @@ class RtlDetailPageV2 extends StatelessWidget {
     BlocProvider.of<RtlDetailListCubit>(context).getData(dataRtl);
   }
 
-  Widget _floatingActionButton(context) {
-    // if (userModel.role == 'MANAGER') {
-    //   return Container();
-    // } else {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0, right: 10),
-      child: FloatingActionButton(
-        elevation: 1,
-        child: const Icon(Icons.add), //child widget inside this button
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => FormRtlDetailForm(
-                dataRtl: dataRtl,
-              ),
-            ),
-          );
-          //task to execute when this button is pressed
-        },
+  Widget statusWidget(RtlListModel data) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      margin: const EdgeInsets.only(right: 40, left: 10, top: 10),
+      decoration: BoxDecoration(
+        color: CommonMethods.colorBadge(data.status),
+        boxShadow: const [BoxShadow(color: Colors.transparent)],
+        border: Border.all(color: const Color.fromARGB(255, 237, 236, 236)),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Text(
+        data.status.toString(),
+        style: const TextStyle(fontSize: 16, color: Color(0XFFFFFFFF)),
       ),
     );
-    // }
   }
 
-  Widget _bottomNavigation(context) {
-    // if (userModel.role == 'MANAGER') {
+  void buttonSelesaikanRTL(context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RtlUpdateStatusForm(
+                  dataForm: dataRtl,
+                )));
+  }
+
+  Widget _floatingActionButton(context) {
+    if (userModel.role == 'MANAGER') {
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 30.0, right: 10),
+        child: FloatingActionButton(
+          elevation: 1,
+          child: const Icon(Icons.add), //child widget inside this button
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => FormRtlDetailForm(
+                  dataRtl: dataRtl,
+                ),
+              ),
+            );
+            //task to execute when this button is pressed
+          },
+        ),
+      );
+    }
+  }
+
+  Widget __bottomNavigationWidget(context, status) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -67,7 +98,9 @@ class RtlDetailPageV2 extends StatelessWidget {
           const SizedBox(width: 10.0),
           Expanded(
             child: ElevatedButton.icon(
-              icon: const Icon(Icons.check),
+              icon: status == 'OPEN'
+                  ? const Icon(Icons.check)
+                  : const Icon(Icons.block_flipped),
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
@@ -77,20 +110,39 @@ class RtlDetailPageV2 extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    CommonColors.titleTextColor),
+                backgroundColor: status == 'OPEN'
+                    ? MaterialStateProperty.all<Color>(
+                        CommonColors.titleTextColor)
+                    : MaterialStateProperty.all<Color>(
+                        CommonColors.textGeryColor),
               ),
               onPressed: () {
-                // actionCloseRtlPopUp(context, 1);
+                status == 'OPEN' ? buttonSelesaikanRTL(context) : () {};
               },
               label: Text(
-                'Selesaikan RTL ',
+                status == 'OPEN' ? 'Selesaikan RTL ' : 'RTL Ditutup.',
                 style: kTextStyle.copyWith(color: kWhite),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _bottomNavigation(context) {
+    // if (userModel.role == 'MANAGER') {
+    return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
+      builder: (context, state) {
+        if (state is LoadingRtlUpdateStatusFormState) {
+          return __bottomNavigationWidget(context, dataRtl.status);
+        }
+        if (state is SuccessRtlUpdateStatusFormState) {
+          return __bottomNavigationWidget(context, state.dataRtl.status);
+        }
+
+        return __bottomNavigationWidget(context, dataRtl.status);
+      },
     );
     // } else {
     //   return Container();
@@ -162,23 +214,17 @@ class RtlDetailPageV2 extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      margin:
-                          const EdgeInsets.only(right: 40, left: 10, top: 10),
-                      decoration: BoxDecoration(
-                        color: CommonMethods.colorBadge(dataRtl.status),
-                        boxShadow: const [BoxShadow(color: Colors.transparent)],
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 237, 236, 236)),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Text(
-                        dataRtl.status.toString(),
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0XFFFFFFFF)),
-                      ),
+                    BlocBuilder<RtlUpdateStatusFormCubit,
+                        RtlUpdateStatusFormState>(
+                      builder: (context, state) {
+                        if (state is InitialRtlUpdateStatusFormState) {
+                          return statusWidget(dataRtl);
+                        }
+                        if (state is SuccessRtlUpdateStatusFormState) {
+                          return statusWidget(state.dataRtl);
+                        }
+                        return statusWidget(dataRtl);
+                      },
                     ),
                   ],
                 ),

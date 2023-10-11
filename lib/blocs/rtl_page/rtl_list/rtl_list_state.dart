@@ -7,6 +7,7 @@ class LoadingRtlListListState extends RtlListState {}
 
 class SuccessRtlListListState extends RtlListState {
   final List<RtlListModel> dataForm;
+  final UserModel userModel;
 
-  SuccessRtlListListState(this.dataForm);
+  SuccessRtlListListState(this.dataForm, this.userModel);
 }

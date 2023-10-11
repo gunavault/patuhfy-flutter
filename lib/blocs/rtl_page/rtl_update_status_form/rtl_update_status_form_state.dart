@@ -10,8 +10,11 @@ class LoadingRtlUpdateStatusFormState extends RtlUpdateStatusFormState {}
 class SuccessRtlUpdateStatusFormState extends RtlUpdateStatusFormState {
   final int status_code;
   final String message;
+  final RtlListModel dataRtl;
   SuccessRtlUpdateStatusFormState(
-      {required this.status_code, required this.message});
+      {required this.status_code,
+      required this.message,
+      required this.dataRtl});
 }
 
 class DuplicatedRtlUpdateStatusFormState extends RtlUpdateStatusFormState {
