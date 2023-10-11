@@ -131,22 +131,24 @@ class RtlDetailPageV2 extends StatelessWidget {
   }
 
   Widget _bottomNavigation(context) {
-    // if (userModel.role == 'MANAGER') {
-    return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
-      builder: (context, state) {
-        if (state is LoadingRtlUpdateStatusFormState) {
-          return __bottomNavigationWidget(context, dataRtl.status);
-        }
-        if (state is SuccessRtlUpdateStatusFormState) {
-          return __bottomNavigationWidget(context, state.dataRtl.status);
-        }
+    if (userModel.role == 'MANAGER') {
+      return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
+        builder: (context, state) {
+          if (state is LoadingRtlUpdateStatusFormState) {
+            return __bottomNavigationWidget(context, dataRtl.status);
+          }
+          if (state is SuccessRtlUpdateStatusFormState) {
+            return __bottomNavigationWidget(context, state.dataRtl.status);
+          }
 
-        return __bottomNavigationWidget(context, dataRtl.status);
-      },
-    );
-    // } else {
-    //   return Container();
-    // }
+          return __bottomNavigationWidget(context, dataRtl.status);
+        },
+      );
+    } else {
+      return const Padding(
+        padding: EdgeInsets.all(1.0),
+      );
+    }
   }
 
   @override
