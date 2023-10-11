@@ -36,7 +36,7 @@ class RtlDetailCardV2 extends StatelessWidget {
     if (role == 'MANAGER' && status == 'OPEN') {
       return Column(
         children: [
-          Divider(),
+          const Divider(),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
@@ -117,8 +117,8 @@ class RtlDetailCardV2 extends StatelessWidget {
           ),
           BlocBuilder<RtlDetailListCubit, RtlDetailListState>(
             builder: (context, state) {
-              if (state is LoadingRtlDetailListListState) {
-                return Column(
+              if (state is LoadingRtlDetailListLState) {
+                return const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -129,7 +129,7 @@ class RtlDetailCardV2 extends StatelessWidget {
                   ],
                 );
               }
-              if (state is SuccessRtlDetailListListState) {
+              if (state is SuccessRtlDetailListState) {
                 List<RtlDetailListModel> dataRtlDetail =
                     state.dataFormRtlDetail;
                 return ListView.builder(
@@ -303,7 +303,7 @@ class RtlDetailCardV2 extends StatelessWidget {
               }
 
               return Container(
-                child: Text('Oops, Cek Internet Anda'),
+                child: const Text('Oops, Cek Internet Anda'),
               );
             },
           ),

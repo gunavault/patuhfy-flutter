@@ -13,20 +13,21 @@ class RtlDetailListCubit extends Cubit<RtlDetailListState> {
   final RemoteDataSource remoteDataSource;
 
   RtlDetailListCubit(this.localDataSource, this.remoteDataSource)
-      : super(LoadingRtlDetailListListState());
+      : super(LoadingRtlDetailListLState());
 
   getData(RtlListModel dataFormRtl) async {
-    emit(LoadingRtlDetailListListState());
+    emit(LoadingRtlDetailListLState());
     UserModel userModel = await localDataSource.getCurrentUser();
     RtlDetailListModelSelectResponse data =
         await remoteDataSource.getDataListRtlDetailByRowstampAcuan(
             dataFormRtl.rowstamp.toString(), userModel.token);
 
+    print('update data nih');
+
     if (data.dataForm.isEmpty) {
-      emit(NoDataRtlDetailListListState(dataFormRtl, data.dataForm, userModel));
+      emit(NoDataRtlDetailListState(dataFormRtl, data.dataForm, userModel));
     } else {
-      emit(
-          SuccessRtlDetailListListState(dataFormRtl, data.dataForm, userModel));
+      emit(SuccessRtlDetailListState(dataFormRtl, data.dataForm, userModel));
     }
     print('data pencurian tsb $data');
   }

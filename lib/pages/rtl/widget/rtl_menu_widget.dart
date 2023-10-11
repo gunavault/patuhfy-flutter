@@ -9,7 +9,7 @@ class RtlMenuWidget extends StatefulWidget {
   State<RtlMenuWidget> createState() => _RtlMenuWidgetState();
 }
 
-enum RtlMenuState { OPEN, REJECT, DONE }
+enum RtlMenuState { OPEN, CLOSED }
 
 class _RtlMenuWidgetState extends State<RtlMenuWidget> {
   RtlMenuState menuRtlState = RtlMenuState.OPEN;
@@ -31,13 +31,9 @@ class _RtlMenuWidgetState extends State<RtlMenuWidget> {
               label: Text('Open'),
               icon: Icon(Icons.folder_open)),
           ButtonSegment<RtlMenuState>(
-              value: RtlMenuState.REJECT,
-              label: Text('Rejected'),
+              value: RtlMenuState.CLOSED,
+              label: Text('Closed'),
               icon: Icon(Icons.close)),
-          ButtonSegment<RtlMenuState>(
-              value: RtlMenuState.DONE,
-              label: Text('Done'),
-              icon: Icon(Icons.checklist)),
         ],
         selected: <RtlMenuState>{menuRtlState},
         onSelectionChanged: (Set<RtlMenuState> newSelection) {

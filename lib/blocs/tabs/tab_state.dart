@@ -13,4 +13,4 @@ part of 'tab_cubit.dart';
 
 // class TabCloseRTL extends TabState {}
 
-enum TabState { tasksheet, approval, lapor, closeRTL, profile }
+enum TabState { tasksheet, approval, profile }

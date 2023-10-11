@@ -41,7 +41,7 @@ class RtlDetailCard extends StatelessWidget {
     if (role == 'MANAGER' && status == 'OPEN') {
       return Column(
         children: [
-          Divider(),
+          const Divider(),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
@@ -121,7 +121,7 @@ class RtlDetailCard extends StatelessWidget {
             ],
           ),
           dataRtlDetail.isEmpty
-              ? Center(child: const NotFoundWidget())
+              ? const Center(child: NotFoundWidget())
               : ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
                   scrollDirection: Axis.vertical,

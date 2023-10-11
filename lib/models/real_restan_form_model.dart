@@ -46,7 +46,7 @@ class RealRestanFormModel {
       });
 
   RealRestanFormModel.fromJson(Map<String, dynamic> json) {
-    print('data json ${json}');
+    print('data json $json');
     tanggal = json["TANGGAL"];
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];

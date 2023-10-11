@@ -21,7 +21,7 @@ class RtlDetailList extends StatelessWidget {
     _getData(context);
     return BlocBuilder<RtlDetailListCubit, RtlDetailListState>(
       builder: (context, state) {
-        if (state is LoadingRtlDetailListListState) {
+        if (state is LoadingRtlDetailListLState) {
           return const Scaffold(
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +31,7 @@ class RtlDetailList extends StatelessWidget {
           );
         }
 
-        if (state is NoDataRtlDetailListListState) {
+        if (state is NoDataRtlDetailListState) {
           print('stateusermodel ${state.userModel.role}');
           if (state.userModel.role == 'MANAGER') {
             return RtlDetailPage(
@@ -44,10 +44,9 @@ class RtlDetailList extends StatelessWidget {
               dataRtl: state.dataFormRtl,
             );
           }
-          ;
         }
 
-        if (state is SuccessRtlDetailListListState) {
+        if (state is SuccessRtlDetailListState) {
           return RtlDetailPage(
             dataRtl: state.dataFormRtl,
             dataRtlDetail: state.dataFormRtlDetail,

@@ -11,8 +11,7 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import 'rtl_detail_update_status_form.dart';
-import 'widget/rtl_update_status_dialog.dart';
+import 'rtl_update_status_form.dart';
 
 class RtlDetailPage extends StatelessWidget {
   const RtlDetailPage(
@@ -25,8 +24,12 @@ class RtlDetailPage extends StatelessWidget {
   final UserModel userModel;
 
   void buttonSelesaikanRTL(context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RtlDetailUpdateStatusForm()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RtlUpdateStatusForm(
+                  dataForm: dataRtl,
+                )));
   }
 
   Widget _floatingActionButton(context) {
@@ -53,8 +56,8 @@ class RtlDetailPage extends StatelessWidget {
     }
   }
 
-  Widget _bottomNavigation(context) {
-    if (userModel.role == 'MANAGER') {
+  Widget _bottomNavigation(context, status) {
+    if (userModel.role == 'MANAGER' && status == 'OPEN') {
       return Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -89,8 +92,8 @@ class RtlDetailPage extends StatelessWidget {
         ),
       );
     } else {
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
+      return const Padding(
+        padding: EdgeInsets.all(1.0),
       );
     }
   }
@@ -102,7 +105,7 @@ class RtlDetailPage extends StatelessWidget {
       // overlayColor: Colors.black.withOpacity(0.4),
       child: Scaffold(
         floatingActionButton: _floatingActionButton(context),
-        bottomNavigationBar: _bottomNavigation(context),
+        bottomNavigationBar: _bottomNavigation(context, dataRtl.status),
         backgroundColor: CommonColors.whiteColor,
         appBar: AppBarView(
           title: "List Detail RTL",

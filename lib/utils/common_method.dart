@@ -13,6 +13,8 @@ class CommonMethods {
       return CommonColors.bottomIconColor;
     } else if (status == 'REJECTED') {
       return CommonColors.redColor;
+    } else if (status == 'CLOSED') {
+      return CommonColors.redColor;
     } else {
       return CommonColors.containerTextG;
     }
