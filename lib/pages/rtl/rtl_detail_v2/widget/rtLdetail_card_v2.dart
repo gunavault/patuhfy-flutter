@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
+import 'package:patuhfy/pages/network/notfound.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/widget/pdf_reader_screen.dart';
+import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_detail_no_data.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_update_status_dialog.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -117,6 +119,8 @@ class RtlDetailCardV2 extends StatelessWidget {
           ),
           BlocBuilder<RtlDetailListCubit, RtlDetailListState>(
             builder: (context, state) {
+              print('state apa nij ${state}');
+
               if (state is LoadingRtlDetailListLState) {
                 return const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -132,174 +136,205 @@ class RtlDetailCardV2 extends StatelessWidget {
               if (state is SuccessRtlDetailListState) {
                 List<RtlDetailListModel> dataRtlDetail =
                     state.dataFormRtlDetail;
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dataRtlDetail.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 06, bottom: 06),
-                          child: InkWell(
-                            onTap: () {
-                              // widget.onTap!(index);
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: CommonColors.containerTextB
-                                      .withOpacity(0.2)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20, bottom: 20, left: 20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                maxLines: 1,
-                                                softWrap: false,
-                                                overflow: TextOverflow.ellipsis,
-                                                "${dataRtlDetail[index].deskripsiRealisasiRtl}",
-                                                style:
-                                                    CommonStyle.getRalewayFont(
-                                                  color:
-                                                      CommonColors.blackColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w700,
+                print('dataRtlDetail $dataRtlDetail');
+
+                return dataRtlDetail.isEmpty
+                    ? const Center(child: NotFoundWidget())
+                    : ListView.builder(
+                        padding: const EdgeInsets.only(top: 10),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: dataRtlDetail.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 06, bottom: 06),
+                                child: InkWell(
+                                  onTap: () {
+                                    // widget.onTap!(index);
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: CommonColors.containerTextB
+                                            .withOpacity(0.2)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20,
+                                                    bottom: 20,
+                                                    left: 20),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      maxLines: 1,
+                                                      softWrap: false,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      "${dataRtlDetail[index].deskripsiRealisasiRtl}",
+                                                      style: CommonStyle
+                                                          .getRalewayFont(
+                                                        color: CommonColors
+                                                            .blackColor,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                    Text(
+                                                      maxLines: 1,
+                                                      softWrap: false,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      "Tanggal RTL : ${dataRtlDetail[index].tanggalRealisasiRtl}",
+                                                      style: CommonStyle
+                                                          .getRalewayFont(
+                                                        color: CommonColors
+                                                            .textGeryColor,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                    Text(
+                                                      maxLines: 1,
+                                                      softWrap: false,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      "Status : ${dataRtlDetail[index].status}",
+                                                      style: CommonStyle
+                                                          .getRalewayFont(
+                                                        color: CommonMethods
+                                                            .colorBadge(
+                                                                dataRtlDetail[
+                                                                        index]
+                                                                    .status),
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              const SizedBox(height: 12),
-                                              Text(
-                                                maxLines: 1,
-                                                softWrap: false,
-                                                overflow: TextOverflow.ellipsis,
-                                                "Tanggal RTL : ${dataRtlDetail[index].tanggalRealisasiRtl}",
-                                                style:
-                                                    CommonStyle.getRalewayFont(
-                                                  color: CommonColors
-                                                      .textGeryColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.all(12),
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  color: index == 0
+                                                      ? CommonColors
+                                                          .bottomIconColor
+                                                          .withOpacity(0.2)
+                                                      : CommonColors
+                                                          .bottomIconColor
+                                                          .withOpacity(0.2)),
+                                              child: const Icon(
+                                                Icons.check,
+                                                color: CommonColors.whiteColor,
+                                                size: 18,
                                               ),
-                                              const SizedBox(height: 12),
-                                              Text(
-                                                maxLines: 1,
-                                                softWrap: false,
-                                                overflow: TextOverflow.ellipsis,
-                                                "Status : ${dataRtlDetail[index].status}",
-                                                style:
-                                                    CommonStyle.getRalewayFont(
-                                                  color:
-                                                      CommonMethods.colorBadge(
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 0, bottom: 5, left: 20),
+                                              child: MaterialButton(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 1,
+                                                        horizontal: 2),
+                                                onPressed: () async {
+                                                  String inMy =
+                                                      await PdfReader.getPath(
                                                           dataRtlDetail[index]
-                                                              .status),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
+                                                              .evidence
+                                                              .toString(),
+                                                          dataRtlDetail[index]
+                                                              .rowstamp);
+
+                                                  // ignore: use_build_context_synchronously
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PDFScreen(
+                                                        path: inMy,
+                                                      ),
+                                                    ),
+                                                  );
+
+                                                  // pdfReader(doc);
+                                                  // print('docc $doc');
+                                                },
+                                                color: CommonColors
+                                                    .bottomIconColor,
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30))),
+                                                elevation: 0,
+                                                animationDuration:
+                                                    const Duration(
+                                                        milliseconds: 300),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  child: Text('Buka Evidence',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.all(12),
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                            color: index == 0
-                                                ? CommonColors.bottomIconColor
-                                                    .withOpacity(0.2)
-                                                : CommonColors.bottomIconColor
-                                                    .withOpacity(0.2)),
-                                        child: const Icon(
-                                          Icons.check,
-                                          color: CommonColors.whiteColor,
-                                          size: 18,
-                                        ),
-                                      ),
-                                    ],
+                                        widgetTombolApproval(
+                                            context,
+                                            dataRtlDetail[index]
+                                                .rowstamp
+                                                .toString(),
+                                            dataRtlDetail[index]
+                                                .status
+                                                .toString(),
+                                            state.userModel.role.toString())
+                                      ],
+                                    ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 0, bottom: 5, left: 20),
-                                        child: MaterialButton(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 1, horizontal: 2),
-                                          onPressed: () async {
-                                            String inMy =
-                                                await PdfReader.getPath(
-                                                    dataRtlDetail[index]
-                                                        .evidence
-                                                        .toString(),
-                                                    dataRtlDetail[index]
-                                                        .rowstamp);
-
-                                            // ignore: use_build_context_synchronously
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => PDFScreen(
-                                                  path: inMy,
-                                                ),
-                                              ),
-                                            );
-
-                                            // pdfReader(doc);
-                                            // print('docc $doc');
-                                          },
-                                          color: CommonColors.bottomIconColor,
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30))),
-                                          elevation: 0,
-                                          animationDuration:
-                                              const Duration(milliseconds: 300),
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Text('Buka Evidence',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  widgetTombolApproval(
-                                      context,
-                                      dataRtlDetail[index].rowstamp.toString(),
-                                      dataRtlDetail[index].status.toString(),
-                                      state.userModel.role.toString())
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                            ],
+                          );
+                        },
+                      );
               }
 
               return Container(

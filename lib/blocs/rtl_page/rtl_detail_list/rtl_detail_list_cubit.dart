@@ -24,11 +24,10 @@ class RtlDetailListCubit extends Cubit<RtlDetailListState> {
 
     print('update data nih');
 
-    if (data.dataForm.isEmpty) {
-      emit(NoDataRtlDetailListState(dataFormRtl, data.dataForm, userModel));
-    } else {
-      emit(SuccessRtlDetailListState(dataFormRtl, data.dataForm, userModel));
-    }
-    print('data pencurian tsb $data');
+    // if (data.dataForm.isEmpty) {
+    //   emit(NoDataRtlDetailListState(dataFormRtl, data.dataForm, userModel));
+    // } else {
+    emit(SuccessRtlDetailListState(dataFormRtl, data.dataForm, userModel));
+    // }
   }
 }
