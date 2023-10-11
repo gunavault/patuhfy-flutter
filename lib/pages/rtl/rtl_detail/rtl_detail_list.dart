@@ -32,9 +32,19 @@ class RtlDetailList extends StatelessWidget {
         }
 
         if (state is NoDataRtlDetailListListState) {
-          return RtlDetailNoData(
-            dataRtl: state.dataFormRtl,
-          );
+          print('stateusermodel ${state.userModel.role}');
+          if (state.userModel.role == 'MANAGER') {
+            return RtlDetailPage(
+              dataRtl: state.dataFormRtl,
+              dataRtlDetail: state.dataFormRtlDetail,
+              userModel: state.userModel,
+            );
+          } else {
+            return RtlDetailNoData(
+              dataRtl: state.dataFormRtl,
+            );
+          }
+          ;
         }
 
         if (state is SuccessRtlDetailListListState) {

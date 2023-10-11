@@ -7,8 +7,11 @@ class LoadingRtlDetailListListState extends RtlDetailListState {}
 
 class NoDataRtlDetailListListState extends RtlDetailListState {
   final RtlListModel dataFormRtl;
+  final List<RtlDetailListModel> dataFormRtlDetail;
+  final UserModel userModel;
 
-  NoDataRtlDetailListListState(this.dataFormRtl);
+  NoDataRtlDetailListListState(
+      this.dataFormRtl, this.dataFormRtlDetail, this.userModel);
 }
 
 class SuccessRtlDetailListListState extends RtlDetailListState {

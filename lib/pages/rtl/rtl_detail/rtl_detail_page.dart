@@ -11,6 +11,7 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
+import 'rtl_detail_update_status_form.dart';
 import 'widget/rtl_update_status_dialog.dart';
 
 class RtlDetailPage extends StatelessWidget {
@@ -23,19 +24,10 @@ class RtlDetailPage extends StatelessWidget {
   final List<RtlDetailListModel> dataRtlDetail;
   final UserModel userModel;
 
-  // void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
-  //   showDialog(
-  //     barrierDismissible: false,
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       // return const Text('aw');
-  //       return RtlUpdateStatusDialog(
-  //         status: statusBtn,
-  //         rowstamp: rowstamp,
-  //       );
-  //     },
-  //   );
-  // }
+  void buttonSelesaikanRTL(context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RtlDetailUpdateStatusForm()));
+  }
 
   Widget _floatingActionButton(context) {
     if (userModel.role == 'MANAGER') {
@@ -85,7 +77,7 @@ class RtlDetailPage extends StatelessWidget {
                       CommonColors.titleTextColor),
                 ),
                 onPressed: () {
-                  // actionCloseRtlPopUp(context, 1);
+                  buttonSelesaikanRTL(context);
                 },
                 label: Text(
                   'Selesaikan RTL ',
@@ -97,7 +89,9 @@ class RtlDetailPage extends StatelessWidget {
         ),
       );
     } else {
-      return Container();
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+      );
     }
   }
 

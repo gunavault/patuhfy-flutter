@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/models/rtl_detail_list_model.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
-import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/rtl_detail_form.dart';
-import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtLdetail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import 'widget/rtl_update_status_dialog.dart';
+import 'widget/rtLdetail_card_v2.dart';
 
 class RtlDetailPageV2 extends StatelessWidget {
-  const RtlDetailPageV2(
-      {super.key,
-      required this.dataRtl,
-      required this.dataRtlDetail,
-      required this.userModel});
+  const RtlDetailPageV2({super.key, required this.dataRtl});
   final RtlListModel dataRtl;
-  final List<RtlDetailListModel> dataRtlDetail;
-  final UserModel userModel;
 
   // void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
   //   showDialog(
@@ -37,72 +30,76 @@ class RtlDetailPageV2 extends StatelessWidget {
   //   );
   // }
 
+  void _getData(context) {
+    BlocProvider.of<RtlDetailListCubit>(context).getData(dataRtl);
+  }
+
   Widget _floatingActionButton(context) {
-    if (userModel.role == 'MANAGER') {
-      return Container();
-    } else {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 30.0, right: 10),
-        child: FloatingActionButton(
-          elevation: 1,
-          child: const Icon(Icons.add), //child widget inside this button
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => FormRtlDetailForm(
-                  dataRtl: dataRtl,
-                ),
+    // if (userModel.role == 'MANAGER') {
+    //   return Container();
+    // } else {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30.0, right: 10),
+      child: FloatingActionButton(
+        elevation: 1,
+        child: const Icon(Icons.add), //child widget inside this button
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FormRtlDetailForm(
+                dataRtl: dataRtl,
               ),
-            );
-            //task to execute when this button is pressed
-          },
-        ),
-      );
-    }
+            ),
+          );
+          //task to execute when this button is pressed
+        },
+      ),
+    );
+    // }
   }
 
   Widget _bottomNavigation(context) {
-    if (userModel.role == 'MANAGER') {
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            const SizedBox(width: 10.0),
-            Expanded(
-              child: ElevatedButton.icon(
-                icon: const Icon(Icons.check),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 10.0),
-                  ),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                  ),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      CommonColors.titleTextColor),
+    // if (userModel.role == 'MANAGER') {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.check),
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
                 ),
-                onPressed: () {
-                  // actionCloseRtlPopUp(context, 1);
-                },
-                label: Text(
-                  'Selesaikan RTL ',
-                  style: kTextStyle.copyWith(color: kWhite),
+                shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
                 ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    CommonColors.titleTextColor),
+              ),
+              onPressed: () {
+                // actionCloseRtlPopUp(context, 1);
+              },
+              label: Text(
+                'Selesaikan RTL ',
+                style: kTextStyle.copyWith(color: kWhite),
               ),
             ),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
+          ),
+        ],
+      ),
+    );
+    // } else {
+    //   return Container();
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
+    _getData(context);
     return LoaderOverlay(
       overlayOpacity: 0.4,
       // overlayColor: Colors.black.withOpacity(0.4),
@@ -254,9 +251,7 @@ class RtlDetailPageV2 extends StatelessWidget {
                     ],
                   ),
                 ),
-                RtlDetailCard(
-                  dataRtlDetail: dataRtlDetail,
-                  role: userModel.role.toString(),
+                RtlDetailCardV2(
                   dataRtl: dataRtl,
                 )
               ],

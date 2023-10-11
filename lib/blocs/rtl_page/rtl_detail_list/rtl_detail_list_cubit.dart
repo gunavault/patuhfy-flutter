@@ -23,7 +23,7 @@ class RtlDetailListCubit extends Cubit<RtlDetailListState> {
             dataFormRtl.rowstamp.toString(), userModel.token);
 
     if (data.dataForm.isEmpty) {
-      emit(NoDataRtlDetailListListState(dataFormRtl));
+      emit(NoDataRtlDetailListListState(dataFormRtl, data.dataForm, userModel));
     } else {
       emit(
           SuccessRtlDetailListListState(dataFormRtl, data.dataForm, userModel));

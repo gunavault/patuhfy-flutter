@@ -14,7 +14,7 @@ class CommonMethods {
     } else if (status == 'REJECTED') {
       return CommonColors.redColor;
     } else {
-      return CommonColors.containerTextB;
+      return CommonColors.containerTextG;
     }
   }
 }
