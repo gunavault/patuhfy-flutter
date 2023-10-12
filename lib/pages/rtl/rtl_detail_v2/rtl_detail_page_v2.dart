@@ -66,28 +66,46 @@ class RtlDetailPageV2 extends StatelessWidget {
                 )));
   }
 
-  Widget _floatingActionButton(context) {
+  Widget _floatingActionButtonWidget(context, status) {
     if (userModel.role == 'MANAGER') {
       return Container();
     } else {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 30.0, right: 10),
-        child: FloatingActionButton(
-          elevation: 1,
-          child: const Icon(Icons.add), //child widget inside this button
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => FormRtlDetailForm(
-                  dataRtl: dataRtl,
+      if (status == 'OPEN') {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 30.0, right: 10),
+          child: FloatingActionButton(
+            elevation: 1,
+            child: const Icon(Icons.add), //child widget inside this button
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FormRtlDetailForm(
+                    dataRtl: dataRtl,
+                  ),
                 ),
-              ),
-            );
-            //task to execute when this button is pressed
-          },
-        ),
-      );
+              );
+              //task to execute when this button is pressed
+            },
+          ),
+        );
+      }
+      return Container();
     }
+  }
+
+  Widget _floatingActionButton(context) {
+    return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
+      builder: (context, state) {
+        if (state is LoadingRtlUpdateStatusFormState) {
+          return _floatingActionButtonWidget(context, dataRtl.status);
+        }
+        if (state is SuccessRtlUpdateStatusFormState) {
+          return _floatingActionButtonWidget(context, state.dataRtl.status);
+        }
+
+        return _floatingActionButtonWidget(context, dataRtl.status);
+      },
+    );
   }
 
   Widget __bottomNavigationWidget(context, status) {
@@ -131,22 +149,24 @@ class RtlDetailPageV2 extends StatelessWidget {
   }
 
   Widget _bottomNavigation(context) {
-    // if (userModel.role == 'MANAGER') {
-    return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
-      builder: (context, state) {
-        if (state is LoadingRtlUpdateStatusFormState) {
-          return __bottomNavigationWidget(context, dataRtl.status);
-        }
-        if (state is SuccessRtlUpdateStatusFormState) {
-          return __bottomNavigationWidget(context, state.dataRtl.status);
-        }
+    if (userModel.role == 'MANAGER') {
+      return BlocBuilder<RtlUpdateStatusFormCubit, RtlUpdateStatusFormState>(
+        builder: (context, state) {
+          if (state is LoadingRtlUpdateStatusFormState) {
+            return __bottomNavigationWidget(context, dataRtl.status);
+          }
+          if (state is SuccessRtlUpdateStatusFormState) {
+            return __bottomNavigationWidget(context, state.dataRtl.status);
+          }
 
-        return __bottomNavigationWidget(context, dataRtl.status);
-      },
-    );
-    // } else {
-    //   return Container();
-    // }
+          return __bottomNavigationWidget(context, dataRtl.status);
+        },
+      );
+    } else {
+      return const Padding(
+        padding: EdgeInsets.all(1.0),
+      );
+    }
   }
 
   @override
