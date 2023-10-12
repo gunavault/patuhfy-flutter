@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
-import 'package:patuhfy/pages/network/notfound.dart';
+import 'package:patuhfy/pages/rtl/rtl_detail/widget/pdf_reader_screen.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_update_status_dialog.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -9,17 +11,9 @@ import 'package:patuhfy/utils/pdf_reader.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import 'pdf_reader_screen.dart';
-
-class RtlDetailCard extends StatelessWidget {
-  const RtlDetailCard(
-      {super.key,
-      required this.dataRtlDetail,
-      required this.role,
-      required this.dataRtl});
-  final List<RtlDetailListModel> dataRtlDetail;
+class RtlDetailCardV2 extends StatelessWidget {
+  const RtlDetailCardV2({super.key, required this.dataRtl});
   final RtlListModel dataRtl;
-  final String role;
   // PDFDocument? document;
 
   void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
@@ -37,7 +31,8 @@ class RtlDetailCard extends StatelessWidget {
     );
   }
 
-  Widget widgetTombolApproval(context, String rowstamp, String status) {
+  Widget widgetTombolApproval(
+      context, String rowstamp, String status, String role) {
     if (role == 'MANAGER' && status == 'OPEN') {
       return Column(
         children: [
@@ -120,9 +115,24 @@ class RtlDetailCard extends StatelessWidget {
               ),
             ],
           ),
-          dataRtlDetail.isEmpty
-              ? const Center(child: NotFoundWidget())
-              : ListView.builder(
+          BlocBuilder<RtlDetailListCubit, RtlDetailListState>(
+            builder: (context, state) {
+              if (state is LoadingRtlDetailListLState) {
+                return const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 200,
+                    ),
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              }
+              if (state is SuccessRtlDetailListState) {
+                List<RtlDetailListModel> dataRtlDetail =
+                    state.dataFormRtlDetail;
+                return ListView.builder(
                   padding: const EdgeInsets.only(top: 10),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -279,7 +289,8 @@ class RtlDetailCard extends StatelessWidget {
                                   widgetTombolApproval(
                                       context,
                                       dataRtlDetail[index].rowstamp.toString(),
-                                      dataRtlDetail[index].status.toString())
+                                      dataRtlDetail[index].status.toString(),
+                                      state.userModel.role.toString())
                                 ],
                               ),
                             ),
@@ -288,7 +299,14 @@ class RtlDetailCard extends StatelessWidget {
                       ],
                     );
                   },
-                ),
+                );
+              }
+
+              return Container(
+                child: const Text('Oops, Cek Internet Anda'),
+              );
+            },
+          ),
         ],
       ),
     );

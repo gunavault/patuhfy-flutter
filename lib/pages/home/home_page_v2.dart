@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
-import 'package:patuhfy/pages/close_rtl/close_rtl_page.dart';
-import 'package:patuhfy/pages/lapor/lapor_page.dart';
 import 'package:patuhfy/pages/rtl/rtl_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
 import 'package:patuhfy/pages/user_page/user_page.dart';
@@ -30,15 +28,16 @@ class HomePageV2 extends StatelessWidget {
       return const RtlPage(
         key: PageStorageKey('approval'),
       );
-    } else if (activeTab == TabState.lapor) {
-      return const LaporPage(
-        key: PageStorageKey('lapor'),
-      );
-    } else if (activeTab == TabState.closeRTL) {
-      return const CloseRTL(
-        key: PageStorageKey('close_rtl'),
-      );
     }
+    // else if (activeTab == TabState.lapor) {
+    //   return const LaporPage(
+    //     key: PageStorageKey('lapor'),
+    //   );
+    // } else if (activeTab == TabState.closeRTL) {
+    //   return const CloseRTL(
+    //     key: PageStorageKey('close_rtl'),
+    //   );
+    // }
 
     return const Center(child: Text('error'));
   }
@@ -76,14 +75,14 @@ class HomePageV2 extends StatelessWidget {
                 label: "RTL",
               ),
 
-              BottomNavigationBarItem(
-                icon: Icon(IconlyLight.shieldDone),
-                label: "Lapor",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(IconlyLight.ticket),
-                label: "Close RTL",
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(IconlyLight.shieldDone),
+              //   label: "Lapor",
+              // ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(IconlyLight.ticket),
+              //   label: "Close RTL",
+              // ),
               BottomNavigationBarItem(
                 icon: Icon(IconlyLight.profile),
                 label: "User",

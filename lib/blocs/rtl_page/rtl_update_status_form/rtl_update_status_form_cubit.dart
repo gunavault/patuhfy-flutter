@@ -3,42 +3,46 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
+import 'package:patuhfy/models/rtl_update_status_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
-part 'rtl_detail_update_status_form_state.dart';
+part 'rtl_update_status_form_state.dart';
 
-class RtlDetailUpdateStatusFormCubit
-    extends Cubit<RtlDetailUpdateStatusFormState> {
+class RtlUpdateStatusFormCubit extends Cubit<RtlUpdateStatusFormState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  RtlDetailUpdateStatusFormCubit(this.localDataSource, this.remoteDataSource)
-      : super(InitialRtlDetailUpdateStatusFormState());
+  RtlUpdateStatusFormCubit(this.localDataSource, this.remoteDataSource)
+      : super(InitialRtlUpdateStatusFormState());
 
-  storedOnline(
-      RtlDetailUpdateStatusFormModel dataForm, UserModel userModel) async {
+  storedOnline(RtlUpdateStatusFormModel dataForm, UserModel userModel) async {
     // set lat and long jika ada sinyal
 
     // setelah itu simpen ke database holding
-    RtlDetailUpdateStatusFormModelResponse resFromApi =
-        await remoteDataSource.updateStatusRtlDetail(
+    RtlUpdateStatusFormModelResponse resFromApi =
+        await remoteDataSource.updateStatusRtl(
       userModel.token,
       dataForm,
     );
 
     if (resFromApi.status_code == 200) {
-      emit(SuccessRtlDetailUpdateStatusFormState(
-          status_code: resFromApi.status_code, message: resFromApi.message));
+      emit(SuccessRtlUpdateStatusFormState(
+          status_code: resFromApi.status_code,
+          message: resFromApi.message,
+          dataRtl: resFromApi.rtlData));
     } else {
-      emit(ErrorRtlDetailUpdateStatusFormState('Oops, Something Wrong!'));
+      emit(ErrorRtlUpdateStatusFormState('Oops, Something Wrong!'));
     }
   }
 
-  submitToDatabase(RtlDetailUpdateStatusFormModel dataForm) async {
+  resetStatus() {
+    emit(InitialRtlUpdateStatusFormState());
+  }
+
+  submitToDatabase(RtlUpdateStatusFormModel dataForm) async {
     try {
-      emit(LoadingRtlDetailUpdateStatusFormState());
+      emit(LoadingRtlUpdateStatusFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
 
       UserModel userModel = await localDataSource.getCurrentUser();
@@ -51,10 +55,10 @@ class RtlDetailUpdateStatusFormCubit
       if (connectivityResult != ConnectivityResult.none) {
         storedOnline(dataForm, userModel); // Send to Database Server Holding
       } else {
-        emit(ErrorRtlDetailUpdateStatusFormState('Oops, No Connection'));
+        emit(ErrorRtlUpdateStatusFormState('Oops, No Connection'));
       }
     } catch (err) {
-      emit(ErrorRtlDetailUpdateStatusFormState('error'));
+      emit(ErrorRtlUpdateStatusFormState('error'));
     }
   }
 }

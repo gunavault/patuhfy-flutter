@@ -26,6 +26,6 @@ class RtlListCubit extends Cubit<RtlListState> {
         .getDataListRtlByPsa(psa, nikSap, status, role, userModel.token);
 
     print('data pencurian tsb $data');
-    emit(SuccessRtlListListState(data.dataForm));
+    emit(SuccessRtlListListState(data.dataForm, userModel));
   }
 }

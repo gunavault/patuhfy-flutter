@@ -30,6 +30,7 @@ import 'package:patuhfy/blocs/rtl_page/rtl_detail_form/rtl_detail_form_cubit.dar
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_update_status_form/rtl_detail_update_status_form_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
+import 'package:patuhfy/blocs/rtl_page/rtl_update_status_form/rtl_update_status_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
@@ -219,6 +220,10 @@ Future<void> main() async {
           create: (BuildContext context) =>
               RtlDetailUpdateStatusFormCubit(localDataSource, remoteDataSource),
         ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RtlUpdateStatusFormCubit(localDataSource, remoteDataSource),
+        ),
       ],
       child: MyApp(
         localDataSource: localDataSource,
@@ -245,7 +250,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Patuhfy V2',
+      title: 'Patuhfy',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

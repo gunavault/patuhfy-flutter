@@ -11,7 +11,7 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-import 'widget/rtl_update_status_dialog.dart';
+import 'rtl_update_status_form.dart';
 
 class RtlDetailPage extends StatelessWidget {
   const RtlDetailPage(
@@ -23,19 +23,14 @@ class RtlDetailPage extends StatelessWidget {
   final List<RtlDetailListModel> dataRtlDetail;
   final UserModel userModel;
 
-  // void actionCloseRtlPopUp(context, int statusBtn, String rowstamp) {
-  //   showDialog(
-  //     barrierDismissible: false,
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       // return const Text('aw');
-  //       return RtlUpdateStatusDialog(
-  //         status: statusBtn,
-  //         rowstamp: rowstamp,
-  //       );
-  //     },
-  //   );
-  // }
+  void buttonSelesaikanRTL(context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RtlUpdateStatusForm(
+                  dataForm: dataRtl,
+                )));
+  }
 
   Widget _floatingActionButton(context) {
     if (userModel.role == 'MANAGER') {
@@ -61,8 +56,8 @@ class RtlDetailPage extends StatelessWidget {
     }
   }
 
-  Widget _bottomNavigation(context) {
-    if (userModel.role == 'MANAGER') {
+  Widget _bottomNavigation(context, status) {
+    if (userModel.role == 'MANAGER' && status == 'OPEN') {
       return Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -85,7 +80,7 @@ class RtlDetailPage extends StatelessWidget {
                       CommonColors.titleTextColor),
                 ),
                 onPressed: () {
-                  // actionCloseRtlPopUp(context, 1);
+                  buttonSelesaikanRTL(context);
                 },
                 label: Text(
                   'Selesaikan RTL ',
@@ -97,7 +92,9 @@ class RtlDetailPage extends StatelessWidget {
         ),
       );
     } else {
-      return Container();
+      return const Padding(
+        padding: EdgeInsets.all(1.0),
+      );
     }
   }
 
@@ -108,7 +105,7 @@ class RtlDetailPage extends StatelessWidget {
       // overlayColor: Colors.black.withOpacity(0.4),
       child: Scaffold(
         floatingActionButton: _floatingActionButton(context),
-        bottomNavigationBar: _bottomNavigation(context),
+        bottomNavigationBar: _bottomNavigation(context, dataRtl.status),
         backgroundColor: CommonColors.whiteColor,
         appBar: AppBarView(
           title: "List Detail RTL",

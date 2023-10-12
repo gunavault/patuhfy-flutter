@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
-import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 
 part 'real_pemeliharaan_jalan_card_state.dart';
 

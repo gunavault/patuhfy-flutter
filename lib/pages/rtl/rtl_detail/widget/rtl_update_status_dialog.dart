@@ -1,17 +1,13 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_update_status_form/rtl_detail_update_status_form_cubit.dart';
 import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/utils/common_colors.dart';
-import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
 class RtlUpdateStatusDialog extends StatelessWidget {
@@ -38,7 +34,7 @@ class RtlUpdateStatusDialog extends StatelessWidget {
 dialogContent(
     BuildContext context, int status, String rowstamp, RtlListModel dataRtl) {
   TextEditingController keteranganController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   void _postToDatabase(rowstamp, status) {
     FocusScope.of(context).requestFocus(FocusNode());
@@ -54,7 +50,7 @@ dialogContent(
 
   void submitData(rowstamp, status) {
     // FocusScope.of(context).requestFocus(FocusNode());
-    final form = _formKey.currentState;
+    final form = formKey.currentState;
 
     if (form!.validate()) {
       // context.loaderOverlay.show();
@@ -132,13 +128,13 @@ dialogContent(
           )
         ],
       ),
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: BlocBuilder<RtlDetailUpdateStatusFormCubit,
           RtlDetailUpdateStatusFormState>(
         builder: (contextForm, state) {
           return SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.max, // To make the card compact
                 children: <Widget>[
@@ -166,8 +162,8 @@ dialogContent(
                       ),
                     ],
                   ),
-                  Divider(),
-                  SizedBox(height: 10.0),
+                  const Divider(),
+                  const SizedBox(height: 10.0),
                   TextFormFieldWidgetForm(
                     fieldController: keteranganController,
                     fieldKeterangan: 'Keterangan',
@@ -175,10 +171,10 @@ dialogContent(
                     fieldType: 'text',
                     maxLines: 3,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(color: Colors.white),
+                      textStyle: const TextStyle(color: Colors.white),
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(80.0)),
@@ -193,8 +189,8 @@ dialogContent(
                     child: Container(
                       decoration: (state
                               is LoadingRtlDetailUpdateStatusFormState)
-                          ? BoxDecoration(
-                              gradient: const LinearGradient(colors: <Color>[
+                          ? const BoxDecoration(
+                              gradient: LinearGradient(colors: <Color>[
                                 Color.fromARGB(255, 180, 183, 183),
                                 Color.fromARGB(255, 123, 127, 125)
                               ]),
@@ -212,16 +208,16 @@ dialogContent(
                                       Color.fromARGB(255, 249, 117, 117)
                                     ]),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(80.0)),
+                                  const BorderRadius.all(Radius.circular(80.0)),
                             ),
                       child: Center(
                         child: Padding(
-                            padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             child: Text(
                               (state is LoadingRtlDetailUpdateStatusFormState)
                                   ? 'Mengrim..'
                                   : 'Submit',
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                               textAlign: TextAlign.center,
                             )),
                       ),

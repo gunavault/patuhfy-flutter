@@ -19,6 +19,7 @@ import 'package:patuhfy/models/rtl_detail_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
+import 'package:patuhfy/models/rtl_update_status_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
 class RemoteDataSource {
@@ -380,7 +381,6 @@ class RemoteDataSource {
     }
   }
 
-
   //Realisasi Penyiangan
   Future<RealPenyianganFormModelResponse> createRealPenyiangan(
       token, RealPenyianganFormModel dataForm) async {
@@ -424,7 +424,7 @@ class RemoteDataSource {
     }
   }
 
-  //Realisasi Penunasan 
+  //Realisasi Penunasan
   Future<RealPenunasanFormModelResponse> createRealPenunasan(
       token, RealPenunasanFormModel dataForm) async {
     try {
@@ -466,7 +466,6 @@ class RemoteDataSource {
           dataForm: [RealPenunasanFormModel()]);
     }
   }
-
 
   //Realisasi Restan
   Future<RealRestanFormModelResponse> createRealRestan(
@@ -511,15 +510,16 @@ class RemoteDataSource {
     }
   }
 
-
   //Realisasi Pemeliharaan Jalan
   Future<RealPemeliharaanJalanFormModelResponse> createRealPemeliharaanJalan(
       token, RealPemeliharaanJalanFormModel dataForm) async {
     try {
       var dio = Dio();
       print('apa ini data restan ${dataForm.toJson()}');
-      var response = await dio.post("$baseUrl/tasksheet/real-pemeliharaan-jalan",
-          data: dataForm.toJson(), options: optionAuth(token));
+      var response = await dio.post(
+          "$baseUrl/tasksheet/real-pemeliharaan-jalan",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
       dynamic callback = response.data;
       return RealPemeliharaanJalanFormModelResponse(
           status_code: int.parse(callback['status_code']),
@@ -530,8 +530,8 @@ class RemoteDataSource {
     }
   }
 
-  Future<RealPemeliharaanJalanFormModelSelectResponse> getDataRealPemeliharaanJalanByTanggal(
-      tanggal, createdBy, token) async {
+  Future<RealPemeliharaanJalanFormModelSelectResponse>
+      getDataRealPemeliharaanJalanByTanggal(tanggal, createdBy, token) async {
     try {
       var dio = Dio();
 
@@ -694,6 +694,26 @@ class RemoteDataSource {
           status_code: 500,
           message: err.response.toString(),
           dataForm: [RtlDetailListModel()]);
+    }
+  }
+
+  Future<RtlUpdateStatusFormModelResponse> updateStatusRtl(
+      token, RtlUpdateStatusFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('cek data sblm dikirim ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/rtl/update-status-rtl",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RtlUpdateStatusFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          rowstamp: dataForm.rowstamp,
+          rtlData: RtlListModel.fromJson(callback['data']));
+    } on DioError catch (err) {
+      print('aww error $err');
+      return RtlUpdateStatusFormModelResponse(
+          message: 'error', status_code: 500, rtlData: RtlListModel());
     }
   }
 

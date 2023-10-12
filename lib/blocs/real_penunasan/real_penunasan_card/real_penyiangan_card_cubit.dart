@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
-import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 
 part 'real_penyiangan_card_state.dart';
 

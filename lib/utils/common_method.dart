@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 class CommonMethods {
@@ -13,8 +14,14 @@ class CommonMethods {
       return CommonColors.bottomIconColor;
     } else if (status == 'REJECTED') {
       return CommonColors.redColor;
+    } else if (status == 'CLOSED') {
+      return CommonColors.redColor;
     } else {
-      return CommonColors.containerTextB;
+      return CommonColors.containerTextG;
     }
+  }
+
+  static bool isManager(role) {
+    return true;
   }
 }
