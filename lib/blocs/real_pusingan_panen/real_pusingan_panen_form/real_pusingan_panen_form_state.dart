@@ -1,28 +1,28 @@
-part of 'real_pengendalian_hama_form_cubit.dart';
+part of 'real_pusingan_panen_form_cubit.dart';
 
 @immutable
-abstract class RealPengendalianHamaFormState {}
+abstract class RealPusinganPanenFormState {}
 
-class InitialRealPengendalianHamaFormState extends RealPengendalianHamaFormState {}
+class InitialRealPusinganPanenFormState extends RealPusinganPanenFormState {}
 
-class LoadingRealPengendalianHamaFormState extends RealPengendalianHamaFormState {}
+class LoadingRealPusinganPanenFormState extends RealPusinganPanenFormState {}
 
-class SuccessRealPengendalianHamaFormState extends RealPengendalianHamaFormState {
+class SuccessRealPusinganPanenFormState extends RealPusinganPanenFormState {
   final int status_code;
   final String message;
-  SuccessRealPengendalianHamaFormState(
+  SuccessRealPusinganPanenFormState(
       {required this.status_code, required this.message});
 }
 
-class DuplicatedRealPengendalianHamaFormState extends RealPengendalianHamaFormState {
+class DuplicatedRealPusinganPanenFormState extends RealPusinganPanenFormState {
   final int status_code;
   final String message;
-  DuplicatedRealPengendalianHamaFormState(
+  DuplicatedRealPusinganPanenFormState(
       {required this.status_code, required this.message});
 }
 
-class ErrorRealPengendalianHamaFormState extends RealPengendalianHamaFormState {
+class ErrorRealPusinganPanenFormState extends RealPusinganPanenFormState {
   final String? message;
 
-  ErrorRealPengendalianHamaFormState(this.message);
+  ErrorRealPusinganPanenFormState(this.message);
 }

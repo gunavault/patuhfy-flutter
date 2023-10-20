@@ -1,13 +1,13 @@
-part of 'real_pengendalian_hama_card_cubit.dart';
+part of 'real_pusingan_panen_card_cubit.dart';
 
 @immutable
-abstract class RealPengendalianHamaCardState {}
+abstract class RealPusinganPanenCardState {}
 
-class InitialRealPengendalianHamaCardState extends RealPengendalianHamaCardState {}
+class InitialRealPusinganPanenCardState extends RealPusinganPanenCardState {}
 
-class IsRealPengendalianHamaAswered extends RealPengendalianHamaCardState {
+class IsRealPusinganPanenAswered extends RealPusinganPanenCardState {
   final bool isAnswered;
-  final RealPengendalianHamaFormModel? dataForm;
+  final RealPusinganPanenFormModel? dataForm;
 
-  IsRealPengendalianHamaAswered(this.isAnswered, this.dataForm);
+  IsRealPusinganPanenAswered(this.isAnswered, this.dataForm);
 }

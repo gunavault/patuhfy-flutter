@@ -4,39 +4,40 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
-part 'real_pengendalian_hama_card_state.dart';
+import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
+part 'real_pusingan_panen_card_state.dart';
 
-class RealPengendalianHamaCardCubit extends Cubit<RealPengendalianHamaCardState> {
+class RealPusinganPanenCardCubit extends Cubit<RealPusinganPanenCardState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  RealPengendalianHamaCardCubit(this.localDataSource, this.remoteDataSource)
-      : super(IsRealPengendalianHamaAswered(false, null));
+  RealPusinganPanenCardCubit(this.localDataSource, this.remoteDataSource)
+      : super(IsRealPusinganPanenAswered(false, null));
 
   checkIsAnwered(String taskDate) async {
-    List<RealPengendalianHamaFormModel> cekData;
+    List<RealPusinganPanenFormModel> cekData;
 
     final connectivityResult = await (Connectivity()
-        .checkConnectivity()); // cCheck if there is connection post to local and database
+        .checkConnectivity()); // cCheck if there is connection   post to local and database
 
     if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
-          .getDataRealPengendalianHamaByTanggalOnlineOrOffline(taskDate.toString());
+          .getDataRealPusinganPanenByTanggalOnlineOrOffline(taskDate.toString());
 
       if (cekData.isEmpty) {
-        emit(IsRealPengendalianHamaAswered(false, null));
+        emit(IsRealPusinganPanenAswered(false, null));
       } else {
-        emit(IsRealPengendalianHamaAswered(
+        emit(IsRealPusinganPanenAswered(
             true, cekData.first)); // Send to Database Server Holding
       }
     } else {
       cekData = await localDataSource
-          .getDataRealPengendalianHamaByTanggal(taskDate.toString());
+          .getDataRealPusinganPanenByTanggal(taskDate.toString());
 
       if (cekData.isEmpty) {
-        emit(IsRealPengendalianHamaAswered(false, null));
+        emit(IsRealPusinganPanenAswered(false, null));
       } else {
-        emit(IsRealPengendalianHamaAswered(true, cekData.first));
+        emit(IsRealPusinganPanenAswered(true, cekData.first));
       }
     }
   }
