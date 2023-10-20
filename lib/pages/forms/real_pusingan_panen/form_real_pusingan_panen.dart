@@ -5,11 +5,16 @@ import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_form/real_pengendalian_hama_form_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_form/real_pusingan_panen_form_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
+import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/butuh_tindak_lanjut_widget.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
+import 'package:patuhfy/pages/forms/widget_form/selectbox_blok.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -18,8 +23,8 @@ import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
-class FormRealPengendalianHama extends StatelessWidget {
-  FormRealPengendalianHama({Key? key, required this.selectedDate}) : super(key: key);
+class FormRealPusinganPanen extends StatelessWidget {
+  FormRealPusinganPanen({Key? key, required this.selectedDate}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
@@ -27,15 +32,15 @@ class FormRealPengendalianHama extends StatelessWidget {
     TextEditingController kodeAfdelingController = TextEditingController();
     TextEditingController kodeBlokController = TextEditingController();
     TextEditingController tahunTanamController = TextEditingController();
-    TextEditingController luasController = TextEditingController();
-    TextEditingController rencanaLuasPemupukanController =
-        TextEditingController();
-    TextEditingController realisasiLuasPemupukanController =
-        TextEditingController();
+    TextEditingController rotasipanencontroller = TextEditingController();
+    TextEditingController normapusingancontroller = TextEditingController();
+    TextEditingController pusingan9haricontroller = TextEditingController();
+    TextEditingController pusingan10haricontroller = TextEditingController();
+    TextEditingController pusingan11haricontroller = TextEditingController();
+    TextEditingController pusingan12harilebihcontroller = TextEditingController();
     TextEditingController penyebabController = TextEditingController();
     TextEditingController rtlController = TextEditingController();
     TextEditingController hasRtlController = TextEditingController();
-    TextEditingController fotoController = TextEditingController();
     // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
     //     TextEditingController();
     // TextEditingController pelepahTidakDipotongTigaController =
@@ -49,16 +54,20 @@ class FormRealPengendalianHama extends StatelessWidget {
       FocusScope.of(context).requestFocus(FocusNode());
       //, rencanaLuasPemupukan: int.parse(rencanaLuasPemupukanController.text), realisasiLuasPemupukan: int.parse(realisasiLuasPemupukanController.text),
 
-      context.read<RealPengendalianHamaFormCubit>().submitToDatabase(
-          RealPengendalianHamaFormModel(
+      context.read<RealPusinganPanenFormCubit>().submitToDatabase(
+          RealPusinganPanenFormModel(
               afdeling: kodeAfdelingController.text,
-              rencanaLuasPengendalianHama:
-                  int.parse(rencanaLuasPemupukanController.text),
-              realisasiLuasPengendalianHama:
-                  int.parse(realisasiLuasPemupukanController.text),
+              blok: kodeBlokController.text,
+              tahunTanam: int.parse(tahunTanamController.text),
+              rotasipanen: int.parse(rotasipanencontroller.text),
+              normapusingan: int.parse(normapusingancontroller.text),
+              pusingan9hari: int.parse(pusingan9haricontroller.text),
+              pusingan10hari: int.parse(pusingan10haricontroller.text),
+              pusingan11hari: int.parse(pusingan11haricontroller.text),
+              pusingan12harilebih: int.parse(pusingan12harilebihcontroller.text),
               penyebab: penyebabController.text,
               rtl: rtlController.text,
-              foto: fotoController.text,
+              // foto: fotoController.text,
               hasRtl: int.parse(hasRtlController.text)));
 
       // _loginBloc.add(LoginPressed(_loginData));
@@ -79,6 +88,12 @@ class FormRealPengendalianHama extends StatelessWidget {
 
     void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
+      BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
+    }
+
+    void onChangeSelectboxBlok(value) {
+      tahunTanamController.text = value!.tahunTanam.toString();
+      kodeBlokController.text = value.kodeBlok.toString();
     }
 
     // void onChangeSelectboxBlok(BlokModel value) {
@@ -91,9 +106,9 @@ class FormRealPengendalianHama extends StatelessWidget {
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<RealPengendalianHamaFormCubit, RealPengendalianHamaFormState>(
-        listener: (context, RealPengendalianHamaFormState) {
-          if (RealPengendalianHamaFormState is LoadingRealPengendalianHamaFormState) {
+      child: BlocListener<RealPusinganPanenFormCubit, RealPusinganPanenFormState>(
+        listener: (context, RealPusinganPanenFormState) {
+          if (RealPusinganPanenFormState is LoadingRealPusinganPanenFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -109,16 +124,16 @@ class FormRealPengendalianHama extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (RealPengendalianHamaFormState is SuccessRealPengendalianHamaFormState) {
+          } else if (RealPusinganPanenFormState is SuccessRealPusinganPanenFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, RealPengendalianHamaFormState.message,
+            showAlertSuccessOkActionV2(context, RealPusinganPanenFormState.message,
                 () {
-              BlocProvider.of<RealPengendalianHamaCardCubit>(context)
+              BlocProvider.of<RealPusinganPanenCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               Navigator.pop(context);
             });
-          } else if (RealPengendalianHamaFormState
-              is DuplicatedRealPengendalianHamaFormState) {
+          } else if (RealPusinganPanenFormState
+              is DuplicatedRealPusinganPanenFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -127,20 +142,20 @@ class FormRealPengendalianHama extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(RealPengendalianHamaFormState.message),
+                      Text(RealPusinganPanenFormState.message),
                       const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (RealPengendalianHamaFormState is ErrorRealPengendalianHamaFormState) {
+          } else if (RealPusinganPanenFormState is ErrorRealPusinganPanenFormState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(RealPengendalianHamaFormState.message.toString()),
+                    Text(RealPusinganPanenFormState.message.toString()),
                     const Icon(Icons.error)
                   ],
                 ),
@@ -175,27 +190,58 @@ class FormRealPengendalianHama extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxAfdeling,
                         ),
-                        TextFormFieldWidgetForm(
-                          fieldText: 'Rencana Luas pengendalian hama',
-                          fieldKeterangan: 'Rencana Luas pengendalian hama',
-                          fieldType: 'number',
-                          fieldController: rencanaLuasPemupukanController,
+                        SelectboxBlok(
+                          titleName: 'Blok',
+                          isTitleName: true,
+                          onChangeFunc: onChangeSelectboxBlok,
                         ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Realisasi Luas pengendalian hama',
-                          fieldKeterangan: 'Realisasi Luas pengendalian hama',
+                            fieldText: 'Tahun Tanam',
+                            fieldKeterangan: 'Tahun Tanam',
+                            fieldType: 'number',
+                            fieldController: tahunTanamController,
+                            isEnabled: true),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Rotasi Panen',
+                          fieldKeterangan: 'Rotasi Panen',
                           fieldType: 'number',
-                          fieldController: realisasiLuasPemupukanController,
+                          fieldController: rotasipanencontroller,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Norma Pusingan',
+                          fieldKeterangan: 'Norma Pusingan',
+                          fieldType: 'number',
+                          fieldController: normapusingancontroller,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Pusingan 9 Hari',
+                          fieldKeterangan: 'Pusingan 9 Hari',
+                          fieldType: 'number',
+                          fieldController: pusingan9haricontroller,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Pusingan 10 Hari',
+                          fieldKeterangan: 'Pusingan 10 Hari',
+                          fieldType: 'number',
+                          fieldController: pusingan10haricontroller,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Pusingan 11 Hari',
+                          fieldKeterangan: 'Pusingan 11 Hari',
+                          fieldType: 'number',
+                          fieldController: pusingan11haricontroller,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Pusingan 12 Hari Lebih',
+                          fieldKeterangan: 'Pusingan 12 Hari Lebih',
+                          fieldType: 'number',
+                          fieldController: pusingan12harilebihcontroller,
                         ),
                         TextFormFieldWidgetForm(
                           fieldText: 'Penyebab',
                           fieldKeterangan: 'Penyebab',
                           fieldType: 'text',
                           fieldController: penyebabController,
-                        ),
-                        UploadFoto(
-                          fieldName: 'Evidence pengendalian hama',
-                          imageNameController: fotoController,
                         ),
                         const SizedBox(
                           height: 30,

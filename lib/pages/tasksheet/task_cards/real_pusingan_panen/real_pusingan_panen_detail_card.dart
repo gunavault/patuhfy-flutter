@@ -3,43 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
+import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class RealPengendalianHamaDetailCard extends StatelessWidget {
-  const RealPengendalianHamaDetailCard({super.key, required this.dataForm});
+class RealPusinganPanenDetailCard extends StatelessWidget {
+  const RealPusinganPanenDetailCard({super.key, required this.dataForm});
 
-  final RealPengendalianHamaFormModel? dataForm;
+  final RealPusinganPanenFormModel? dataForm;
 
-  Widget evidenceRealPengendalianHama(context) {
-    final double bannerWidth = MediaQuery.of(context).size.width;
-    final double bannerHeight = MediaQuery.of(context).size.width * 3 / 4;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Evidence Realisasi pengendalian hama",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: CommonColors.blackColor,
-          ),
-        ),
-        const SizedBox(height: 10.0),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.memory(
-            base64Decode(dataForm!.foto.toString()),
-            width: bannerWidth,
-            height: bannerHeight,
-            fit: BoxFit.cover,
-          ),
-        )
-      ],
-    );
-  }
 
   Widget textFieldWidget({fieldText, fieldValue}) {
     return Column(
@@ -153,18 +126,50 @@ class RealPengendalianHamaDetailCard extends StatelessWidget {
                 fieldText: 'Afdeling',
                 fieldValue: dataForm!.afdeling,
               ),
+              textFieldWidget(
+                fieldText: 'Blok',
+                fieldValue: dataForm!.blok,
+              ),
+              textFieldWidget(
+                fieldText: 'Tahun Tanam',
+                fieldValue: dataForm!.tahunTanam,
+              ),
+              textFieldWidget(
+                fieldText: 'Rotasi Panen',
+                fieldValue: dataForm!.rotasipanen,
+              ),
+              textFieldWidget(
+                fieldText: 'Norma Pusingan Panen',
+                fieldValue: dataForm!.normapusingan,
+              ),
+              textFieldWidget(
+                fieldText: 'Pusingan 9 Hari',
+                fieldValue: dataForm!.pusingan9hari,
+              ),
+              textFieldWidget(
+                fieldText: 'Pusingan 10 Hari',
+                fieldValue: dataForm!.pusingan10hari,
+              ),
+              textFieldWidget(
+                fieldText: 'Pusingan 11 Hari',
+                fieldValue: dataForm!.pusingan11hari,
+              ),
+              textFieldWidget(
+                fieldText: 'Pusingan 12 Hari atau lebih',
+                fieldValue: dataForm!.pusingan12harilebih,
+              ),
               // textFieldWidget(
               //   fieldText: 'Luas Areal (ha)',
               //   fieldValue: dataForm!.luas,
               // ),
-              textFieldWidget(
-                fieldText: 'Rencana Luas Pengendalian Hama',
-                fieldValue: dataForm!.rencanaLuasPengendalianHama,
-              ),
-              textFieldWidget(
-                fieldText: 'Realisasi Luas pengendalian Hama',
-                fieldValue: dataForm!.realisasiLuasPengendalianHama,
-              ),
+              // textFieldWidget(
+              //   fieldText: 'Rencana Luas Pengendalian Hama',
+              //   fieldValue: dataForm!.rencanaLuasPengendalianHama,
+              // ),
+              // textFieldWidget(
+              //   fieldText: 'Realisasi Luas pengendalian Hama',
+              //   fieldValue: dataForm!.realisasiLuasPengendalianHama,
+              // ),
               textFieldWidget(
                 fieldText: 'Penyebab',
                 fieldValue: dataForm!.penyebab,
@@ -172,9 +177,7 @@ class RealPengendalianHamaDetailCard extends StatelessWidget {
               textFieldWidget(
                 fieldText: 'Rencana Tindak Lanjut',
                 fieldValue: dataForm!.rtl,
-              ),
-              evidenceRealPengendalianHama(context),
-              const SizedBox(height: 30.0),
+              )
             ],
           ),
         ),

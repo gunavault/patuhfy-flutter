@@ -2,31 +2,34 @@ import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
 import 'package:patuhfy/pages/forms/real_pengendalian_hama/form_real_pengendalian_hama.dart';
+import 'package:patuhfy/pages/forms/real_pusingan_panen/form_real_pusingan_panen.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pusingan_panen_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pengendalian_hama_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/real_pusingan_panen/real_pusingan_panen_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class RealPengendalianHamaCard extends StatelessWidget {
-  const RealPengendalianHamaCard(
+class RealPusinganPanenCard extends StatelessWidget {
+  const RealPusinganPanenCard(
       {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
   final bool isToday;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RealPengendalianHamaCardCubit, RealPengendalianHamaCardState>(
+    return BlocBuilder<RealPusinganPanenCardCubit, RealPusinganPanenCardState>(
       builder: (context, state) {
-        if (state is IsRealPengendalianHamaAswered) {
+        if (state is IsRealPusinganPanenAswered) {
           void timesheetAddPopUp(context) {
             showDialog(
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 // return const Text('aw');
-                return RealPengendalianHamaDetailCard(
+                return RealPusinganPanenDetailCard(
                   dataForm: state.dataForm,
                 );
               },
@@ -45,7 +48,7 @@ class RealPengendalianHamaCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormRealPengendalianHama(
+                              builder: (context) => FormRealPusinganPanen(
                                 selectedDate: selectedDate,
                               ),
                             ),
@@ -108,7 +111,7 @@ class RealPengendalianHamaCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Realisasi pengendalian hama',
+                                  'Realisasi Pusingan Panen',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -118,7 +121,7 @@ class RealPengendalianHamaCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Realisasi pengendalian hama',
+                                  'Realisasi Pusingan Panen',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,
