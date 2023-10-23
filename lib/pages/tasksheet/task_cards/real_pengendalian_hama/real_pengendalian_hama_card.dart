@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
 import 'package:patuhfy/pages/forms/real_pengendalian_hama/form_real_pengendalian_hama.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pusingan_panen_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pengendalian_hama_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';

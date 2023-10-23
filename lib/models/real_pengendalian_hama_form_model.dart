@@ -3,75 +3,76 @@ import 'package:floor/floor.dart';
 @Entity(tableName: "t_real_pengendalian_hama")
 class RealPengendalianHamaFormModel {
   @PrimaryKey(autoGenerate: true)
-int? id;
+  int? id;
   String? tanggal;
   String? createdBy;
-  String? afdeling;
   String? unitKerja;
+  String? afdeling;
   String? luas;
-  int? rencanaluaspengendalian;
-  int? realisasiluaspengendalian;
+  int? rencanaLuasPengendalianHama;
+  int? realisasiLuasPengendalianHama;
   String? penyebab;
   String? rtl;
-  String? foto;
   String? lat;
   String? long;
   String? mobileCreatedAt;
   int? isSend;
+  String? foto;
   int? hasRtl;
 
-  RealPengendalianHamaFormModel({
-this.tanggal,
-    this.createdBy,
-    this.afdeling,
-    this.unitKerja,
-    this.luas,
-    this.rencanaluaspengendalian,
-    this.realisasiluaspengendalian,
-    this.penyebab,
-    this.rtl,
-    this.foto,
-    this.lat,
-    this.long,
-    this.mobileCreatedAt,
-    this.isSend,
-    this.hasRtl
-      });
+  RealPengendalianHamaFormModel(
+      {this.tanggal,
+      this.createdBy,
+      this.unitKerja,
+      this.afdeling,
+      this.luas,
+      this.rencanaLuasPengendalianHama,
+      this.realisasiLuasPengendalianHama,
+      this.penyebab,
+      this.rtl,
+      this.lat,
+      this.long,
+      this.mobileCreatedAt,
+      this.isSend,
+      this.foto,
+      this.hasRtl});
 
   RealPengendalianHamaFormModel.fromJson(Map<String, dynamic> json) {
+    print('data json $json');
     tanggal = json["TANGGAL"];
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
-    luas = json["LUAS"];
-    rencanaluaspengendalian = json["RENCANA_LUAS_PENGENDALIAN"];
-    realisasiluaspengendalian = json["REALISASI_LUAS_PENGENDALIAN"];
+    luas = json["LUAS"].toString();
+    rencanaLuasPengendalianHama = json["RENCANA_LUAS_PENGENDALIAN"];
+    realisasiLuasPengendalianHama = json["REALISASI_LUAS_PENGENDALIAN"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    foto = json["FOTO"];
-    lat = json["LAT"];
-    long = json["LONG"];
+    lat = json["LAT"].toString();
+    long = json["LONG"].toString();
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
+    foto = json["FOTO"];
     hasRtl = json['HAS_RTL'];
   }
 
   Map<String, dynamic> toJson() {
-     final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
+    print('data111 hasRtl $hasRtl');
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
     data["UNIT_KERJA"] = unitKerja;
     data["LUAS"] = luas;
-    data["RENCANA_LUAS_PENGENDALIAN"] = rencanaluaspengendalian;
-    data["REALISASI_LUAS_PENGENDALIAN"] = realisasiluaspengendalian;
+    data["RENCANA_LUAS_PENGENDALIAN"] = rencanaLuasPengendalianHama;
+    data["REALISASI_LUAS_PENGENDALIAN"] = realisasiLuasPengendalianHama;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
-    data["FOTO"] = foto;
+    data["HAS_RTL"] = hasRtl;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;
-    data["HAS_RTL"] = hasRtl;
+    data["FOTO"] = foto;
 
     return data;
   }
@@ -80,7 +81,7 @@ this.tanggal,
 class RealPengendalianHamaFormModelResponse {
   final int status_code;
   final String message;
-  final RealPengendalianHamaFormModel? dataForm;
+  final List<RealPengendalianHamaFormModel>? dataForm;
 
   RealPengendalianHamaFormModelResponse(
       {required this.status_code, required this.message, this.dataForm});

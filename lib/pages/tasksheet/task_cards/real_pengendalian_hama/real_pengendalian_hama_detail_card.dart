@@ -7,12 +7,12 @@ import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class RealPusinganPanenDetailCard extends StatelessWidget {
-  const RealPusinganPanenDetailCard({super.key, required this.dataForm});
+class RealPengendalianHamaDetailCard extends StatelessWidget {
+  const RealPengendalianHamaDetailCard({super.key, required this.dataForm});
 
-  final RealPusinganPanenFormModel? dataForm;
+  final RealPengendalianHamaFormModel? dataForm;
 
-  Widget evidenceRealPusinganPanen(context) {
+  Widget evidenceRealPengendalianHama(context) {
     final double bannerWidth = MediaQuery.of(context).size.width;
     final double bannerHeight = MediaQuery.of(context).size.width * 3 / 4;
     return Column(
@@ -173,7 +173,7 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
                 fieldText: 'Rencana Tindak Lanjut',
                 fieldValue: dataForm!.rtl,
               ),
-              evidenceRealPusinganPanen(context),
+              evidenceRealPengendalianHama(context),
               const SizedBox(height: 30.0),
             ],
           ),
