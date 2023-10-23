@@ -5,11 +5,10 @@ class RealPusinganPanenFormModel {
   @PrimaryKey(autoGenerate: true)
 int? id;
   String? tanggal;
-  int? createdBy;
-  int? afdeling;
-  // int? company;
-  // int? unitKerja;
-  int? blok;
+  String? createdBy;
+  String? afdeling;
+  String? unitKerja;
+  String? blok;
   int? tahunTanam;
   int? rotasipanen;
   int? normapusingan;
@@ -19,17 +18,18 @@ int? id;
   int? pusingan12harilebih;
   String? penyebab;
   String? rtl;
-  // String? foto;
-  double? lat;
-  double? long;
+  String? lat;
+  String? long;
   String? mobileCreatedAt;
+  int? isSend;
+  int? hasRtl;
 
   RealPusinganPanenFormModel({
 this.tanggal,
     this.createdBy,
     this.afdeling,
     // this.company,
-    // this.unitKerja,
+    this.unitKerja,
     this.blok,
     this.tahunTanam,
     this.rotasipanen,
@@ -43,14 +43,15 @@ this.tanggal,
     this.lat,
     this.long,
     this.mobileCreatedAt,
+    this.isSend,
+    this.hasRtl
       });
 
   RealPusinganPanenFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
-    // company = json["COMPANY"];
-    // unitKerja = json["UNIT_KERJA"];
+    unitKerja = json["UNIT_KERJA"];
     blok = json["BLOK"];
     tahunTanam = json["TAHUN_TANAM"];
     rotasipanen = json["ROTASI_PANEN"];
@@ -61,10 +62,12 @@ this.tanggal,
     pusingan12harilebih = json["PUSINGAN_12_HARI_LEBIH"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    // foto = json["FOTO"];
     lat = json["LAT"];
     long = json["LONG"];
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
+    isSend = 1;
+    hasRtl = json['HAS_RTL'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -72,8 +75,7 @@ this.tanggal,
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
-    // data["COMPANY"] = company;
-    // data["UNIT_KERJA"] = unitKerja;
+    data["UNIT_KERJA"] = unitKerja;
     data["BLOK"] = blok;
     data["TAHUN_TANAM"] = tahunTanam;
     data["ROTASI_PANEN"] = rotasipanen;
@@ -84,30 +86,31 @@ this.tanggal,
     data["PUSINGAN_12_HARI_LEBIH"] = pusingan12harilebih;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
-    // data["FOTO"] = foto;
     data["LAT"] = lat;
     data["LONG"] = long;
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;
+    data["HAS_RTL"] = hasRtl;
 
-    return data;
+
+     return data;
   }
 }
 
-class LapKerusakanFormModelResponse {
+class RealPusinganPanenFormModelResponse {
   final int status_code;
   final String message;
   final RealPusinganPanenFormModel? dataForm;
 
-  LapKerusakanFormModelResponse(
+  RealPusinganPanenFormModelResponse(
       {required this.status_code, required this.message, this.dataForm});
 }
 
-class LapKerusakanFormModelSelectResponse {
+class RealPusinganPanenFormModelSelectResponse {
   final int status_code;
   final String message;
   final List<RealPusinganPanenFormModel> dataForm;
 
-  LapKerusakanFormModelSelectResponse(
+  RealPusinganPanenFormModelSelectResponse(
       {required this.status_code,
       required this.message,
       required this.dataForm});
