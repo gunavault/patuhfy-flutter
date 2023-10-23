@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_list/rtl_detail_list_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_update_status_form/rtl_detail_update_status_form_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
+
 
 import 'widget/rtLdetail_card_v2.dart';
 
@@ -171,6 +173,10 @@ class RtlDetailPageV2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateFormat dateFormat = DateFormat('ddmmyyyy');
+    String formattedDatetime = DateFormat('ddmmyyyy').format(DateTime.parse(dataRtl.mobileCreatedAt.toString()));
+
+
     _getData(context);
     return LoaderOverlay(
       overlayOpacity: 0.4,
@@ -268,7 +274,7 @@ class RtlDetailPageV2 extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        dataRtl.mobileCreatedAt.toString(),
+                        formattedDatetime,
                         style: CommonStyle.getRalewayFont(
                           color: CommonColors.blackColor1,
                           fontSize: 14,
