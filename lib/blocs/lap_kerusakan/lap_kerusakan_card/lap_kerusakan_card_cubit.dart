@@ -15,7 +15,7 @@ class LapKerusakanCardCubit extends Cubit<LapKerusakanCardState> {
       : super(IsLapKerusakanAswered(false, null));
 
   checkIsAnwered(String taskDate) async {
-    List<LapKerusakanFormModel> cekData;
+    List<LapKerusakanFormModel>   cekData;
     final connectivityResult = await (Connectivity()
         .checkConnectivity()); // cCheck if there is connection post to local and database
 

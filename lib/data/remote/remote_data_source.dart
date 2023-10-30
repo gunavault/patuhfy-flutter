@@ -9,11 +9,13 @@ import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/peroftma_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
+import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_form_model.dart';
 import 'package:patuhfy/models/rtl_detail_list_model.dart';
@@ -381,6 +383,50 @@ class RemoteDataSource {
     }
   }
 
+  //Realisasi pengendalian hama
+  Future<RealPengendalianHamaFormModelResponse> createRealPengendalianHama(
+      token, RealPengendalianHamaFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data pemupukan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-pengendalian-hama",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPengendalianHamaFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPengendalianHamaFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPengendalianHamaFormModelSelectResponse> getDataRealPengendalianHamaByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-pengendalian-hama/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('callaback $callback');
+      return RealPengendalianHamaFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPengendalianHamaFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPengendalianHamaFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPengendalianHamaFormModel()]);
+    }
+  }
+  
   //Realisasi Penyiangan
   Future<RealPenyianganFormModelResponse> createRealPenyiangan(
       token, RealPenyianganFormModel dataForm) async {
@@ -423,6 +469,50 @@ class RemoteDataSource {
           dataForm: [RealPenyianganFormModel()]);
     }
   }
+
+//Realisasi Pusingan Panen
+  Future<RealPusinganPanenFormModelResponse> createRealPusinganPanen(
+      token, RealPusinganPanenFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('apa ini data pemupukan ${dataForm.toJson()}');
+      var response = await dio.post("$baseUrl/tasksheet/real-penyiangan",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return RealPusinganPanenFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return RealPusinganPanenFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<RealPusinganPanenFormModelSelectResponse> getDataRealPusinganPanenByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet/real-penyiangan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return RealPusinganPanenFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => RealPusinganPanenFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return RealPusinganPanenFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [RealPusinganPanenFormModel()]);
+    }
+  }
+
 
   //Realisasi Penunasan
   Future<RealPenunasanFormModelResponse> createRealPenunasan(
@@ -555,49 +645,6 @@ class RemoteDataSource {
     }
   }
   
-  
-  //Realisasi Pemeliharaan Jalan
-  Future<RealPengendalianHamaFormModelResponse> createRealPengendalianHama(
-      token, RealPengendalianHamaFormModel dataForm) async {
-    try {
-      var dio = Dio();
-      print('apa ini data restan ${dataForm.toJson()}');
-      var response = await dio.post("$baseUrl/tasksheet/real-pengendalian-hama",
-          data: dataForm.toJson(), options: optionAuth(token));
-      dynamic callback = response.data;
-      return RealPengendalianHamaFormModelResponse(
-          status_code: int.parse(callback['status_code']),
-          message: callback['msg']);
-    } on DioError catch (err) {
-      return RealPengendalianHamaFormModelResponse(
-          message: err.response.toString(), status_code: 500);
-    }
-  }
-
-  Future<RealPengendalianHamaFormModelSelectResponse> getDataRealPengendalianHamaByTanggal(
-      tanggal, createdBy, token) async {
-    try {
-      var dio = Dio();
-
-      var response = await dio.get(
-          "$baseUrl/tasksheet/real-pengendalian-hama/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
-          options: optionAuth(token));
-
-      dynamic callback = response.data;
-      List<dynamic> parsedData = callback['data'];
-      return RealPengendalianHamaFormModelSelectResponse(
-          status_code: int.parse(callback['status_code']),
-          message: callback['msg'],
-          dataForm: parsedData
-              .map((value) => RealPengendalianHamaFormModel.fromJson(value))
-              .toList());
-    } on DioError catch (err) {
-      return RealPengendalianHamaFormModelSelectResponse(
-          status_code: 500,
-          message: err.response.toString(),
-          dataForm: [RealPengendalianHamaFormModel()]);
-    }
-  }
   
 
   // RTL LIST
@@ -733,6 +780,34 @@ class RemoteDataSource {
       print('aww error $err');
       return RtlDetailUpdateStatusFormModelResponse(
           message: 'error', status_code: 500);
+    }
+  }
+
+//performa
+ Future<PerformaModelSelectResponse> getdataperforma(
+      nikSap, token) async {
+        print('sssss');
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/masterdata/get-performa-by-nik-sap?nik_sap=$nikSap",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      dynamic parsedData = callback['data'];
+      print('parsedData11111 ${callback['data']}');
+
+      return PerformaModelSelectResponse(
+          status_code: callback['status_code'],
+          message: callback['msg'],
+          dataForm: PerformaModel.fromJson(parsedData));
+    } on DioError catch (err) {
+      print('rrtot ${err}');
+      return PerformaModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: PerformaModel());
     }
   }
 }

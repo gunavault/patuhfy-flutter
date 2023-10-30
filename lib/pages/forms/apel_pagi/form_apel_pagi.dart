@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
+import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_afdeling_new.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -80,7 +81,10 @@ class FormApelPagi extends StatelessWidget {
             showAlertSuccessOkActionV2(context, apelPagiFormState.message, () {
               BlocProvider.of<ApelPagiCardCubit>(context)
                   .checkIsAnwered(selectedDate);
+                      BlocProvider.of<PerformaCubit>(context).getData();
+
               Navigator.pop(context);
+              
             });
           } else if (apelPagiFormState is DuplicatedApelPagiFormState) {
             context.loaderOverlay.hide();
