@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
+import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
@@ -133,6 +134,8 @@ class FormInspeksiHanca extends StatelessWidget {
                 () {
               BlocProvider.of<InspeksiHancaCardCubit>(context)
                   .checkIsAnwered(selectedDate);
+              BlocProvider.of<PerformaCubit>(context).getData();
+
               Navigator.pop(context);
             });
           } else if (inspeksiHancaFormState

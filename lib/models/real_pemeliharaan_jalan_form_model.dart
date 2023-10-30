@@ -52,8 +52,8 @@ this.tanggal,
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
     foto = json["FOTO"];
-    lat = json["LAT"];
-    long = json["LONG"];
+    lat = json["LAT"].toString();
+    long = json["LONG"].toString();
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
     hasRtl = json['HAS_RTL'];

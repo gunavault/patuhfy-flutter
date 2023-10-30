@@ -22,6 +22,8 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
   late Uint8List fileBytes;
   // final _formKey = GlobalKey<FormBuilderState>();
   final bool _useCustomFileViewer = false;
+    bool isFileLoaded = false; // Track whether a file is loaded or not
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,12 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
       fileBytes = await file.readAsBytes();
       pickedFileBase64Image = base64Encode(fileBytes);
       widget.fileController.text = pickedFileBase64Image;
+      setState(() {
+        isFileLoaded = true; // Mark the file as loaded
+      });
     }
+
+
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -56,21 +63,27 @@ class _UploadFileFieldWidgetState extends State<UploadFileFieldWidget> {
           // allowedExtensions: const ['pdf', 'doc'],
           previewImages: false,
           onChanged: (val) async {
-            _onLoadFile(val);
-          },
-          typeSelectors: const [
+              _onLoadFile(val);
+              if (val!.isEmpty) {
+                // No files were selected, set isFileLoaded to false
+                setState(() {
+                  isFileLoaded = false;
+                });
+              }
+            },
+          typeSelectors: isFileLoaded? []: const [
             TypeSelector(
               type: FileType.custom,
               selector: Row(
                 children: <Widget>[
-                  Icon(Icons.file_upload),
+                  Icon(Icons.file_upload,size: 50,color: CommonColors.bottomIconColor,),
                   Text('Upload'),
                 ],
               ),
             )
           ],
           customTypeViewerBuilder: (children) => Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: children,
           ),
           onFileLoading: (val) {

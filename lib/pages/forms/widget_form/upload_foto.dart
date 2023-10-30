@@ -89,13 +89,13 @@ class _UploadFotoState extends State<UploadFoto> {
                 },
                 child: const Text('Camera'),
               ),
-              CupertinoActionSheetAction(
-                isDefaultAction: true,
-                onPressed: () {
-                  galleryPicker();
-                },
-                child: const Text('Gallery'),
-              )
+              // CupertinoActionSheetAction(
+              //   isDefaultAction: true,
+              //   onPressed: () {
+              //     galleryPicker();
+              //   },
+              //   child: const Text('Gallery'),
+              // )
             ],
           ),
           onTap: (child) => showCupertinoModalPopup(
