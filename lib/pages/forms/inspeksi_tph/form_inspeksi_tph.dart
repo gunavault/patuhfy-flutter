@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_form/inspeksi_tph_form_cubit.dart';
+import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
@@ -135,6 +136,7 @@ class FormInspeksiTph extends StatelessWidget {
                 () {
               BlocProvider.of<InspeksiTphCardCubit>(context)
                   .checkIsAnwered(selectedDate);
+              BlocProvider.of<PerformaCubit>(context).getData();
               Navigator.pop(context);
             });
           } else if (InspeksiTphFormState is DuplicatedInspeksiTphFormState) {

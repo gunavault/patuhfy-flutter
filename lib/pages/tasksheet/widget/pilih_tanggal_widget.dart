@@ -11,8 +11,10 @@ import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_c
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
 import 'package:patuhfy/blocs/real_restan/real_restan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -58,6 +60,11 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
     BlocProvider.of<RealPemeliharaanJalanCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
+    BlocProvider.of<RealPengendalianHamaCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+    BlocProvider.of<RealPusinganPanenCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+
 
     Navigator.pop(context);
   }
@@ -186,7 +193,7 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
                     color: kWhite, fontWeight: FontWeight.bold),
               ),
               Text(
-                ', $weekOfMonth week',
+                ', Minggu ke - $weekOfMonth ',
                 style: kTextStyle.copyWith(
                     color: kWhite, fontWeight: FontWeight.bold),
               ),

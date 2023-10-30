@@ -59,7 +59,7 @@ class _DatepickerFormWidgetState extends State<DatepickerFormWidget> {
                       child: Icon(Icons.calendar_month,
                           size: 25, color: CommonColors.bottomIconColor),
                     ),
-                    onTap: () {}),
+                    onTap: () {_selectDateOrder(context);}),
                 contentPadding: const EdgeInsets.only(
                     left: 16, right: 18, top: 16, bottom: 16),
                 labelText: widget.fieldText,

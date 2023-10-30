@@ -246,13 +246,8 @@ class RtlDetailCardV2 extends StatelessWidget {
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(30),
-                                                  color: index == 0
-                                                      ? CommonColors
-                                                          .bottomIconColor
-                                                          .withOpacity(0.2)
-                                                      : CommonColors
-                                                          .bottomIconColor
-                                                          .withOpacity(0.2)),
+                                                color:  dataRtlDetail[index].status == 'OPEN' ? Colors.blueAccent :        
+                                                        dataRtlDetail[index].status == 'DONE' ? Colors.green : Colors.red),
                                               child: const Icon(
                                                 Icons.check,
                                                 color: CommonColors.whiteColor,
@@ -262,10 +257,11 @@ class RtlDetailCardV2 extends StatelessWidget {
                                           ],
                                         ),
                                         Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 0, bottom: 5, left: 20),
+                                                  top: 0, bottom: 5, right: 20),
                                               child: MaterialButton(
                                                 padding:
                                                     const EdgeInsets.symmetric(

@@ -16,14 +16,19 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
+import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_form/real_pemeliharaan_jalan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
+import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_form/real_pengendalian_hama_form_cubit.dart';
 import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penunasan/real_penunasan_form/real_penyiangan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_form/real_penyiangan_form_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_form/real_pusingan_panen_form_cubit.dart';
 import 'package:patuhfy/blocs/real_restan/real_restan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_restan/real_restan_form/real_restan_form_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_detail_form/rtl_detail_form_cubit.dart';
@@ -68,7 +73,9 @@ Future<void> main() async {
       database.tRealPenyianganDao,
       database.tRealPenunasanDao,
       database.tRealRestanDao,
-      database.tRealPemeliharaanJalanDao);
+      database.tRealPemeliharaanJalanDao,
+      database.tRealPengendalianHamaDao,
+      database.tRealPusinganPanenDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = DateTime.now();
@@ -169,6 +176,24 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
+              RealPengendalianHamaFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+          RealPengendalianHamaCardCubit(localDataSource, remoteDataSource)
+            ..checkIsAnwered(today.toString()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              RealPusinganPanenFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+          RealPusinganPanenCardCubit(localDataSource, remoteDataSource)
+            ..checkIsAnwered(today.toString()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
               RealPemeliharaanJalanFormCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
@@ -222,6 +247,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               RtlUpdateStatusFormCubit(localDataSource, remoteDataSource),
+        ),
+                BlocProvider(
+          create: (BuildContext context) =>
+              PerformaCubit(localDataSource, remoteDataSource),
         ),
       ],
       child: MyApp(

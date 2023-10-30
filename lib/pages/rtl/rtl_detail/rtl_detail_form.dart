@@ -166,7 +166,7 @@ class FormRtlDetailForm extends StatelessWidget {
                         DatepickerFormWidget(
                           fieldController: tanggalRealisasiController,
                           fieldKeterangan: 'Tanggal Realisasi',
-                          fieldText: 'Tanggal Realisasi',
+                          fieldText: 'Tanggal Realisassi',
                         ),
                         UploadFileFieldWidget(
                           fieldName: 'Evidence',
