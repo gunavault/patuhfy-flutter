@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78552269962",
+    "project_id": "patufy-380bb",
+    "storage_bucket": "patufy-380bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78552269962:android:181f0edfdf765b5ddb5973",
+        "android_client_info": {
+          "package_name": "com.ptpn.patuhy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHFO6yP84xbunCVwHovxZxtRAPQnWpSFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
