@@ -11,6 +11,7 @@ class UserModel {
   String? company_longname;
   String? psa;
   String? psa_name;
+  String? psa_tipe;
   String? role;
   String? token;
   String? foto;
@@ -29,6 +30,7 @@ class UserModel {
       this.company_longname,
       this.psa,
       this.psa_name,
+      this.psa_tipe,
       this.role,
       this.token,
       this.foto,
@@ -47,6 +49,7 @@ class UserModel {
     company_longname = json["user"]["company_longname"];
     psa = json["user"]["psa"];
     psa_name = json["user"]["psa_name"];
+    psa_tipe = json["user"]["psa_tipe"];
     token = json["user"]["user_tokens"];
     role = json["user"]["role"];
     foto = json["user"]["photo"];

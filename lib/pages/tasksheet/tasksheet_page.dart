@@ -20,6 +20,7 @@ import 'package:patuhfy/pages/tasksheet/task_cards/real_restan/real_restan_card.
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
 import 'package:patuhfy/widgets/constant.dart';
+import 'package:shimmer/shimmer.dart';
 import 'widget/filter_menu.dart';
 
 class Tasksheet extends StatelessWidget {
@@ -156,69 +157,109 @@ class Tasksheet extends StatelessWidget {
                               if (state is SuccessPerformaListState) {
                                 print(
                                     'bepraisi data ${state.dataForm.PERSEN_TASK}');
-                                    double? value = state.dataForm.PERSEN_TASK;
+                                double? value = state.dataForm.PERSEN_TASK;
 
-                                  Color getColorForValue(double value) {
-                                    if (value < 0.5) {
-                                      return Colors.red;
-                                    } else if (value >= 0.5 && value < 0.75) {
-                                      return Colors.orange;
-                                    } else {
-                                      return Colors.green;
-                                    }
+                                Color getColorForValue(double value) {
+                                  if (value < 0.5) {
+                                    return Colors.red;
+                                  } else if (value >= 0.5 && value < 0.75) {
+                                    return Colors.orange;
+                                  } else {
+                                    return Colors.green;
                                   }
+                                }
+
                                 return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        "Progress till ${DateTime.now().toString().split(' ')[0]}", // Display current date
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                     SizedBox(height: 10), // Add vertical space here
-
+                                      "Progress till ${DateTime.now().toString().split(' ')[0]}", // Display current date
+                                      style: TextStyle(fontSize: 13),
+                                    ),
                                     SizedBox(
-                                      width: 265,
-                                      height: 5,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10)),
-                                        child: LinearProgressIndicator(
-                                          value: value,
-                                          valueColor: AlwaysStoppedAnimation<Color>(getColorForValue(value!)),
-                                          backgroundColor: const Color(0xffFF4444).withOpacity(0.1),
+                                        height: 10), // Add vertical space here
+
+                                    Center(
+                                      child: SizedBox(
+                                        width: 265,
+                                        height: 5,
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(10)),
+                                          child: LinearProgressIndicator(
+                                            value: value,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    getColorForValue(value!)),
+                                            backgroundColor:
+                                                const Color(0xffFF4444)
+                                                    .withOpacity(0.1),
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Text(
                                       "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 );
                               }
-                              return CircularProgressIndicator();
+
+                              return Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                enabled: true,
+                                child: Container(
+                                  width: 250,
+                                  // width: double.infinity,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                              );
+                              // return CircularProgressIndicator();
                             }),
                             const SizedBox(height: 10.0),
                             BlocBuilder<PerformaCubit, PerformaState>(
                               builder: (context, state) {
-                                if (state is SuccessPerformaListState){
+                                if (state is SuccessPerformaListState) {
                                   return RichText(
-                                  text: TextSpan(
-                                    text: state.dataForm.JUMLAH_TASK,
-                                    style:
-                                        kTextStyle.copyWith(color: kBlueColor),
-                                    children: [
-                                      TextSpan(
-                                        text: ' / ${state.dataForm.HARI_PRODUKTIF} Pekerjaan',
-                                        style: kTextStyle.copyWith(
-                                            color: kTitleColor),
-                                      )
-                                    ],
+                                    text: TextSpan(
+                                      text: state.dataForm.JUMLAH_TASK,
+                                      style: kTextStyle.copyWith(
+                                          fontSize: 11, color: kBlueColor),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              ' / ${state.dataForm.HARI_PRODUKTIF} Pekerjaan',
+                                          style: kTextStyle.copyWith(
+                                              fontSize: 11,
+                                              color: kTitleColor,
+                                              fontWeight: FontWeight.w500,
+                                              height: 0),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade100,
+                                  enabled: true,
+                                  child: Container(
+                                    width: 100,
+                                    // width: double.infinity,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
                                   ),
                                 );
-
-                                }
-                                return CircularProgressIndicator();
-                                
                               },
                             ),
                           ],
