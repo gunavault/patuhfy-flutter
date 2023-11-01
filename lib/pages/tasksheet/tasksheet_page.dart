@@ -143,7 +143,7 @@ class Tasksheet extends StatelessWidget {
           print('what is state $state');
           if (state is HasDataToSyncState) {
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(5.0),
               child: Row(
                 children: [
                   const SizedBox(width: 10.0),
@@ -167,7 +167,7 @@ class Tasksheet extends StatelessWidget {
                         btnSync(context);
                       },
                       label: Text(
-                        '${state.totalData} Task Belum dikirim ke database',
+                        '${state.totalData} Task Belum dikirim ke server',
                         style: kTextStyle.copyWith(color: kWhite, fontSize: 15),
                       ),
                     ),
@@ -179,7 +179,7 @@ class Tasksheet extends StatelessWidget {
 
           if (state is LoadingSyncToServerState) {
             return Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(5.0),
               child: Row(
                 children: [
                   const SizedBox(width: 10.0),
@@ -532,7 +532,7 @@ class Tasksheet extends StatelessWidget {
             },
           ),
 
-          const SizedBox(height: 20.0),
+          // const SizedBox(height: 20.0),
           // Padding(
           //   padding:
           //       const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
