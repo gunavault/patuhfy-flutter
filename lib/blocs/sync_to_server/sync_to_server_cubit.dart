@@ -61,13 +61,13 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
     if (connectivityResult != ConnectivityResult.none) {
       // syncApelPagi(userModel.token);
       emit(LoadingSyncToServerState());
-      // Timer(Duration(seconds: 3), () async {
-      emit(SuccessSyncToServerState(message: 'Sussess', status_code: 200));
       await syncApelPagi(userModel.token);
-      // await getCountDataNotSend();
 
-      print("Yeah, this line is printed after 3 seconds");
-      // });
+      Timer(Duration(seconds: 3), () async {
+        emit(SuccessSyncToServerState(message: 'Sussess', status_code: 200));
+
+        print("Yeah, this line is printed after 3 seconds");
+      });
     } else {
       emit(NoConnectionSyncToServerState('Oops, Periksa Koneksi Anda!'));
     }
