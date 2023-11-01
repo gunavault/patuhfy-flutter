@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
+import 'package:patuhfy/blocs/sync_to_server/sync_to_server_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/models/user_model.dart';
@@ -22,6 +25,7 @@ import 'package:patuhfy/pages/tasksheet/task_cards/real_restan/real_restan_card.
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
 import 'package:patuhfy/utils/common_colors.dart';
+import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:shimmer/shimmer.dart';
 import 'widget/filter_menu.dart';
@@ -108,7 +112,8 @@ class Tasksheet extends StatelessWidget {
     }
   }
 
-  void buttonSelesaikanRTL(context) {
+  void btnSync(context) {
+    BlocProvider.of<SyncToServerCubit>(context).syncData();
     // Navigator.push(
     //     context,
     //     MaterialPageRoute(
@@ -117,37 +122,116 @@ class Tasksheet extends StatelessWidget {
     //             )));
   }
 
-  Widget _bottomNavigation(context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: [
-          const SizedBox(width: 10.0),
-          Expanded(
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.sync),
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-                ),
-                shape: MaterialStateProperty.all<OutlinedBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0),
+  Widget _bottomNavigation(context, dateNow) {
+    return BlocListener<SyncToServerCubit, SyncToServerState>(
+      listener: (context, state) {
+        if (state is SuccessSyncToServerState) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          showAlertSuccessOkActionV2(context, 'Sinkronisasi database berhasil.',
+              () {
+            print('update data');
+            BlocProvider.of<ApelPagiCardCubit>(context)
+                .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+            BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
+            // Navigator.pop(context);
+          });
+        }
+      },
+      child: BlocBuilder<SyncToServerCubit, SyncToServerState>(
+        builder: (context, state) {
+          print('what is state $state');
+          if (state is HasDataToSyncState) {
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.sync),
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 10.0),
+                        ),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            CommonColors.containerTextB),
+                      ),
+                      onPressed: () {
+                        btnSync(context);
+                      },
+                      label: Text(
+                        '${state.totalData} Task Belum dikirim ke database',
+                        style: kTextStyle.copyWith(color: kWhite, fontSize: 15),
+                      ),
+                    ),
                   ),
-                ),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    CommonColors.containerTextB),
+                ],
               ),
-              onPressed: () {
-                buttonSelesaikanRTL(context);
-              },
-              label: Text(
-                '18 Task Belum dikirim ke database',
-                style: kTextStyle.copyWith(color: kWhite, fontSize: 15),
+            );
+          }
+
+          if (state is LoadingSyncToServerState) {
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      // icon: const Icon(Icons.sync),
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 10.0),
+                        ),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            CommonColors.containerTextO),
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 15,
+                              child: Lottie.asset(
+                                  'assets/animation/loading.json')),
+                          SizedBox(width: 10),
+                          Text(
+                            'Mengirim data ke server..',
+                            style: kTextStyle.copyWith(
+                                color: kWhite, fontSize: 15),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ],
+            );
+          }
+
+          if (state is NoDataToSyncState) {
+            return const Padding(
+              padding: EdgeInsets.all(1.0),
+            );
+          }
+
+          return const Padding(
+            padding: EdgeInsets.all(1.0),
+          );
+        },
       ),
     );
   }
@@ -157,7 +241,7 @@ class Tasksheet extends StatelessWidget {
     BlocProvider.of<PerformaCubit>(context).getData();
     return Scaffold(
       backgroundColor: kDarkWhite,
-      bottomNavigationBar: _bottomNavigation(context),
+      bottomNavigationBar: _bottomNavigation(context, dateNow),
       appBar: AppBar(
         backgroundColor: kDarkWhite,
         elevation: 0,
@@ -229,7 +313,7 @@ class Tasksheet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        state.userModel!.foto != null
+                        state.userModel!.foto != Container()
                             ? Container(
                                 height: 50.0,
                                 width: 50.0,
@@ -395,7 +479,20 @@ class Tasksheet extends StatelessWidget {
                     );
                   }
 
-                  return const Text('loading');
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    child: Container(
+                      width: 250,
+                      // width: double.infinity,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

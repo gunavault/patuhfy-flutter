@@ -3,6 +3,7 @@ import 'package:floor/floor.dart';
 @Entity(tableName: "t_apel_pagi_pengolahan")
 class ApelPagiPengolahanFormModel {
   @PrimaryKey(autoGenerate: true)
+  int? id;
   String? rowstamp;
   String? tanggal;
   String? unitKerja;
@@ -22,7 +23,8 @@ class ApelPagiPengolahanFormModel {
   int? isSend;
 
   ApelPagiPengolahanFormModel(
-      {this.rowstamp,
+      {this.id,
+      this.rowstamp,
       this.tanggal,
       this.unitKerja,
       this.jenisApel,

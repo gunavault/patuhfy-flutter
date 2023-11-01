@@ -19,28 +19,26 @@ class RealPemeliharaanJalanFormModel {
   int? hasRtl;
   int? isSend;
 
-
-
-  RealPemeliharaanJalanFormModel({
-this.tanggal,
-    this.createdBy,
-    this.afdeling,
-    // this.company,
-    this.unitKerja,
-    // this.blok,
-    // this.tahunTanam,
-    // this.luas,
-    this.rencanaluaspemeliharaanjalan,
-    this.realisasiluaspemeliharaanjalan,
-    this.penyebab,
-    this.rtl,
-    this.foto,
-    this.lat,
-    this.long,
-    this.mobileCreatedAt,
-    this.hasRtl,
-    this.isSend
-      });
+  RealPemeliharaanJalanFormModel(
+      {this.id,
+      this.tanggal,
+      this.createdBy,
+      this.afdeling,
+      // this.company,
+      this.unitKerja,
+      // this.blok,
+      // this.tahunTanam,
+      // this.luas,
+      this.rencanaluaspemeliharaanjalan,
+      this.realisasiluaspemeliharaanjalan,
+      this.penyebab,
+      this.rtl,
+      this.foto,
+      this.lat,
+      this.long,
+      this.mobileCreatedAt,
+      this.hasRtl,
+      this.isSend});
 
   RealPemeliharaanJalanFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
@@ -60,7 +58,7 @@ this.tanggal,
   }
 
   Map<String, dynamic> toJson() {
-     final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;

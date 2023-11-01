@@ -13,11 +13,14 @@ class SuccessSyncToServerState extends SyncToServerState {
   SuccessSyncToServerState({required this.status_code, required this.message});
 }
 
-class DuplicatedSyncToServerState extends SyncToServerState {
-  final int status_code;
-  final String message;
-  DuplicatedSyncToServerState(
-      {required this.status_code, required this.message});
+class HasDataToSyncState extends SyncToServerState {
+  final int totalData;
+  HasDataToSyncState({required this.totalData});
+}
+
+class NoDataToSyncState extends SyncToServerState {
+  final int totalData;
+  NoDataToSyncState({required this.totalData});
 }
 
 class ErrorSyncToServerState extends SyncToServerState {

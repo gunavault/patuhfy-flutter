@@ -20,23 +20,23 @@ class RealPenunasanFormModel {
   int? isSend;
   int? hasRtl;
 
-
-  RealPenunasanFormModel({
-this.tanggal,
-    this.createdBy,
-    this.afdeling,
-    this.unitKerja,
-    this.luas,
-    this.rencanaLuasPenunasan,
-    this.realisasiLuasPenunasan,
-    this.penyebab,
-    this.rtl,
-    this.foto,
-    this.lat,
-    this.long,
-    this.mobileCreatedAt,
-    this.isSend,
-    this.hasRtl});
+  RealPenunasanFormModel(
+      {this.id,
+      this.tanggal,
+      this.createdBy,
+      this.afdeling,
+      this.unitKerja,
+      this.luas,
+      this.rencanaLuasPenunasan,
+      this.realisasiLuasPenunasan,
+      this.penyebab,
+      this.rtl,
+      this.foto,
+      this.lat,
+      this.long,
+      this.mobileCreatedAt,
+      this.isSend,
+      this.hasRtl});
 
   RealPenunasanFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
@@ -57,7 +57,7 @@ this.tanggal,
   }
 
   Map<String, dynamic> toJson() {
-     final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
@@ -72,7 +72,6 @@ this.tanggal,
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;
     data["HAS_RTL"] = hasRtl;
     data["FOTO"] = foto;
-
 
     return data;
   }

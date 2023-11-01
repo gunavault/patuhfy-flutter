@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @Entity(tableName: "t_real_pusingan_panen")
 class RealPusinganPanenFormModel {
   @PrimaryKey(autoGenerate: true)
-int? id;
+  int? id;
   String? tanggal;
   String? createdBy;
   String? afdeling;
@@ -24,28 +24,28 @@ int? id;
   int? isSend;
   int? hasRtl;
 
-  RealPusinganPanenFormModel({
-this.tanggal,
-    this.createdBy,
-    this.afdeling,
-    // this.company,
-    this.unitKerja,
-    this.blok,
-    this.tahunTanam,
-    this.rotasipanen,
-    this.normapusingan,
-    this.pusingan9hari,
-    this.pusingan10hari,
-    this.pusingan11hari,
-    this.pusingan12harilebih,
-    this.penyebab,
-    this.rtl,
-    this.lat,
-    this.long,
-    this.mobileCreatedAt,
-    this.isSend,
-    this.hasRtl
-      });
+  RealPusinganPanenFormModel(
+      {this.id,
+      this.tanggal,
+      this.createdBy,
+      this.afdeling,
+      // this.company,
+      this.unitKerja,
+      this.blok,
+      this.tahunTanam,
+      this.rotasipanen,
+      this.normapusingan,
+      this.pusingan9hari,
+      this.pusingan10hari,
+      this.pusingan11hari,
+      this.pusingan12harilebih,
+      this.penyebab,
+      this.rtl,
+      this.lat,
+      this.long,
+      this.mobileCreatedAt,
+      this.isSend,
+      this.hasRtl});
 
   RealPusinganPanenFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
@@ -67,11 +67,10 @@ this.tanggal,
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
     hasRtl = json['HAS_RTL'];
-
   }
 
   Map<String, dynamic> toJson() {
-     final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;
@@ -91,8 +90,7 @@ this.tanggal,
     data["MOBILE_CREATED_AT"] = mobileCreatedAt;
     data["HAS_RTL"] = hasRtl;
 
-
-     return data;
+    return data;
   }
 }
 

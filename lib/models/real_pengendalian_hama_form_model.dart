@@ -21,7 +21,8 @@ class RealPengendalianHamaFormModel {
   int? hasRtl;
 
   RealPengendalianHamaFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       this.createdBy,
       this.unitKerja,
       this.afdeling,

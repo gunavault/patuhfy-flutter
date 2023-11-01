@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,12 +20,15 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
   SyncToServerCubit(this.localDataSource, this.remoteDataSource)
       : super(InitialSyncToServerState());
 
-  Map<String, dynamic> successResponse() {
-    return {'statusCode': 200};
-  }
-
-  Map<String, dynamic> errorResponse() {
-    return {'statusCode': 500};
+  getCountDataNotSend() async {
+    print('kesini nih');
+    int total = await localDataSource.getCountNotSend();
+    print('kesini nih ${total}');
+    if (total == 0) {
+      emit(NoDataToSyncState(totalData: total));
+    } else {
+      emit(HasDataToSyncState(totalData: total));
+    }
   }
 
   Future<bool> syncApelPagi(token) async {
@@ -32,15 +37,15 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (apelPagi > 0) {
         List<ApelPagiFormModel> listData =
             await localDataSource.getAllDataApelPagiDataNotSend();
-
+        print('listData ${listData}');
         listData.forEach((dataForm) async {
+          print('awww ${dataForm.toJson()}');
           ApelPagiFormModelResponse dataResponse =
               await remoteDataSource.createApelPagi(token, dataForm);
           if (dataResponse.status_code == 200) {
             await localDataSource.deleteApelPagiById(dataForm.id);
           }
         });
-        return true;
       }
 
       return true;
@@ -54,104 +59,17 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
         .checkConnectivity()); // cCheck if there is connection post to local and database
     UserModel userModel = await localDataSource.getCurrentUser();
     if (connectivityResult != ConnectivityResult.none) {
+      // syncApelPagi(userModel.token);
+      emit(LoadingSyncToServerState());
+      // Timer(Duration(seconds: 3), () async {
+      emit(SuccessSyncToServerState(message: 'Sussess', status_code: 200));
+      await syncApelPagi(userModel.token);
+      // await getCountDataNotSend();
+
+      print("Yeah, this line is printed after 3 seconds");
+      // });
     } else {
       emit(NoConnectionSyncToServerState('Oops, Periksa Koneksi Anda!'));
     }
   }
-
-  // storedOffline(SyncToServerModel dataForm) async {
-  //   // set lat and long jika gak ada signal
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   dataForm.lat = prefs.getString(lat);
-  //   dataForm.long = prefs.getString(long);
-  //   dataForm.isSend = 0;
-
-  //   List<SyncToServerModel> cekLength;
-  //   cekLength = await localDataSource
-  //       .getDataApelPagiByTanggal(dataForm.tanggal.toString());
-
-  //   if (cekLength.isEmpty) {
-  //     //Check duplikat
-  //     await localDataSource.addDataApelPagi(dataForm);
-  //   }
-
-  //   emit(SuccessSyncToServerState(
-  //       status_code: 200, message: 'Inserted to Lokal Database'));
-
-  //   print('bepraisi data ${cekLength.length}');
-  // }
-
-  // storedOnline(SyncToServerModel dataForm, UserModel userModel) async {
-  //   // set lat and long jika ada sinyal
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-  //   dataForm.lat = position.latitude.toString();
-  //   dataForm.long = position.longitude.toString();
-  //   dataForm.isSend = 1;
-
-  //   // setelah itu simpen ke database holding
-  //   SyncToServerModelResponse resFromApi =
-  //       await remoteDataSource.createApelPagi(
-  //     userModel.token,
-  //     dataForm,
-  //   );
-
-  //   if (resFromApi.status_code == 200) {
-  //     // Simpen dulu yang offline
-  //     List<SyncToServerModel> cekLength;
-  //     cekLength = await localDataSource
-  //         .getDataApelPagiByTanggal(dataForm.tanggal.toString());
-
-  //     if (cekLength.isEmpty) {
-  //       //Check duplikat
-  //       await localDataSource.addDataApelPagi(dataForm);
-  //     }
-
-  //     emit(SuccessSyncToServerState(
-  //         status_code: resFromApi.status_code, message: resFromApi.message));
-  //   } else {
-  //     emit(DuplicatedSyncToServerState(
-  //         status_code: resFromApi.status_code, message: resFromApi.message));
-  //   }
-  // }
-
-  // submitToDatabase(SyncToServerModel dataForm) async {
-  //   try {
-  //     emit(LoadingSyncToServerState());
-  //     // SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     DateTime dateToday = DateTime.now();
-  //     String today = dateToday.toString().substring(0, 19);
-
-  //     UserModel userModel = await localDataSource.getCurrentUser();
-  //     dataForm.createdBy = userModel.nik_sap;
-  //     dataForm.tanggal = today;
-  //     // dataForm.company = userModel.company_code;
-  //     dataForm.unitKerja = userModel.psa;
-
-  //     final connectivityResult = await (Connectivity()
-  //         .checkConnectivity()); // cCheck if there is connection post to local and database
-
-  //     if (connectivityResult != ConnectivityResult.none) {
-  //       storedOnline(dataForm, userModel); // Send to Database Server Holding
-  //     } else {
-  //       storedOffline(
-  //           dataForm); // By Default saved local database (offlinemode)
-  //     }
-  //   } catch (err) {
-  //     final connectivityResult = await (Connectivity().checkConnectivity());
-  //     if (connectivityResult != ConnectivityResult.none) {
-  //       localDataSource.deleteDataAPelPagiByDate(
-  //           dataForm.tanggal.toString()); //Hapus data di Lokal By Date
-  //       emit(ErrorSyncToServerState(err.toString())); //Emit Error State
-  //     } else {
-  //       emit(SuccessSyncToServerState(
-  //           status_code: 200, message: 'Inserted to Lokal Database'));
-  //     }
-  //   }
-  // }
-
-  // createApelPagi(
-  //     SyncToServerModel dataFormApelPagi, String kode_sales_order) async {
-
-  // }
 }

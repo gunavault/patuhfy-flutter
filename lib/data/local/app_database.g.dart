@@ -125,7 +125,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, `luasArealTanam` TEXT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
         await database.execute(
@@ -153,7 +153,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_pusingan_panen` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `rotasipanen` INTEGER, `normapusingan` INTEGER, `pusingan9hari` INTEGER, `pusingan10hari` INTEGER, `pusingan11hari` INTEGER, `pusingan12harilebih` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_apel_pagi_pengolahan` (`rowstamp` TEXT PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `jenisApel` TEXT, `jamMulai` TEXT, `jamSelesai` TEXT, `latMulai` REAL, `longMulai` REAL, `latSelesai` REAL, `longSelesai` REAL, `keterangan` TEXT, `createdBy` TEXT, `createdAt` TEXT, `updatedBy` TEXT, `updatedAt` TEXT, `foto` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_apel_pagi_pengolahan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `rowstamp` TEXT, `tanggal` TEXT, `unitKerja` TEXT, `jenisApel` TEXT, `jamMulai` TEXT, `jamSelesai` TEXT, `latMulai` REAL, `longMulai` REAL, `latSelesai` REAL, `longSelesai` REAL, `keterangan` TEXT, `createdBy` TEXT, `createdAt` TEXT, `updatedBy` TEXT, `updatedAt` TEXT, `foto` TEXT, `isSend` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -508,7 +508,7 @@ class _$TApelPagiDao extends TApelPagiDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_apel_pagi WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => ApelPagiFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => ApelPagiFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -516,6 +516,7 @@ class _$TApelPagiDao extends TApelPagiDao {
   Future<List<ApelPagiFormModel>> getAllApelPagi() async {
     return _queryAdapter.queryList('SELECT * FROM t_apel_pagi',
         mapper: (Map<String, Object?> row) => ApelPagiFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -537,6 +538,7 @@ class _$TApelPagiDao extends TApelPagiDao {
   Future<List<ApelPagiFormModel>> getAllDataNotSend() async {
     return _queryAdapter.queryList('SELECT * FROM t_apel_pagi where isSend = 0',
         mapper: (Map<String, Object?> row) => ApelPagiFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -622,7 +624,7 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_inspeksi_hanca WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, brondolanTidakDikutip: row['brondolanTidakDikutip'] as int?, buahBusuk: row['buahBusuk'] as int?, buahLewatMarangTidakDipanen: row['buahLewatMarangTidakDipanen'] as int?, buahLewatMatangTidakDiangkutKeTph: row['buahLewatMatangTidakDiangkutKeTph'] as int?, pelepahTidakDipotongTiga: row['pelepahTidakDipotongTiga'] as int?, pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, brondolanTidakDikutip: row['brondolanTidakDikutip'] as int?, buahBusuk: row['buahBusuk'] as int?, buahLewatMarangTidakDipanen: row['buahLewatMarangTidakDipanen'] as int?, buahLewatMatangTidakDiangkutKeTph: row['buahLewatMatangTidakDiangkutKeTph'] as int?, pelepahTidakDipotongTiga: row['pelepahTidakDipotongTiga'] as int?, pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -630,6 +632,7 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
   Future<List<InspeksiHancaFormModel>> getAllInspeksiHanca() async {
     return _queryAdapter.queryList('SELECT * FROM t_inspeksi_hanca',
         mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -671,6 +674,7 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_inspeksi_hanca where isSend = 0',
         mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -760,7 +764,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_inspeksi_tph WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, noTph: row['noTph'] as int?, panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?, tbsBusuk: row['tbsBusuk'] as int?, gagangTandanPanjang: row['gagangTandanPanjang'] as int?, tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?, tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?, tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, kapveld: row['kapveld'] as int?, mandor: row['mandor'] as String?, pemanen: row['pemanen'] as String?, noTph: row['noTph'] as int?, panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?, tbsBusuk: row['tbsBusuk'] as int?, gagangTandanPanjang: row['gagangTandanPanjang'] as int?, tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?, tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?, tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -768,6 +772,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
   Future<List<InspeksiTphFormModel>> getAllInspeksiTph() async {
     return _queryAdapter.queryList('SELECT * FROM t_inspeksi_tph',
         mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -808,6 +813,7 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_inspeksi_tph where isSend = 0',
         mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -892,7 +898,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(tanggal: row['tanggal'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, realisasiPencurianTbsTandan: row['realisasiPencurianTbsTandan'] as int?, realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?, brondolan: row['brondolan'] as int?, foto: row['foto'] as String?, rtl: row['rtl'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, realisasiPencurianTbsTandan: row['realisasiPencurianTbsTandan'] as int?, realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?, brondolan: row['brondolan'] as int?, foto: row['foto'] as String?, rtl: row['rtl'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -900,6 +906,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   Future<List<PencurianTbsFormModel>> getAllPencurianTbs() async {
     return _queryAdapter.queryList('SELECT * FROM t_pencurian_tbs',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             mobileCreatedAt: row['mobileCreatedAt'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -930,6 +937,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_pencurian_tbs where isSend = 0',
         mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             mobileCreatedAt: row['mobileCreatedAt'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -1012,7 +1020,7 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_lap_kerusakan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, keterangan: row['keterangan'] as String?, rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afd: row['afd'] as String?, foto: row['foto'] as String?, createdBy: row['createdBy'] as String?, long: row['long'] as String?, lat: row['lat'] as String?, keterangan: row['keterangan'] as String?, rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1020,6 +1028,7 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
   Future<List<LapKerusakanFormModel>> getAllLapKerusakan() async {
     return _queryAdapter.queryList('SELECT * FROM t_lap_kerusakan',
         mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -1044,6 +1053,7 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_lap_kerusakan where isSend = 0',
         mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afd: row['afd'] as String?,
@@ -1272,7 +1282,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1280,6 +1290,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
   Future<List<RealPemupukanFormModel>> getAllRealPemupukan() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_pemupukan',
         mapper: (Map<String, Object?> row) => RealPemupukanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -1309,6 +1320,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemupukan where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPemupukanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -1395,7 +1407,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penyiangan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1403,6 +1415,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
   Future<List<RealPenyianganFormModel>> getAllRealPenyiangan() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_penyiangan',
         mapper: (Map<String, Object?> row) => RealPenyianganFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1432,6 +1445,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penyiangan where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPenyianganFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1518,7 +1532,7 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penunasan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?, realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?, realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1526,6 +1540,7 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
   Future<List<RealPenunasanFormModel>> getAllRealPenunasan() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_penunasan',
         mapper: (Map<String, Object?> row) => RealPenunasanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1555,6 +1570,7 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penunasan where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPenunasanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1644,7 +1660,7 @@ class _$TRealRestanDao extends TRealRestanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_restan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealRestanFormModel(tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, jmlTandanDipanen: row['jmlTandanDipanen'] as int?, jmlTandanDiangkut: row['jmlTandanDiangkut'] as int?, restanHi: row['restanHi'] as int?, restanKemarin: row['restanKemarin'] as int?, restanTotal: row['restanTotal'] as int?, ketKendala: row['ketKendala'] as String?, ketTindakLanjut: row['ketTindakLanjut'] as String?, kapasitasAngkutanPerton: row['kapasitasAngkutanPerton'] as int?, kebutuhanArmadaAngkut: row['kebutuhanArmadaAngkut'] as int?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, createdBy: row['createdBy'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealRestanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, jmlTandanDipanen: row['jmlTandanDipanen'] as int?, jmlTandanDiangkut: row['jmlTandanDiangkut'] as int?, restanHi: row['restanHi'] as int?, restanKemarin: row['restanKemarin'] as int?, restanTotal: row['restanTotal'] as int?, ketKendala: row['ketKendala'] as String?, ketTindakLanjut: row['ketTindakLanjut'] as String?, kapasitasAngkutanPerton: row['kapasitasAngkutanPerton'] as int?, kebutuhanArmadaAngkut: row['kebutuhanArmadaAngkut'] as int?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, createdBy: row['createdBy'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1652,6 +1668,7 @@ class _$TRealRestanDao extends TRealRestanDao {
   Future<List<RealRestanFormModel>> getAllRealRestan() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_restan',
         mapper: (Map<String, Object?> row) => RealRestanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1684,6 +1701,7 @@ class _$TRealRestanDao extends TRealRestanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_restan where isSend = 0',
         mapper: (Map<String, Object?> row) => RealRestanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1774,7 +1792,7 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
       getDataRealPemeliharaanJalanByTanggal(String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, rencanaluaspemeliharaanjalan: row['rencanaluaspemeliharaanjalan'] as int?, realisasiluaspemeliharaanjalan: row['realisasiluaspemeliharaanjalan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, hasRtl: row['hasRtl'] as int?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, rencanaluaspemeliharaanjalan: row['rencanaluaspemeliharaanjalan'] as int?, realisasiluaspemeliharaanjalan: row['realisasiluaspemeliharaanjalan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, hasRtl: row['hasRtl'] as int?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1783,6 +1801,7 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
       getAllRealPemeliharaanJalan() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_pemeliharaan_jalan',
         mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1813,6 +1832,7 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemeliharaan_jalan where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -1904,7 +1924,7 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
       getDataRealPengendalianHamaByTanggal(String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pengendalian_hama WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPengendalianHama: row['rencanaLuasPengendalianHama'] as int?, realisasiLuasPengendalianHama: row['realisasiLuasPengendalianHama'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPengendalianHama: row['rencanaLuasPengendalianHama'] as int?, realisasiLuasPengendalianHama: row['realisasiLuasPengendalianHama'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1913,6 +1933,7 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
       getAllRealPengendalianHama() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_pengendalian_hama',
         mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -1944,6 +1965,7 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pengendalian_hama where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -2038,7 +2060,7 @@ class _$TRealPusinganPanenDao extends TRealPusinganPanenDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pusingan_panen WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPusinganPanenFormModel(tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, rotasipanen: row['rotasipanen'] as int?, normapusingan: row['normapusingan'] as int?, pusingan9hari: row['pusingan9hari'] as int?, pusingan10hari: row['pusingan10hari'] as int?, pusingan11hari: row['pusingan11hari'] as int?, pusingan12harilebih: row['pusingan12harilebih'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPusinganPanenFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, blok: row['blok'] as String?, tahunTanam: row['tahunTanam'] as int?, rotasipanen: row['rotasipanen'] as int?, normapusingan: row['normapusingan'] as int?, pusingan9hari: row['pusingan9hari'] as int?, pusingan10hari: row['pusingan10hari'] as int?, pusingan11hari: row['pusingan11hari'] as int?, pusingan12harilebih: row['pusingan12harilebih'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -2046,6 +2068,7 @@ class _$TRealPusinganPanenDao extends TRealPusinganPanenDao {
   Future<List<RealPusinganPanenFormModel>> getAllRealPusinganPanen() async {
     return _queryAdapter.queryList('SELECT * FROM t_real_pusingan_panen',
         mapper: (Map<String, Object?> row) => RealPusinganPanenFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -2079,6 +2102,7 @@ class _$TRealPusinganPanenDao extends TRealPusinganPanenDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pusingan_panen where isSend = 0',
         mapper: (Map<String, Object?> row) => RealPusinganPanenFormModel(
+            id: row['id'] as int?,
             tanggal: row['tanggal'] as String?,
             createdBy: row['createdBy'] as String?,
             afdeling: row['afdeling'] as String?,
@@ -2139,6 +2163,7 @@ class _$TApelPagiPengolahanDao extends TApelPagiPengolahanDao {
             database,
             't_apel_pagi_pengolahan',
             (ApelPagiPengolahanFormModel item) => <String, Object?>{
+                  'id': item.id,
                   'rowstamp': item.rowstamp,
                   'tanggal': item.tanggal,
                   'unitKerja': item.unitKerja,
@@ -2172,7 +2197,7 @@ class _$TApelPagiPengolahanDao extends TApelPagiPengolahanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_apel_pagi_pengolahan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(rowstamp: row['rowstamp'] as String?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, jenisApel: row['jenisApel'] as String?, jamMulai: row['jamMulai'] as String?, jamSelesai: row['jamSelesai'] as String?, latMulai: row['latMulai'] as double?, longMulai: row['longMulai'] as double?, latSelesai: row['latSelesai'] as double?, longSelesai: row['longSelesai'] as double?, keterangan: row['keterangan'] as String?, createdBy: row['createdBy'] as String?, createdAt: row['createdAt'] as String?, updatedBy: row['updatedBy'] as String?, updatedAt: row['updatedAt'] as String?, foto: row['foto'] as String?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(id: row['id'] as int?, rowstamp: row['rowstamp'] as String?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, jenisApel: row['jenisApel'] as String?, jamMulai: row['jamMulai'] as String?, jamSelesai: row['jamSelesai'] as String?, latMulai: row['latMulai'] as double?, longMulai: row['longMulai'] as double?, latSelesai: row['latSelesai'] as double?, longSelesai: row['longSelesai'] as double?, keterangan: row['keterangan'] as String?, createdBy: row['createdBy'] as String?, createdAt: row['createdAt'] as String?, updatedBy: row['updatedBy'] as String?, updatedAt: row['updatedAt'] as String?, foto: row['foto'] as String?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -2180,6 +2205,7 @@ class _$TApelPagiPengolahanDao extends TApelPagiPengolahanDao {
   Future<List<ApelPagiPengolahanFormModel>> getAllApelPagiPengolahan() async {
     return _queryAdapter.queryList('SELECT * FROM t_apel_pagi_pengolahan',
         mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(
+            id: row['id'] as int?,
             rowstamp: row['rowstamp'] as String?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -2211,6 +2237,7 @@ class _$TApelPagiPengolahanDao extends TApelPagiPengolahanDao {
     return _queryAdapter.queryList(
         'SELECT * FROM t_apel_pagi_pengolahan where isSend = 0',
         mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(
+            id: row['id'] as int?,
             rowstamp: row['rowstamp'] as String?,
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,

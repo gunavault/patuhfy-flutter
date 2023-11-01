@@ -3,28 +3,28 @@ import 'package:floor/floor.dart';
 @Entity(tableName: "t_real_restan")
 class RealRestanFormModel {
   @PrimaryKey(autoGenerate: true)
-    int? id;
-    String? tanggal;
-    String? unitKerja;
-    String? afdeling;
-    int? jmlTandanDipanen;
-    int? jmlTandanDiangkut;
-    int? restanHi;
-    int? restanKemarin;
-    int? restanTotal;
-    String? ketKendala;
-    String? ketTindakLanjut;
-    int? kapasitasAngkutanPerton;
-    int? kebutuhanArmadaAngkut;
-    String? lat;
-    String? long;
-    String? mobileCreatedAt;
-    String? createdBy;
-    int? isSend;
-    int? hasRtl;
+  int? id;
+  String? tanggal;
+  String? unitKerja;
+  String? afdeling;
+  int? jmlTandanDipanen;
+  int? jmlTandanDiangkut;
+  int? restanHi;
+  int? restanKemarin;
+  int? restanTotal;
+  String? ketKendala;
+  String? ketTindakLanjut;
+  int? kapasitasAngkutanPerton;
+  int? kebutuhanArmadaAngkut;
+  String? lat;
+  String? long;
+  String? mobileCreatedAt;
+  String? createdBy;
+  int? isSend;
+  int? hasRtl;
 
   RealRestanFormModel(
-      {
+      {this.id,
       this.tanggal,
       this.unitKerja,
       this.afdeling,
@@ -42,8 +42,7 @@ class RealRestanFormModel {
       this.mobileCreatedAt,
       this.createdBy,
       this.isSend,
-      this.hasRtl
-      });
+      this.hasRtl});
 
   RealRestanFormModel.fromJson(Map<String, dynamic> json) {
     print('data json $json');

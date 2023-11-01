@@ -164,7 +164,7 @@ class LocalDataSource {
     // cek off line dlu
     List<ApelPagiFormModel> dataForm;
     dataForm = await tApelPagiDao.getDataApelPagiByTanggal(tanggal);
-
+    print('data dari lokal $dataForm');
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
@@ -172,7 +172,7 @@ class LocalDataSource {
       ApelPagiFormModelSelectResponse response = await RemoteDataSource()
           .getDataApelPagiByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
-
+      print('data dari remote ${response.dataForm.first}');
       if (response.dataForm.isNotEmpty) {
         await addDataApelPagi(response.dataForm.first);
         return response.dataForm;

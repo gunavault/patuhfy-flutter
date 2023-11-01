@@ -17,7 +17,8 @@ class LapKerusakanFormModel {
   int? isSend;
 
   LapKerusakanFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       // this.company,
       this.unitKerja,
       this.afd,

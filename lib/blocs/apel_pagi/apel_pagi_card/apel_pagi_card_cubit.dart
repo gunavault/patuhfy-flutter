@@ -15,6 +15,7 @@ class ApelPagiCardCubit extends Cubit<ApelPagiCardState> {
       : super(IsApelPagiAswered(false, null));
 
   checkIsAnwered(String taskDate) async {
+    print('taskdate $taskDate');
     List<ApelPagiFormModel> cekData;
     final connectivityResult = await (Connectivity()
         .checkConnectivity()); // cCheck if there is connection post to local and database

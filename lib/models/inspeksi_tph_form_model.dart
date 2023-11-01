@@ -27,7 +27,8 @@ class InspeksiTphFormModel {
   int? isSend;
 
   InspeksiTphFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       // this.company,
       this.unitKerja,
       this.afd,

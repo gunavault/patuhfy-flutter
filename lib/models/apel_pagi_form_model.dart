@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "t_apel_pagi")
+@Entity(tableName: "t_apel_pagi", primaryKeys: ['id'])
 class ApelPagiFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;
@@ -14,7 +14,8 @@ class ApelPagiFormModel {
   int? isSend;
 
   ApelPagiFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       this.unitKerja,
       required this.afd,
       required this.foto,
@@ -37,6 +38,7 @@ class ApelPagiFormModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
     data["tanggal"] = tanggal;
     data["unitKerja"] = unitKerja;
     data["afd"] = afd;

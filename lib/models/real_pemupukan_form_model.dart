@@ -21,7 +21,8 @@ class RealPemupukanFormModel {
   int? hasRtl;
 
   RealPemupukanFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       this.createdBy,
       this.unitKerja,
       this.afdeling,

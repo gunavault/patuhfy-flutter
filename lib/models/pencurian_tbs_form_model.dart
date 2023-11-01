@@ -21,7 +21,8 @@ class PencurianTbsFormModel {
   int? isSend;
 
   PencurianTbsFormModel(
-      {this.tanggal,
+      {this.id,
+      this.tanggal,
       this.mobileCreatedAt,
       this.unitKerja,
       this.afd,
