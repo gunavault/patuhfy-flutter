@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
-import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 
 part 'rtl_detail_update_status_form_state.dart';

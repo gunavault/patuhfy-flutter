@@ -7,8 +7,9 @@ class InitialTasksheetPageState extends TasksheetPageState {}
 
 class SetTasksheetPageState extends TasksheetPageState {
   final String selectedDate;
+  final UserModel userModel;
 
-  SetTasksheetPageState(this.selectedDate);
+  SetTasksheetPageState(this.selectedDate, this.userModel);
 }
 
 // class SuccessTasksheetPageState extends TasksheetPageState {

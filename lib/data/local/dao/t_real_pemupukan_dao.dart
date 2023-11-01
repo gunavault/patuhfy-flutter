@@ -18,6 +18,14 @@ abstract class TRealPemupukanDao {
   // @update
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
+  @Query('SELECT count(*) FROM t_real_pemupukan where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('SELECT * FROM t_real_pemupukan where isSend = 0')
+  Future<List<RealPemupukanFormModel>> getAllDataNotSend();
+
+  @Query('DELETE FROM t_real_pemupukan where id = :id')
+  Future<bool?> deleteDataById(int id);
 
   @Query('DELETE FROM t_real_pemupukan')
   Future<bool?> deleteDataRealPemupukan();

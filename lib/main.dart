@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_form/apel_pagi_form_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_card/apel_pagi_pengolahan_card_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_form/apel_pagi_pengolahan_form_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
@@ -75,7 +77,8 @@ Future<void> main() async {
       database.tRealRestanDao,
       database.tRealPemeliharaanJalanDao,
       database.tRealPengendalianHamaDao,
-      database.tRealPusinganPanenDao);
+      database.tRealPusinganPanenDao,
+      database.tApelPagiPengolahanDao);
   final UserModel user = await localDataSource.getCurrentUser() ?? UserModel();
   final remoteDataSource = RemoteDataSource();
   DateTime dateToday = DateTime.now();
@@ -118,7 +121,8 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
-              TasksheetPageCubit(localDataSource, remoteDataSource, today),
+              TasksheetPageCubit(localDataSource, remoteDataSource, today)
+                ..initTasksheetPage(),
         ),
         BlocProvider(
           create: (BuildContext context) =>
@@ -180,8 +184,8 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
-          RealPengendalianHamaCardCubit(localDataSource, remoteDataSource)
-            ..checkIsAnwered(today.toString()),
+              RealPengendalianHamaCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
         ),
         BlocProvider(
           create: (BuildContext context) =>
@@ -189,8 +193,8 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
-          RealPusinganPanenCardCubit(localDataSource, remoteDataSource)
-            ..checkIsAnwered(today.toString()),
+              RealPusinganPanenCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
         ),
         BlocProvider(
           create: (BuildContext context) =>
@@ -248,9 +252,18 @@ Future<void> main() async {
           create: (BuildContext context) =>
               RtlUpdateStatusFormCubit(localDataSource, remoteDataSource),
         ),
-                BlocProvider(
+        BlocProvider(
           create: (BuildContext context) =>
               PerformaCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              ApelPagiPengolahanFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              ApelPagiPengolahanCardCubit(localDataSource, remoteDataSource)
+                ..checkIsAnwered(today.toString()),
         ),
       ],
       child: MyApp(

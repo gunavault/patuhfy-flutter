@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
+import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
@@ -401,8 +402,8 @@ class RemoteDataSource {
     }
   }
 
-  Future<RealPengendalianHamaFormModelSelectResponse> getDataRealPengendalianHamaByTanggal(
-      tanggal, createdBy, token) async {
+  Future<RealPengendalianHamaFormModelSelectResponse>
+      getDataRealPengendalianHamaByTanggal(tanggal, createdBy, token) async {
     try {
       var dio = Dio();
 
@@ -426,7 +427,7 @@ class RemoteDataSource {
           dataForm: [RealPengendalianHamaFormModel()]);
     }
   }
-  
+
   //Realisasi Penyiangan
   Future<RealPenyianganFormModelResponse> createRealPenyiangan(
       token, RealPenyianganFormModel dataForm) async {
@@ -488,8 +489,8 @@ class RemoteDataSource {
     }
   }
 
-  Future<RealPusinganPanenFormModelSelectResponse> getDataRealPusinganPanenByTanggal(
-      tanggal, createdBy, token) async {
+  Future<RealPusinganPanenFormModelSelectResponse>
+      getDataRealPusinganPanenByTanggal(tanggal, createdBy, token) async {
     try {
       var dio = Dio();
 
@@ -512,7 +513,6 @@ class RemoteDataSource {
           dataForm: [RealPusinganPanenFormModel()]);
     }
   }
-
 
   //Realisasi Penunasan
   Future<RealPenunasanFormModelResponse> createRealPenunasan(
@@ -644,8 +644,6 @@ class RemoteDataSource {
           dataForm: [RealPemeliharaanJalanFormModel()]);
     }
   }
-  
-  
 
   // RTL LIST
   Future<RtlListModelSelectResponse> getDataListRtlByPsaAndKodeJabatan(
@@ -784,9 +782,8 @@ class RemoteDataSource {
   }
 
 //performa
- Future<PerformaModelSelectResponse> getdataperforma(
-      nikSap, token) async {
-        print('sssss');
+  Future<PerformaModelSelectResponse> getdataperforma(nikSap, token) async {
+    print('sssss');
     try {
       var dio = Dio();
 
@@ -803,11 +800,52 @@ class RemoteDataSource {
           message: callback['msg'],
           dataForm: PerformaModel.fromJson(parsedData));
     } on DioError catch (err) {
-      print('rrtot ${err}');
+      print('rrtot $err');
       return PerformaModelSelectResponse(
           status_code: 500,
           message: err.response.toString(),
           dataForm: PerformaModel());
+    }
+  }
+
+  createApelPagiPengolahan(token, ApelPagiPengolahanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.post("$baseUrl/tasksheet-pengolahan/apel-pagi",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return ApelPagiFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return ApelPagiFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<ApelPagiPengolahanFormModelSelectResponse>
+      getDataApelPagiPengolahanByTanggal(tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/apel-pagi/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return ApelPagiPengolahanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => ApelPagiPengolahanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return ApelPagiPengolahanFormModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [ApelPagiPengolahanFormModel()]);
     }
   }
 }

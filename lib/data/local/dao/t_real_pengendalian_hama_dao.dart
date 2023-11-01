@@ -9,8 +9,8 @@ abstract class TRealPengendalianHamaDao {
 
   @Query(
       'SELECT * FROM t_real_pengendalian_hama WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
-  Future<List<RealPengendalianHamaFormModel>> getDataRealPengendalianHamaByTanggal(
-      String tanggal);
+  Future<List<RealPengendalianHamaFormModel>>
+      getDataRealPengendalianHamaByTanggal(String tanggal);
 
   @Query('SELECT * FROM t_real_pengendalian_hama')
   Future<List<RealPengendalianHamaFormModel>> getAllRealPengendalianHama();
@@ -18,6 +18,15 @@ abstract class TRealPengendalianHamaDao {
   // @update
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
+
+  @Query('SELECT count(*) FROM t_real_pengendalian_hama where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('SELECT * FROM t_real_pengendalian_hama where isSend = 0')
+  Future<List<RealPengendalianHamaFormModel>> getAllDataNotSend();
+
+  @Query('DELETE FROM t_real_pengendalian_hama where id = :id')
+  Future<bool?> deleteDataById(int id);
 
   @Query('DELETE FROM t_real_pengendalian_hama')
   Future<bool?> deleteDataRealPengendalianHama();
@@ -27,5 +36,6 @@ abstract class TRealPengendalianHamaDao {
   Future<bool?> deleteDataRealPengendalianHamaByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)
-  Future<void> insertDataRealPengendalianHama(RealPengendalianHamaFormModel data);
+  Future<void> insertDataRealPengendalianHama(
+      RealPengendalianHamaFormModel data);
 }

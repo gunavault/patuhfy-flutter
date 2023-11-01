@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/lap_kerusakan/lap_kerusakan_card.dart';
@@ -19,6 +21,7 @@ import 'package:patuhfy/pages/tasksheet/task_cards/real_pusingan_panen/real_pusi
 import 'package:patuhfy/pages/tasksheet/task_cards/real_restan/real_restan_card.dart';
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
+import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:shimmer/shimmer.dart';
 import 'widget/filter_menu.dart';
@@ -29,11 +32,132 @@ class Tasksheet extends StatelessWidget {
   bool isToday = false;
   Tasksheet({super.key});
 
+  List<Widget> taskList(
+      UserModel userModel, bool isToday, state, selectedDate) {
+    print('userModel ${userModel.psa_tipe}');
+    if (userModel.psa_tipe == 'KEBUN') {
+      return [
+        LabelTaskDoTo(
+          selectedDate: selectedDate,
+        ),
+        ApelPagiCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        InspeksiHancaCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        InspeksiTphCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        PencurianTbsCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        LapKerusakanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPemupukanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPengendalianHamaCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPusinganPanenCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPemeliharaanJalanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPenyianganCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealPenunasanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        RealRestanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+      ];
+    } else if (userModel.psa_tipe == 'PABRIK') {
+      return [
+        LabelTaskDoTo(
+          selectedDate: selectedDate,
+        ),
+        ApelPagiPengolahanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+      ];
+    } else {
+      return [
+        Container(
+          child: const Center(child: Text('No Card Found')),
+        )
+      ];
+    }
+  }
+
+  void buttonSelesaikanRTL(context) {
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => RtlUpdateStatusForm(
+    //               dataForm: dataRtl,
+    //             )));
+  }
+
+  Widget _bottomNavigation(context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          const SizedBox(width: 10.0),
+          Expanded(
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.sync),
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                ),
+                shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    CommonColors.containerTextB),
+              ),
+              onPressed: () {
+                buttonSelesaikanRTL(context);
+              },
+              label: Text(
+                '18 Task Belum dikirim ke database',
+                style: kTextStyle.copyWith(color: kWhite, fontSize: 15),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PerformaCubit>(context).getData();
     return Scaffold(
       backgroundColor: kDarkWhite,
+      bottomNavigationBar: _bottomNavigation(context),
       appBar: AppBar(
         backgroundColor: kDarkWhite,
         elevation: 0,
@@ -155,8 +279,6 @@ class Tasksheet extends StatelessWidget {
                             BlocBuilder<PerformaCubit, PerformaState>(
                                 builder: (context, state) {
                               if (state is SuccessPerformaListState) {
-                                print(
-                                    'bepraisi data ${state.dataForm.PERSEN_TASK}');
                                 double? value = state.dataForm.PERSEN_TASK;
 
                                 Color getColorForValue(double value) {
@@ -175,9 +297,9 @@ class Tasksheet extends StatelessWidget {
                                   children: [
                                     Text(
                                       "Progress till ${DateTime.now().toString().split(' ')[0]}", // Display current date
-                                      style: TextStyle(fontSize: 13),
+                                      style: const TextStyle(fontSize: 13),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                         height: 10), // Add vertical space here
 
                                     Center(
@@ -201,7 +323,7 @@ class Tasksheet extends StatelessWidget {
                                     ),
                                     Text(
                                       "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
-                                      style: TextStyle(fontSize: 14),
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 );
@@ -278,8 +400,8 @@ class Tasksheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10.0),
           const FilterMenutaskSheet(),
+
           BlocBuilder<TasksheetPageCubit, TasksheetPageState>(
             builder: (context, state) {
               if (state is SetTasksheetPageState) {
@@ -292,60 +414,18 @@ class Tasksheet extends StatelessWidget {
 
                 return Expanded(
                   child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        LabelTaskDoTo(selectedDate: selectedDate),
-                        ApelPagiCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        InspeksiHancaCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        InspeksiTphCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        PencurianTbsCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        LapKerusakanCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPemupukanCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPengendalianHamaCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPusinganPanenCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPemeliharaanJalanCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPenyianganCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealPenunasanCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                        RealRestanCard(
-                          selectedDate: state.selectedDate,
-                          isToday: isToday,
-                        ),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: taskList(
+                              state.userModel, isToday, state, selectedDate)
+                          // [
+                          //
+
+                          // ],
+                          ),
                     ),
                   ),
                 );

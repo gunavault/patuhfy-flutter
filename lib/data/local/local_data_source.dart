@@ -3,6 +3,7 @@ import 'package:patuhfy/data/local/dao/afdeling_dao.dart';
 import 'package:patuhfy/data/local/dao/blok_dao.dart';
 import 'package:patuhfy/data/local/dao/mandor_dao.dart';
 import 'package:patuhfy/data/local/dao/pemanen_dao.dart';
+import 'package:patuhfy/data/local/dao/t_apel_pagi_pengolahan_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_tph_dao.dart';
 import 'package:patuhfy/data/local/dao/t_apel_pagi_dao.dart';
 import 'package:patuhfy/data/local/dao/t_inspeksi_hanca_dao.dart';
@@ -17,6 +18,7 @@ import 'package:patuhfy/data/local/dao/user_dao.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
+import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
@@ -54,6 +56,7 @@ class LocalDataSource {
   final TRealPemeliharaanJalanDao tRealPemeliharaanJalanDao;
   final TRealPengendalianHamaDao tRealPengendalianHamaDao;
   final TRealPusinganPanenDao tRealPusinganPanenDao;
+  final TApelPagiPengolahanDao tApelPagiPengolahanDao;
 
   LocalDataSource(
       this.userDao,
@@ -72,7 +75,8 @@ class LocalDataSource {
       this.tRealRestanDao,
       this.tRealPemeliharaanJalanDao,
       this.tRealPengendalianHamaDao,
-      this.tRealPusinganPanenDao);
+      this.tRealPusinganPanenDao,
+      this.tApelPagiPengolahanDao);
 
   //user
   addUser(UserModel userModel) => userDao.insertUser(userModel);
@@ -406,7 +410,6 @@ class LocalDataSource {
     return await tRealPemupukanDao.deleteDataRealPemupukanByDate(tanggal);
   }
 
-
   // Transaksi pengendalian hama
   addDataRealPengendalianHama(RealPengendalianHamaFormModel dataForm) =>
       tRealPengendalianHamaDao.insertDataRealPengendalianHama(dataForm);
@@ -416,19 +419,21 @@ class LocalDataSource {
   }
 
   getDataRealPengendalianHamaByTanggal(String tanggal) async {
-    return await tRealPengendalianHamaDao.getDataRealPengendalianHamaByTanggal(tanggal);
+    return await tRealPengendalianHamaDao
+        .getDataRealPengendalianHamaByTanggal(tanggal);
   }
 
   getDataRealPengendalianHamaByTanggalOnlineOrOffline(String tanggal) async {
     // cek off line dlu
     List<RealPengendalianHamaFormModel> dataForm;
-    dataForm = await tRealPengendalianHamaDao.getDataRealPengendalianHamaByTanggal(tanggal);
+    dataForm = await tRealPengendalianHamaDao
+        .getDataRealPengendalianHamaByTanggal(tanggal);
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
-      RealPengendalianHamaFormModelSelectResponse response = await RemoteDataSource()
-          .getDataRealPengendalianHamaByTanggal(
-          tanggal, userModel.nik_sap, userModel.token);
+      RealPengendalianHamaFormModelSelectResponse response =
+          await RemoteDataSource().getDataRealPengendalianHamaByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
       if (response.dataForm.isNotEmpty) {
         for (var data in response.dataForm) {
           await addDataRealPengendalianHama(data);
@@ -448,9 +453,9 @@ class LocalDataSource {
   }
 
   deleteDataRealPengendalianHamaByDate(String tanggal) async {
-    return await tRealPengendalianHamaDao.deleteDataRealPengendalianHamaByDate(tanggal);
+    return await tRealPengendalianHamaDao
+        .deleteDataRealPengendalianHamaByDate(tanggal);
   }
-
 
   // Transaksi Realisasi Pemeliharaan Jalan
   addDataRealPemeliharaanJalan(RealPemeliharaanJalanFormModel dataForm) =>
@@ -461,18 +466,20 @@ class LocalDataSource {
   }
 
   getDataRealPemeliharaanJalanByTanggal(String tanggal) async {
-    return await tRealPemeliharaanJalanDao.getDataRealPemeliharaanJalanByTanggal(tanggal);
+    return await tRealPemeliharaanJalanDao
+        .getDataRealPemeliharaanJalanByTanggal(tanggal);
   }
 
   getDataRealPemeliharaanJalanByTanggalOnlineOrOffline(String tanggal) async {
     // cek off line dlu
     List<RealPemeliharaanJalanFormModel> dataForm;
-    dataForm = await tRealPemeliharaanJalanDao.getDataRealPemeliharaanJalanByTanggal(tanggal);
+    dataForm = await tRealPemeliharaanJalanDao
+        .getDataRealPemeliharaanJalanByTanggal(tanggal);
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
-      RealPemeliharaanJalanFormModelSelectResponse response = await RemoteDataSource()
-          .getDataRealPemeliharaanJalanByTanggal(
+      RealPemeliharaanJalanFormModelSelectResponse response =
+          await RemoteDataSource().getDataRealPemeliharaanJalanByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
       if (response.dataForm.isNotEmpty) {
         for (var data in response.dataForm) {
@@ -493,10 +500,9 @@ class LocalDataSource {
   }
 
   deleteDataRealPemeliharaanJalanByDate(String tanggal) async {
-    return await tRealPemeliharaanJalanDao.deleteDataRealPemeliharaanJalanByDate(tanggal);
+    return await tRealPemeliharaanJalanDao
+        .deleteDataRealPemeliharaanJalanByDate(tanggal);
   }
-
-
 
   // Transaksi pusingan panen
   addDataRealPusinganPanen(RealPusinganPanenFormModel dataForm) =>
@@ -507,19 +513,21 @@ class LocalDataSource {
   }
 
   getDataRealPusinganPanenByTanggal(String tanggal) async {
-    return await tRealPusinganPanenDao.getDataRealPusinganPanenByTanggal(tanggal);
+    return await tRealPusinganPanenDao
+        .getDataRealPusinganPanenByTanggal(tanggal);
   }
 
   getDataRealPusinganPanenByTanggalOnlineOrOffline(String tanggal) async {
     // cek off line dlu
     List<RealPusinganPanenFormModel> dataForm;
-    dataForm = await tRealPusinganPanenDao.getDataRealPusinganPanenByTanggal(tanggal);
+    dataForm =
+        await tRealPusinganPanenDao.getDataRealPusinganPanenByTanggal(tanggal);
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
-      RealPusinganPanenFormModelSelectResponse response = await RemoteDataSource()
-          .getDataRealPusinganPanenByTanggal(
-          tanggal, userModel.nik_sap, userModel.token);
+      RealPusinganPanenFormModelSelectResponse response =
+          await RemoteDataSource().getDataRealPusinganPanenByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
       if (response.dataForm.isNotEmpty) {
         for (var data in response.dataForm) {
           await addDataRealPusinganPanen(data);
@@ -539,9 +547,10 @@ class LocalDataSource {
   }
 
   deleteDataRealPusinganPanenByDate(String tanggal) async {
-    return await tRealPusinganPanenDao.deleteDataRealPusinganPanenByDate(tanggal);
+    return await tRealPusinganPanenDao
+        .deleteDataRealPusinganPanenByDate(tanggal);
   }
-  
+
   // Transaksi Restan
   addDataRealRestan(RealRestanFormModel dataForm) =>
       tRealRestanDao.insertDataRealRestan(dataForm);
@@ -585,7 +594,6 @@ class LocalDataSource {
   deleteDataRealRestanByDate(String tanggal) async {
     return await tRealRestanDao.deleteDataRealRestanByDate(tanggal);
   }
-
 
   // Transaksi realisasi penyiangan
   addDataRealPenyiangan(RealPenyianganFormModel dataForm) =>
@@ -631,9 +639,7 @@ class LocalDataSource {
     return await tRealPenyianganDao.deleteDataRealPenyianganByDate(tanggal);
   }
 
-
 //Transaksi Realisasi Penunasan
-
 
   addDataRealPenunasan(RealPenunasanFormModel dataForm) =>
       tRealPenunasanDao.insertDataRealPenunasan(dataForm);
@@ -678,5 +684,249 @@ class LocalDataSource {
     return await tRealPenunasanDao.deleteDataRealPenunasanByDate(tanggal);
   }
 
+  // Transaksi Apel Pagi Pengolahan Dao
+  addDataApelPagiPengolahan(ApelPagiPengolahanFormModel dataForm) =>
+      tApelPagiPengolahanDao.insertDataApelPagiPengolahan(dataForm);
 
+  getAllDataApelPagiPengolahan() async {
+    return await tApelPagiPengolahanDao.getAllApelPagiPengolahan();
+  }
+
+  getDataApelPagiPengolahanByTanggal(String tanggal) async {
+    return await tApelPagiPengolahanDao
+        .getDataApelPagiPengolahanByTanggal(tanggal);
+  }
+
+  getDataApelPagiPengolahanByTanggalOnlineOrOffline(String tanggal) async {
+    // cek off line dlu
+    List<ApelPagiPengolahanFormModel> dataForm;
+    dataForm = await tApelPagiPengolahanDao
+        .getDataApelPagiPengolahanByTanggal(tanggal);
+
+    if (dataForm.isEmpty) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await getCurrentUser();
+
+      ApelPagiPengolahanFormModelSelectResponse response =
+          await RemoteDataSource().getDataApelPagiPengolahanByTanggal(
+              tanggal, userModel.nik_sap, userModel.token);
+
+      if (response.dataForm.isNotEmpty) {
+        await addDataApelPagiPengolahan(response.dataForm.first);
+        return response.dataForm;
+      } else {
+        return dataForm;
+      }
+    } else {
+      return dataForm;
+    }
+  }
+
+  deleteAllApelPagiPengolahan() async {
+    return await tApelPagiPengolahanDao.deleteDataApelPagiPengolahan();
+  }
+
+  deleteDataApelPagiPengolahanByDate(String tanggal) async {
+    return await tApelPagiPengolahanDao
+        .deleteDataApelPagiPengolahanByDate(tanggal);
+  }
+
+  // Sync
+  Future<int?> getApelPagiDataNotSend() {
+    return tApelPagiDao.getCountNotSend();
+  }
+
+  Future<int?> getInspeksiHancaDataNotSend() {
+    return tInspeksiHancaDao.getCountNotSend();
+  }
+
+  Future<int?> getInspeksiTphDataNotSend() {
+    return tInspeksiTphDao.getCountNotSend();
+  }
+
+  Future<int?> getPencurianTbsDataNotSend() {
+    return tPencurianTbsDao.getCountNotSend();
+  }
+
+  Future<int?> getLapKerusakanDataNotSend() {
+    return tLapKerusakanDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPemupukanDataNotSend() {
+    return tRealPemupukanDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPenyinanganDataNotSend() {
+    return tRealPenyianganDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPenunasanDataNotSend() {
+    return tRealPenunasanDao.getCountNotSend();
+  }
+
+  Future<int?> getRealRestanDataNotSend() {
+    return tRealRestanDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPemeliharaanJalanDataNotSend() {
+    return tRealPemeliharaanJalanDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPengendalianHamaDataNotSend() {
+    return tRealPengendalianHamaDao.getCountNotSend();
+  }
+
+  Future<int?> getRealPusinganPanenDataNotSend() {
+    return tRealPusinganPanenDao.getCountNotSend();
+  }
+
+  Future<int?> getApelPagiPengolahanDataNotSend() {
+    return tApelPagiPengolahanDao.getCountNotSend();
+  }
+
+  // delete data
+
+  Future<bool?> deleteApelPagiById(id) {
+    return tApelPagiDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteInspeksiHancaById(int id) {
+    return tInspeksiHancaDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteInspeksiTphById(int id) {
+    return tInspeksiTphDao.deleteDataById(id);
+  }
+
+  Future<bool?> deletePencurianTbsById(int id) {
+    return tPencurianTbsDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteLapKerusakanById(int id) {
+    return tLapKerusakanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPemupukanById(int id) {
+    return tRealPemupukanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPenyinanganById(int id) {
+    return tRealPenyianganDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPenunasanById(int id) {
+    return tRealPenunasanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealRestanById(int id) {
+    return tRealRestanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPemeliharaanJalanById(int id) {
+    return tRealPemeliharaanJalanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPengendalianHamaById(int id) {
+    return tRealPengendalianHamaDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPusinganPanenById(int id) {
+    return tRealPusinganPanenDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteApelPagiPengolahanById(int id) {
+    return tApelPagiPengolahanDao.deleteDataById(id);
+  }
+
+  // Get Sync List
+
+  Future<List<ApelPagiFormModel>> getAllDataApelPagiDataNotSend() {
+    return tApelPagiDao.getAllDataNotSend();
+  }
+
+  Future<List<InspeksiHancaFormModel>> getAllDataInspeksiHancaDataNotSend() {
+    return tInspeksiHancaDao.getAllDataNotSend();
+  }
+
+  Future<List<InspeksiTphFormModel>> getAllDataInspeksiTphDataNotSend() {
+    return tInspeksiTphDao.getAllDataNotSend();
+  }
+
+  Future<List<PencurianTbsFormModel>> getAllDataPencurianTbsDataNotSend() {
+    return tPencurianTbsDao.getAllDataNotSend();
+  }
+
+  Future<List<LapKerusakanFormModel>> getAllDataLapKerusakanDataNotSend() {
+    return tLapKerusakanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPemupukanFormModel>> getAllDataRealPemupukanDataNotSend() {
+    return tRealPemupukanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPenyianganFormModel>> getAllDataRealPenyinanganDataNotSend() {
+    return tRealPenyianganDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPenunasanFormModel>> getAllDataRealPenunasanDataNotSend() {
+    return tRealPenunasanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealRestanFormModel>> getAllDataRealRestanDataNotSend() {
+    return tRealRestanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPemeliharaanJalanFormModel>>
+      getAllDataRealPemeliharaanJalanDataNotSend() {
+    return tRealPemeliharaanJalanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPengendalianHamaFormModel>>
+      getAllDataRealPengendalianHamaDataNotSend() {
+    return tRealPengendalianHamaDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPusinganPanenFormModel>>
+      getAllDataRealPusinganPanenDataNotSend() {
+    return tRealPusinganPanenDao.getAllDataNotSend();
+  }
+
+  Future<List<ApelPagiPengolahanFormModel>>
+      getAllDataApelPagiPengolahanDataNotSend() {
+    return tApelPagiPengolahanDao.getAllDataNotSend();
+  }
+
+  Future<int> getCountNotSend() async {
+    int? apelPagi = await tApelPagiDao.getCountNotSend();
+    int? inspeksiHanca = await tInspeksiHancaDao.getCountNotSend();
+    int? inspeksiTph = await tInspeksiTphDao.getCountNotSend();
+    int? pencurianTbs = await tPencurianTbsDao.getCountNotSend();
+    int? lapKerusakan = await tLapKerusakanDao.getCountNotSend();
+
+    int? realPemupukan = await tRealPemupukanDao.getCountNotSend();
+    int? realPenyinangan = await tRealPenyianganDao.getCountNotSend();
+    int? realPenunasan = await tRealPenunasanDao.getCountNotSend();
+    int? realRestan = await tRealRestanDao.getCountNotSend();
+    int? realPemeliharaanJalan =
+        await tRealPemeliharaanJalanDao.getCountNotSend();
+    int? realPengendalianHama =
+        await tRealPengendalianHamaDao.getCountNotSend();
+    int? realPusinganPanen = await tRealPusinganPanenDao.getCountNotSend();
+    int? apelPagiPengolahan = await tApelPagiPengolahanDao.getCountNotSend();
+
+    int totalSum = (apelPagi ?? 0) +
+        (inspeksiHanca ?? 0) +
+        (inspeksiTph ?? 0) +
+        (pencurianTbs ?? 0) +
+        (lapKerusakan ?? 0) +
+        (realPemupukan ?? 0) +
+        (realPenyinangan ?? 0) +
+        (realPenunasan ?? 0) +
+        (realRestan ?? 0) +
+        (realPemeliharaanJalan ?? 0) +
+        (realPengendalianHama ?? 0) +
+        (realPusinganPanen ?? 0) +
+        (apelPagiPengolahan ?? 0);
+    return totalSum;
+  }
 }

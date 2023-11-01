@@ -95,6 +95,8 @@ class _$AppDatabase extends AppDatabase {
 
   TRealPusinganPanenDao? _tRealPusinganPanenDaoInstance;
 
+  TApelPagiPengolahanDao? _tApelPagiPengolahanDaoInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -117,7 +119,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER, `nik_sap` TEXT, `name` TEXT, `company_code` TEXT, `company_shortname` TEXT, `company_longname` TEXT, `psa` TEXT, `psa_name` TEXT, `role` TEXT, `token` TEXT, `foto` TEXT, `hasSawit` INTEGER, `hasKaret` INTEGER, `hasTeh` INTEGER, `hasTebu` INTEGER, `hasKopi` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `user` (`id` INTEGER, `nik_sap` TEXT, `name` TEXT, `company_code` TEXT, `company_shortname` TEXT, `company_longname` TEXT, `psa` TEXT, `psa_name` TEXT, `psa_tipe` TEXT, `role` TEXT, `token` TEXT, `foto` TEXT, `hasSawit` INTEGER, `hasKaret` INTEGER, `hasTeh` INTEGER, `hasTebu` INTEGER, `hasKopi` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_afdeling` (`kodeAfd` TEXT, PRIMARY KEY (`kodeAfd`))');
         await database.execute(
@@ -150,6 +152,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `t_real_pengendalian_hama` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPengendalianHama` INTEGER, `realisasiLuasPengendalianHama` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_pusingan_panen` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `rotasipanen` INTEGER, `normapusingan` INTEGER, `pusingan9hari` INTEGER, `pusingan10hari` INTEGER, `pusingan11hari` INTEGER, `pusingan12harilebih` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `t_apel_pagi_pengolahan` (`rowstamp` TEXT PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `jenisApel` TEXT, `jamMulai` TEXT, `jamSelesai` TEXT, `latMulai` REAL, `longMulai` REAL, `latSelesai` REAL, `longSelesai` REAL, `keterangan` TEXT, `createdBy` TEXT, `createdAt` TEXT, `updatedBy` TEXT, `updatedAt` TEXT, `foto` TEXT, `isSend` INTEGER)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -252,6 +256,12 @@ class _$AppDatabase extends AppDatabase {
     return _tRealPusinganPanenDaoInstance ??=
         _$TRealPusinganPanenDao(database, changeListener);
   }
+
+  @override
+  TApelPagiPengolahanDao get tApelPagiPengolahanDao {
+    return _tApelPagiPengolahanDaoInstance ??=
+        _$TApelPagiPengolahanDao(database, changeListener);
+  }
 }
 
 class _$UserDao extends UserDao {
@@ -271,6 +281,7 @@ class _$UserDao extends UserDao {
                   'company_longname': item.company_longname,
                   'psa': item.psa,
                   'psa_name': item.psa_name,
+                  'psa_tipe': item.psa_tipe,
                   'role': item.role,
                   'token': item.token,
                   'foto': item.foto,
@@ -301,6 +312,7 @@ class _$UserDao extends UserDao {
             company_longname: row['company_longname'] as String?,
             psa: row['psa'] as String?,
             psa_name: row['psa_name'] as String?,
+            psa_tipe: row['psa_tipe'] as String?,
             role: row['role'] as String?,
             token: row['token'] as String?,
             foto: row['foto'] as String?,
@@ -515,6 +527,34 @@ class _$TApelPagiDao extends TApelPagiDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_apel_pagi where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<ApelPagiFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList('SELECT * FROM t_apel_pagi where isSend = 0',
+        mapper: (Map<String, Object?> row) => ApelPagiFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            foto: row['foto'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_apel_pagi where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataAPelPagi() async {
     return _queryAdapter.query('DELETE FROM t_apel_pagi',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -589,6 +629,47 @@ class _$TInspeksiHancaDao extends TInspeksiHancaDao {
   @override
   Future<List<InspeksiHancaFormModel>> getAllInspeksiHanca() async {
     return _queryAdapter.queryList('SELECT * FROM t_inspeksi_hanca',
+        mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            kapveld: row['kapveld'] as int?,
+            mandor: row['mandor'] as String?,
+            pemanen: row['pemanen'] as String?,
+            brondolanTidakDikutip: row['brondolanTidakDikutip'] as int?,
+            buahBusuk: row['buahBusuk'] as int?,
+            buahLewatMarangTidakDipanen:
+                row['buahLewatMarangTidakDipanen'] as int?,
+            buahLewatMatangTidakDiangkutKeTph:
+                row['buahLewatMatangTidakDiangkutKeTph'] as int?,
+            pelepahTidakDipotongTiga: row['pelepahTidakDipotongTiga'] as int?,
+            pelepahTidakDiturunkan: row['pelepahTidakDiturunkan'] as int?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_inspeksi_hanca where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_inspeksi_hanca where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
+  Future<List<InspeksiHancaFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_inspeksi_hanca where isSend = 0',
         mapper: (Map<String, Object?> row) => InspeksiHancaFormModel(
             tanggal: row['tanggal'] as String?,
             unitKerja: row['unitKerja'] as String?,
@@ -709,6 +790,46 @@ class _$TInspeksiTphDao extends TInspeksiTphDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_inspeksi_tph where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_inspeksi_tph where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
+  Future<List<InspeksiTphFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_inspeksi_tph where isSend = 0',
+        mapper: (Map<String, Object?> row) => InspeksiTphFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            kapveld: row['kapveld'] as int?,
+            mandor: row['mandor'] as String?,
+            pemanen: row['pemanen'] as String?,
+            noTph: row['noTph'] as int?,
+            panenBuahSangatMentah: row['panenBuahSangatMentah'] as int?,
+            tbsBusuk: row['tbsBusuk'] as int?,
+            gagangTandanPanjang: row['gagangTandanPanjang'] as int?,
+            tbsTidakDiberiNomor: row['tbsTidakDiberiNomor'] as int?,
+            tbsTidakDisusunRapi: row['tbsTidakDisusunRapi'] as int?,
+            tangkaiTidakBerbentukV: row['tangkaiTidakBerbentukV'] as int?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
   Future<bool?> deleteDataInspeksiTph() async {
     return _queryAdapter.query('DELETE FROM t_inspeksi_tph',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -798,6 +919,43 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_pencurian_tbs where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<PencurianTbsFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_pencurian_tbs where isSend = 0',
+        mapper: (Map<String, Object?> row) => PencurianTbsFormModel(
+            tanggal: row['tanggal'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            realisasiPencurianTbsTandan:
+                row['realisasiPencurianTbsTandan'] as int?,
+            realisasiPencurianTbsKg: row['realisasiPencurianTbsKg'] as int?,
+            brondolan: row['brondolan'] as int?,
+            foto: row['foto'] as String?,
+            rtl: row['rtl'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_pencurian_tbs where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataPencurianTbs() async {
     return _queryAdapter.query('DELETE FROM t_pencurian_tbs',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -872,6 +1030,37 @@ class _$TLapKerusakanDao extends TLapKerusakanDao {
             keterangan: row['keterangan'] as String?,
             rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?,
             isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_lap_kerusakan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<LapKerusakanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_lap_kerusakan where isSend = 0',
+        mapper: (Map<String, Object?> row) => LapKerusakanFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afd: row['afd'] as String?,
+            foto: row['foto'] as String?,
+            createdBy: row['createdBy'] as String?,
+            long: row['long'] as String?,
+            lat: row['lat'] as String?,
+            keterangan: row['keterangan'] as String?,
+            rencana_tindaklanjut: row['rencana_tindaklanjut'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_lap_kerusakan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
   }
 
   @override
@@ -1109,6 +1298,42 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_pemupukan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPemupukanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pemupukan where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afdeling: row['afdeling'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
+            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            foto: row['foto'] as String?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_real_pemupukan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataRealPemupukan() async {
     return _queryAdapter.query('DELETE FROM t_real_pemupukan',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -1196,6 +1421,42 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_penyiangan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPenyianganFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_penyiangan where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?,
+            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_real_penyiangan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataRealPenyiangan() async {
     return _queryAdapter.query('DELETE FROM t_real_penyiangan',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -1280,6 +1541,42 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
             mobileCreatedAt: row['mobileCreatedAt'] as String?,
             isSend: row['isSend'] as int?,
             hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_penunasan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPenunasanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_penunasan where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?,
+            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_real_penunasan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
   }
 
   @override
@@ -1376,6 +1673,45 @@ class _$TRealRestanDao extends TRealRestanDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_restan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealRestanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_restan where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealRestanFormModel(
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afdeling: row['afdeling'] as String?,
+            jmlTandanDipanen: row['jmlTandanDipanen'] as int?,
+            jmlTandanDiangkut: row['jmlTandanDiangkut'] as int?,
+            restanHi: row['restanHi'] as int?,
+            restanKemarin: row['restanKemarin'] as int?,
+            restanTotal: row['restanTotal'] as int?,
+            ketKendala: row['ketKendala'] as String?,
+            ketTindakLanjut: row['ketTindakLanjut'] as String?,
+            kapasitasAngkutanPerton: row['kapasitasAngkutanPerton'] as int?,
+            kebutuhanArmadaAngkut: row['kebutuhanArmadaAngkut'] as int?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            createdBy: row['createdBy'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query('DELETE FROM t_real_restan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataRealRestan() async {
     return _queryAdapter.query('DELETE FROM t_real_restan',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -1463,6 +1799,44 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
             mobileCreatedAt: row['mobileCreatedAt'] as String?,
             hasRtl: row['hasRtl'] as int?,
             isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_pemeliharaan_jalan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPemeliharaanJalanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pemeliharaan_jalan where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            rencanaluaspemeliharaanjalan:
+                row['rencanaluaspemeliharaanjalan'] as int?,
+            realisasiluaspemeliharaanjalan:
+                row['realisasiluaspemeliharaanjalan'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            foto: row['foto'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            hasRtl: row['hasRtl'] as int?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_pemeliharaan_jalan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
   }
 
   @override
@@ -1556,6 +1930,45 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
             isSend: row['isSend'] as int?,
             foto: row['foto'] as String?,
             hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_pengendalian_hama where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPengendalianHamaFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pengendalian_hama where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            afdeling: row['afdeling'] as String?,
+            luas: row['luas'] as String?,
+            rencanaLuasPengendalianHama:
+                row['rencanaLuasPengendalianHama'] as int?,
+            realisasiLuasPengendalianHama:
+                row['realisasiLuasPengendalianHama'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            foto: row['foto'] as String?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_pengendalian_hama where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
   }
 
   @override
@@ -1655,6 +2068,47 @@ class _$TRealPusinganPanenDao extends TRealPusinganPanenDao {
   }
 
   @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_real_pusingan_panen where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<RealPusinganPanenFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_real_pusingan_panen where isSend = 0',
+        mapper: (Map<String, Object?> row) => RealPusinganPanenFormModel(
+            tanggal: row['tanggal'] as String?,
+            createdBy: row['createdBy'] as String?,
+            afdeling: row['afdeling'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            blok: row['blok'] as String?,
+            tahunTanam: row['tahunTanam'] as int?,
+            rotasipanen: row['rotasipanen'] as int?,
+            normapusingan: row['normapusingan'] as int?,
+            pusingan9hari: row['pusingan9hari'] as int?,
+            pusingan10hari: row['pusingan10hari'] as int?,
+            pusingan11hari: row['pusingan11hari'] as int?,
+            pusingan12harilebih: row['pusingan12harilebih'] as int?,
+            penyebab: row['penyebab'] as String?,
+            rtl: row['rtl'] as String?,
+            lat: row['lat'] as String?,
+            long: row['long'] as String?,
+            mobileCreatedAt: row['mobileCreatedAt'] as String?,
+            isSend: row['isSend'] as int?,
+            hasRtl: row['hasRtl'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_real_pusingan_panen where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
   Future<bool?> deleteDataRealPusinganPanen() async {
     return _queryAdapter.query('DELETE FROM t_real_pusingan_panen',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -1672,6 +2126,136 @@ class _$TRealPusinganPanenDao extends TRealPusinganPanenDao {
   Future<void> insertDataRealPusinganPanen(
       RealPusinganPanenFormModel data) async {
     await _realPusinganPanenFormModelInsertionAdapter.insert(
+        data, OnConflictStrategy.rollback);
+  }
+}
+
+class _$TApelPagiPengolahanDao extends TApelPagiPengolahanDao {
+  _$TApelPagiPengolahanDao(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _apelPagiPengolahanFormModelInsertionAdapter = InsertionAdapter(
+            database,
+            't_apel_pagi_pengolahan',
+            (ApelPagiPengolahanFormModel item) => <String, Object?>{
+                  'rowstamp': item.rowstamp,
+                  'tanggal': item.tanggal,
+                  'unitKerja': item.unitKerja,
+                  'jenisApel': item.jenisApel,
+                  'jamMulai': item.jamMulai,
+                  'jamSelesai': item.jamSelesai,
+                  'latMulai': item.latMulai,
+                  'longMulai': item.longMulai,
+                  'latSelesai': item.latSelesai,
+                  'longSelesai': item.longSelesai,
+                  'keterangan': item.keterangan,
+                  'createdBy': item.createdBy,
+                  'createdAt': item.createdAt,
+                  'updatedBy': item.updatedBy,
+                  'updatedAt': item.updatedAt,
+                  'foto': item.foto,
+                  'isSend': item.isSend
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<ApelPagiPengolahanFormModel>
+      _apelPagiPengolahanFormModelInsertionAdapter;
+
+  @override
+  Future<List<ApelPagiPengolahanFormModel>> getDataApelPagiPengolahanByTanggal(
+      String tanggal) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_apel_pagi_pengolahan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(rowstamp: row['rowstamp'] as String?, tanggal: row['tanggal'] as String?, unitKerja: row['unitKerja'] as String?, jenisApel: row['jenisApel'] as String?, jamMulai: row['jamMulai'] as String?, jamSelesai: row['jamSelesai'] as String?, latMulai: row['latMulai'] as double?, longMulai: row['longMulai'] as double?, latSelesai: row['latSelesai'] as double?, longSelesai: row['longSelesai'] as double?, keterangan: row['keterangan'] as String?, createdBy: row['createdBy'] as String?, createdAt: row['createdAt'] as String?, updatedBy: row['updatedBy'] as String?, updatedAt: row['updatedAt'] as String?, foto: row['foto'] as String?, isSend: row['isSend'] as int?),
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<List<ApelPagiPengolahanFormModel>> getAllApelPagiPengolahan() async {
+    return _queryAdapter.queryList('SELECT * FROM t_apel_pagi_pengolahan',
+        mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(
+            rowstamp: row['rowstamp'] as String?,
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            jenisApel: row['jenisApel'] as String?,
+            jamMulai: row['jamMulai'] as String?,
+            jamSelesai: row['jamSelesai'] as String?,
+            latMulai: row['latMulai'] as double?,
+            longMulai: row['longMulai'] as double?,
+            latSelesai: row['latSelesai'] as double?,
+            longSelesai: row['longSelesai'] as double?,
+            keterangan: row['keterangan'] as String?,
+            createdBy: row['createdBy'] as String?,
+            createdAt: row['createdAt'] as String?,
+            updatedBy: row['updatedBy'] as String?,
+            updatedAt: row['updatedAt'] as String?,
+            foto: row['foto'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<int?> getCountNotSend() async {
+    return _queryAdapter.query(
+        'SELECT count(*) FROM t_apel_pagi_pengolahan where isSend = 0',
+        mapper: (Map<String, Object?> row) => row.values.first as int);
+  }
+
+  @override
+  Future<List<ApelPagiPengolahanFormModel>> getAllDataNotSend() async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM t_apel_pagi_pengolahan where isSend = 0',
+        mapper: (Map<String, Object?> row) => ApelPagiPengolahanFormModel(
+            rowstamp: row['rowstamp'] as String?,
+            tanggal: row['tanggal'] as String?,
+            unitKerja: row['unitKerja'] as String?,
+            jenisApel: row['jenisApel'] as String?,
+            jamMulai: row['jamMulai'] as String?,
+            jamSelesai: row['jamSelesai'] as String?,
+            latMulai: row['latMulai'] as double?,
+            longMulai: row['longMulai'] as double?,
+            latSelesai: row['latSelesai'] as double?,
+            longSelesai: row['longSelesai'] as double?,
+            keterangan: row['keterangan'] as String?,
+            createdBy: row['createdBy'] as String?,
+            createdAt: row['createdAt'] as String?,
+            updatedBy: row['updatedBy'] as String?,
+            updatedAt: row['updatedAt'] as String?,
+            foto: row['foto'] as String?,
+            isSend: row['isSend'] as int?));
+  }
+
+  @override
+  Future<bool?> deleteDataById(int id) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_apel_pagi_pengolahan where id = ?1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [id]);
+  }
+
+  @override
+  Future<bool?> deleteDataApelPagiPengolahan() async {
+    return _queryAdapter.query('DELETE FROM t_apel_pagi_pengolahan',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
+  Future<bool?> deleteDataApelPagiPengolahanByDate(String tanggal) async {
+    return _queryAdapter.query(
+        'DELETE FROM t_apel_pagi_pengolahan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
+        arguments: [tanggal]);
+  }
+
+  @override
+  Future<void> insertDataApelPagiPengolahan(
+      ApelPagiPengolahanFormModel data) async {
+    await _apelPagiPengolahanFormModelInsertionAdapter.insert(
         data, OnConflictStrategy.rollback);
   }
 }

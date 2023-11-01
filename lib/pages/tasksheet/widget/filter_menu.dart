@@ -14,14 +14,15 @@ class FilterMenutaskSheet extends StatelessWidget {
           width: 1.0,
         )),
       ),
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 5),
       height: kToolbarHeight,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
           FilterChip(
             label: const Text('Kelapa Sawit'),
-            labelStyle: const TextStyle(color: true ? Colors.white : Colors.black),
+            labelStyle:
+                const TextStyle(color: true ? Colors.white : Colors.black),
             selected: true,
             onSelected: (bool selected) {
               // refreshData();
@@ -38,7 +39,8 @@ class FilterMenutaskSheet extends StatelessWidget {
           const SizedBox(width: 12),
           FilterChip(
             label: const Text('Karet'),
-            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
+            labelStyle:
+                const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,
@@ -50,7 +52,8 @@ class FilterMenutaskSheet extends StatelessWidget {
           const SizedBox(width: 12),
           FilterChip(
             label: const Text('Tebu'),
-            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
+            labelStyle:
+                const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,
@@ -62,7 +65,8 @@ class FilterMenutaskSheet extends StatelessWidget {
           const SizedBox(width: 12),
           FilterChip(
             label: const Text('Teh'),
-            labelStyle: const TextStyle(color: false ? Colors.white : Colors.black),
+            labelStyle:
+                const TextStyle(color: false ? Colors.white : Colors.black),
             selected: false,
             onSelected: (bool selected) {},
             elevation: 0,

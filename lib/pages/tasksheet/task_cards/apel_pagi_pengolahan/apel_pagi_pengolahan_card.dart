@@ -1,32 +1,39 @@
 import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
-import 'package:patuhfy/pages/forms/real_pusingan_panen/form_real_pusingan_panen.dart';
+import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
+import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_card/apel_pagi_pengolahan_card_cubit.dart';
+import 'package:patuhfy/pages/forms/apel_pagi/form_apel_pagi.dart';
+import 'package:patuhfy/pages/forms/apel_pagi_pengolahan/form_apel_pagi_pengolahan.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/real_pusingan_panen/real_pusingan_panen_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class RealPusinganPanenCard extends StatelessWidget {
-  const RealPusinganPanenCard(
+class ApelPagiPengolahanCard extends StatelessWidget {
+  const ApelPagiPengolahanCard(
       {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
   final bool isToday;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RealPusinganPanenCardCubit, RealPusinganPanenCardState>(
+    return BlocBuilder<ApelPagiPengolahanCardCubit,
+        ApelPagiPengolahanCardState>(
       builder: (context, state) {
-        if (state is IsRealPusinganPanenAswered) {
+        if (state is IsApelPagiPengolahanAswered) {
+          if (state.dataForm != null) {
+            print('aww is sent ${state.dataForm!.isSend}');
+          }
+
           void timesheetAddPopUp(context) {
             showDialog(
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                // return const Text('aw');
-                return RealPusinganPanenDetailCard(
+                return ApelPagiPengolahanDetailCard(
                   dataForm: state.dataForm,
                 );
               },
@@ -34,7 +41,7 @@ class RealPusinganPanenCard extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
             child: Column(
               children: [
                 Padding(
@@ -45,7 +52,7 @@ class RealPusinganPanenCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormRealPusinganPanen(
+                              builder: (context) => FormApelPagiPengolahan(
                                 selectedDate: selectedDate,
                               ),
                             ),
@@ -70,7 +77,7 @@ class RealPusinganPanenCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                           color: CommonColors.containerTextB.withOpacity(0.2)),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           !state.isAnswered
@@ -108,7 +115,7 @@ class RealPusinganPanenCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Realisasi Pusingan Panen',
+                                  'Apel Pagi Pengolahan',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -118,7 +125,7 @@ class RealPusinganPanenCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Realisasi Pusingan Panen',
+                                  'Melakukan Apel Pagi Pengolahan',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,
@@ -129,13 +136,13 @@ class RealPusinganPanenCard extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          // IconButton(
-                          //   onPressed: () {},
-                          //   icon: const Icon(
-                          //     Icons.cloud_upload,
-                          //     color: kNeutralColor,
-                          //   ),
-                          // ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.attachment_outlined,
+                              color: kTitleColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),

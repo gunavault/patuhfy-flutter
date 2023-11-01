@@ -51,8 +51,8 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
               ),
             ),
             IconButton(
-              icon:
-                  const Icon(Icons.add_a_photo, color: CommonColors.bottomIconColor),
+              icon: const Icon(Icons.add_a_photo,
+                  color: CommonColors.bottomIconColor),
               iconSize: 30,
               onPressed: () {
                 // getFoto();
@@ -74,8 +74,8 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
                                   Icon(Icons.folder_open,
                                       size: 36.0, color: Colors.orange),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.only(
-                                        start: 16.0),
+                                    padding:
+                                        EdgeInsetsDirectional.only(start: 16.0),
                                     child: Text('Pilih Dari Galeri'),
                                   ),
                                 ],
@@ -93,8 +93,8 @@ class _UploadFotoFieldState extends State<UploadFotoField> {
                                     size: 36.0,
                                     color: CommonColors.bottomIconColor),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                      start: 16.0),
+                                  padding:
+                                      EdgeInsetsDirectional.only(start: 16.0),
                                   child: Text('Ambil Gambar'),
                                 ),
                               ],

@@ -1,6 +1,5 @@
 import 'package:floor/floor.dart';
 
-import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
 
 @dao
@@ -19,6 +18,14 @@ abstract class TRealPusinganPanenDao {
   // @update
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
+  @Query('SELECT count(*) FROM t_real_pusingan_panen where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('SELECT * FROM t_real_pusingan_panen where isSend = 0')
+  Future<List<RealPusinganPanenFormModel>> getAllDataNotSend();
+
+  @Query('DELETE FROM t_real_pusingan_panen where id = :id')
+  Future<bool?> deleteDataById(int id);
 
   @Query('DELETE FROM t_real_pusingan_panen')
   Future<bool?> deleteDataRealPusinganPanen();

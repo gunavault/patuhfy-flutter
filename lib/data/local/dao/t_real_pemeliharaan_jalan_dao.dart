@@ -7,8 +7,10 @@ abstract class TRealPemeliharaanJalanDao {
   // @Query('SELECT * FROM t_apel_pagi WHERE nik_sap = :id')
   // Future<TApelPagiEntity?> getAfdById(int id);
 
-  @Query('SELECT * FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
-  Future<List<RealPemeliharaanJalanFormModel>> getDataRealPemeliharaanJalanByTanggal(String tanggal);
+  @Query(
+      'SELECT * FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  Future<List<RealPemeliharaanJalanFormModel>>
+      getDataRealPemeliharaanJalanByTanggal(String tanggal);
 
   @Query('SELECT * FROM t_real_pemeliharaan_jalan')
   Future<List<RealPemeliharaanJalanFormModel>> getAllRealPemeliharaanJalan();
@@ -17,12 +19,23 @@ abstract class TRealPemeliharaanJalanDao {
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
 
+  @Query('SELECT count(*) FROM t_real_pemeliharaan_jalan where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('SELECT * FROM t_real_pemeliharaan_jalan where isSend = 0')
+  Future<List<RealPemeliharaanJalanFormModel>> getAllDataNotSend();
+
+  @Query('DELETE FROM t_real_pemeliharaan_jalan where id = :id')
+  Future<bool?> deleteDataById(int id);
+
   @Query('DELETE FROM t_real_pemeliharaan_jalan')
   Future<bool?> deleteDataRealPemeliharaanJalan();
 
-  @Query('DELETE FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query(
+      'DELETE FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<bool?> deleteDataRealPemeliharaanJalanByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)
-  Future<void> insertDataRealPemeliharaanJalan(RealPemeliharaanJalanFormModel data);
+  Future<void> insertDataRealPemeliharaanJalan(
+      RealPemeliharaanJalanFormModel data);
 }

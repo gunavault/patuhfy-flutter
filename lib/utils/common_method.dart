@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 class CommonMethods {

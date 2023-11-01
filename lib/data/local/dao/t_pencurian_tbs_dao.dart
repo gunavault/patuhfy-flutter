@@ -6,7 +6,8 @@ abstract class TPencurianTbsDao {
   // @Query('SELECT * FROM t_pencurian_tbs WHERE nik_sap = :id')
   // Future<TPencurianTbsEntity?> getAfdById(int id);
 
-  @Query('SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query(
+      'SELECT * FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<List<PencurianTbsFormModel>> getDataPencurianTbsByTanggal(
       String tanggal);
 
@@ -16,11 +17,20 @@ abstract class TPencurianTbsDao {
   // @update
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
+  @Query('SELECT count(*) FROM t_pencurian_tbs where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('SELECT * FROM t_pencurian_tbs where isSend = 0')
+  Future<List<PencurianTbsFormModel>> getAllDataNotSend();
+
+  @Query('DELETE FROM t_pencurian_tbs where id = :id')
+  Future<bool?> deleteDataById(int id);
 
   @Query('DELETE FROM t_pencurian_tbs')
   Future<bool?> deleteDataPencurianTbs();
 
-  @Query('DELETE FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query(
+      'DELETE FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<bool?> deleteDataPencurianTbsByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)

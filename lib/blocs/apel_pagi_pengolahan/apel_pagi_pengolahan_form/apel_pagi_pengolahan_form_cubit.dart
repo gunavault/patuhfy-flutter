@@ -5,106 +5,87 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
-import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
+import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'real_pusingan_panen_form_state.dart';
+part 'apel_pagi_pengolahan_form_state.dart';
 
-class RealPusinganPanenFormCubit extends Cubit<RealPusinganPanenFormState> {
+class ApelPagiPengolahanFormCubit extends Cubit<ApelPagiPengolahanFormState> {
   final LocalDataSource localDataSource;
   final RemoteDataSource remoteDataSource;
 
-  RealPusinganPanenFormCubit(this.localDataSource, this.remoteDataSource)
-      : super(InitialRealPusinganPanenFormState());
+  ApelPagiPengolahanFormCubit(this.localDataSource, this.remoteDataSource)
+      : super(InitialApelPagiPengolahanFormState());
 
-  List<RealPusinganPanenFormModel> unsyncedData = [];
-
-  storedOffline(RealPusinganPanenFormModel dataForm) async {
+  storedOffline(ApelPagiPengolahanFormModel dataForm) async {
     // set lat and long jika gak ada signal
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    dataForm.lat = prefs.getString(lat);
-    dataForm.long = prefs.getString(long);
+    dataForm.latMulai = double.parse(prefs.getString(lat).toString());
+    dataForm.longMulai = double.parse(prefs.getString(long).toString());
     dataForm.isSend = 0;
 
-    List<RealPusinganPanenFormModel> cekLength;
+    List<ApelPagiPengolahanFormModel> cekLength;
     cekLength = await localDataSource
-        .getDataRealPusinganPanenByTanggal(dataForm.tanggal.toString());
-    UserModel userModel = await localDataSource.getCurrentUser();
+        .getDataApelPagiPengolahanByTanggal(dataForm.tanggal.toString());
 
     if (cekLength.isEmpty) {
       //Check duplikat
-      await localDataSource.addDataRealPusinganPanen(dataForm);
-      if (await hasInternetConnection()) {
-        for (var unsyncedForm in unsyncedData) {
-          storedOnline(unsyncedForm, userModel);
-        }
-        unsyncedData.clear();
-      }
+      await localDataSource.addDataApelPagiPengolahan(dataForm);
     }
 
-    emit(SuccessRealPusinganPanenFormState(
+    emit(SuccessApelPagiPengolahanFormState(
         status_code: 200, message: 'Inserted to Lokal Database'));
 
     print('bepraisi data ${cekLength.length}');
   }
 
-  storedOnline(RealPusinganPanenFormModel dataForm, UserModel userModel) async {
+  storedOnline(
+      ApelPagiPengolahanFormModel dataForm, UserModel userModel) async {
     // set lat and long jika ada sinyal
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    dataForm.lat = position.latitude.toString();
-    dataForm.long = position.longitude.toString();
+
+    dataForm.latMulai = double.parse(position.latitude.toString());
+    dataForm.longMulai = double.parse(position.longitude.toString());
     dataForm.isSend = 1;
 
     // setelah itu simpen ke database holding
-    RealPusinganPanenFormModelResponse resFromApi =
-        await remoteDataSource.createRealPusinganPanen(
+    ApelPagiPengolahanFormModelResponse resFromApi =
+        await remoteDataSource.createApelPagiPengolahan(
       userModel.token,
       dataForm,
     );
 
     if (resFromApi.status_code == 200) {
       // Simpen dulu yang offline
-      List<RealPusinganPanenFormModel> cekLength;
+      List<ApelPagiPengolahanFormModel> cekLength;
       cekLength = await localDataSource
-          .getDataRealPusinganPanenByTanggal(dataForm.tanggal.toString());
+          .getDataApelPagiPengolahanByTanggal(dataForm.tanggal.toString());
 
       if (cekLength.isEmpty) {
         //Check duplikat
-        await localDataSource.addDataRealPusinganPanen(dataForm);
+        await localDataSource.addDataApelPagiPengolahan(dataForm);
       }
 
-      emit(SuccessRealPusinganPanenFormState(
+      emit(SuccessApelPagiPengolahanFormState(
           status_code: resFromApi.status_code, message: resFromApi.message));
     } else {
-      emit(DuplicatedRealPusinganPanenFormState(
+      emit(DuplicatedApelPagiPengolahanFormState(
           status_code: resFromApi.status_code, message: resFromApi.message));
-                unsyncedData.add(dataForm);
-                      print("ini var unsync nya $unsyncedData");
-
-
     }
   }
 
-  // Helper function to check if there is an internet connection
-  Future<bool> hasInternetConnection() async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    return connectivityResult != ConnectivityResult.none;
-  }
-
-  submitToDatabase(RealPusinganPanenFormModel dataForm) async {
+  submitToDatabase(ApelPagiPengolahanFormModel dataForm) async {
     try {
-      emit(LoadingRealPusinganPanenFormState());
+      emit(LoadingApelPagiPengolahanFormState());
       // SharedPreferences prefs = await SharedPreferences.getInstance();
       DateTime dateToday = DateTime.now();
-      String today = dateToday.toString().substring(0, 10);
-      String todayCreatedAt = dateToday.toString().substring(0, 19);
+      String today = dateToday.toString().substring(0, 19);
 
       UserModel userModel = await localDataSource.getCurrentUser();
       dataForm.createdBy = userModel.nik_sap;
       dataForm.tanggal = today;
-      dataForm.mobileCreatedAt = todayCreatedAt;
       // dataForm.company = userModel.company_code;
       dataForm.unitKerja = userModel.psa;
 
@@ -120,18 +101,19 @@ class RealPusinganPanenFormCubit extends Cubit<RealPusinganPanenFormState> {
     } catch (err) {
       final connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult != ConnectivityResult.none) {
-        localDataSource.deleteDataRealPusinganPanenByDate(
+        localDataSource.deleteDataApelPagiPengolahanByDate(
             dataForm.tanggal.toString()); //Hapus data di Lokal By Date
-        emit(ErrorRealPusinganPanenFormState(err.toString())); //Emit Error State
+        emit(ErrorApelPagiPengolahanFormState(
+            err.toString())); //Emit Error State
       } else {
-        emit(SuccessRealPusinganPanenFormState(
+        emit(SuccessApelPagiPengolahanFormState(
             status_code: 200, message: 'Inserted to Lokal Database'));
       }
     }
   }
 
-  // createRealPusinganPanen(
-  //     RealPusinganPanenFormModel dataFormRealPusinganPanen, String kode_sales_order) async {
+  // createApelPagiPengolahan(
+  //     ApelPagiPengolahanFormModel dataFormApelPagiPengolahan, String kode_sales_order) async {
 
   // }
 }

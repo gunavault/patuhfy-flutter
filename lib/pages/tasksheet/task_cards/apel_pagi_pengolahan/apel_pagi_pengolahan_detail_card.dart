@@ -1,23 +1,24 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
+import 'package:patuhfy/models/apel_pagi_form_model.dart';
+import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class RealPusinganPanenDetailCard extends StatelessWidget {
-  const RealPusinganPanenDetailCard({super.key, required this.dataForm});
+class ApelPagiPengolahanDetailCard extends StatelessWidget {
+  const ApelPagiPengolahanDetailCard({super.key, required this.dataForm});
 
-  final RealPusinganPanenFormModel? dataForm;
+  final ApelPagiPengolahanFormModel? dataForm;
 
-
-  Widget textFieldWidget({fieldText, fieldValue}) {
+  Widget fieldAfdeling() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          fieldText,
+          'Afdeling',
           style: CommonStyle.getRalewayFont(
             color: CommonColors.blackColor,
             fontWeight: FontWeight.w700,
@@ -36,12 +37,12 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
               }
               return null;
             },
-            initialValue: fieldValue.toString(),
+            initialValue: dataForm!.unitKerja,
             enabled: false,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(
                   left: 16, right: 18, top: 16, bottom: 16),
-              labelText: fieldText,
+              labelText: 'Kode Afdeling',
               fillColor: Colors.transparent,
               hintStyle: CommonStyle.getRalewayFont(
                   color: const Color.fromARGB(255, 0, 0, 0),
@@ -82,6 +83,35 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
     );
   }
 
+  Widget evidenceApelPagiPengolahan(context) {
+    final double bannerWidth = MediaQuery.of(context).size.width;
+    final double bannerHeight = MediaQuery.of(context).size.width * 3 / 4;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Evidence Apel Pagi",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: CommonColors.blackColor,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.memory(
+            base64Decode(dataForm!.foto.toString()),
+            width: bannerWidth,
+            height: bannerHeight,
+            fit: BoxFit.cover,
+          ),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -100,7 +130,7 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task pengendalian hama',
+                    'Isian Task Apel Pagi',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,
@@ -120,62 +150,10 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10.0),
-              textFieldWidget(
-                fieldText: 'Afdeling',
-                fieldValue: dataForm!.afdeling,
-              ),
-              textFieldWidget(
-                fieldText: 'Blok',
-                fieldValue: dataForm!.blok,
-              ),
-              textFieldWidget(
-                fieldText: 'Tahun Tanam',
-                fieldValue: dataForm!.tahunTanam,
-              ),
-              textFieldWidget(
-                fieldText: 'Rotasi Panen',
-                fieldValue: dataForm!.rotasipanen,
-              ),
-              textFieldWidget(
-                fieldText: 'Norma Pusingan Panen',
-                fieldValue: dataForm!.normapusingan,
-              ),
-              textFieldWidget(
-                fieldText: 'Pusingan 9 Hari',
-                fieldValue: dataForm!.pusingan9hari,
-              ),
-              textFieldWidget(
-                fieldText: 'Pusingan 10 Hari',
-                fieldValue: dataForm!.pusingan10hari,
-              ),
-              textFieldWidget(
-                fieldText: 'Pusingan 11 Hari',
-                fieldValue: dataForm!.pusingan11hari,
-              ),
-              textFieldWidget(
-                fieldText: 'Pusingan 12 Hari atau lebih',
-                fieldValue: dataForm!.pusingan12harilebih,
-              ),
-              // textFieldWidget(
-              //   fieldText: 'Luas Areal (ha)',
-              //   fieldValue: dataForm!.luas,
-              // ),
-              // textFieldWidget(
-              //   fieldText: 'Rencana Luas Pengendalian Hama',
-              //   fieldValue: dataForm!.rencanaLuasPengendalianHama,
-              // ),
-              // textFieldWidget(
-              //   fieldText: 'Realisasi Luas pengendalian Hama',
-              //   fieldValue: dataForm!.realisasiLuasPengendalianHama,
-              // ),
-              textFieldWidget(
-                fieldText: 'Penyebab',
-                fieldValue: dataForm!.penyebab,
-              ),
-              textFieldWidget(
-                fieldText: 'Rencana Tindak Lanjut',
-                fieldValue: dataForm!.rtl,
-              )
+              const SizedBox(height: 20.0),
+              fieldAfdeling(),
+              evidenceApelPagiPengolahan(context),
+              const SizedBox(height: 30.0),
             ],
           ),
         ),

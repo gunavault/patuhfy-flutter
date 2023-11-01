@@ -5,7 +5,6 @@ import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/pages/network/notfound.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/widget/pdf_reader_screen.dart';
-import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_detail_no_data.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail/widget/rtl_update_status_dialog.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -119,7 +118,7 @@ class RtlDetailCardV2 extends StatelessWidget {
           ),
           BlocBuilder<RtlDetailListCubit, RtlDetailListState>(
             builder: (context, state) {
-              print('state apa nij ${state}');
+              print('state apa nij $state');
 
               if (state is LoadingRtlDetailListLState) {
                 return const Column(

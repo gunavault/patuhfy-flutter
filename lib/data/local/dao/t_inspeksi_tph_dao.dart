@@ -6,7 +6,8 @@ abstract class TInspeksiTphDao {
   // @Query('SELECT * FROM t_inspeksi_Tph WHERE nik_sap = :id')
   // Future<TInspeksiTphEntity?> getAfdById(int id);
 
-  @Query('SELECT * FROM t_inspeksi_tph WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query(
+      'SELECT * FROM t_inspeksi_tph WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<List<InspeksiTphFormModel>> getDataInspeksiTphByTanggal(
       String tanggal);
 
@@ -17,10 +18,20 @@ abstract class TInspeksiTphDao {
   // @Query('UPDATE user set foto = :foto WHERE username = :username')
   // Future<UserModel?> updateFoto(String username, String foto);
 
+  @Query('SELECT count(*) FROM t_inspeksi_tph where isSend = 0')
+  Future<int?> getCountNotSend();
+
+  @Query('DELETE FROM t_inspeksi_tph where id = :id')
+  Future<bool?> deleteDataById(int id);
+
+  @Query('SELECT * FROM t_inspeksi_tph where isSend = 0')
+  Future<List<InspeksiTphFormModel>> getAllDataNotSend();
+
   @Query('DELETE FROM t_inspeksi_tph')
   Future<bool?> deleteDataInspeksiTph();
 
-  @Query('DELETE FROM t_inspeksi_tph WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query(
+      'DELETE FROM t_inspeksi_tph WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
   Future<bool?> deleteDataInspeksiTphByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)
