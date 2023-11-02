@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "t_real_pemupukan")
+@Entity(tableName: "t_real_pemupukan", primaryKeys: ['id'])
 class RealPemupukanFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;

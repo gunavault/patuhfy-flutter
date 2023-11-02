@@ -123,37 +123,37 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_afdeling` (`kodeAfd` TEXT, PRIMARY KEY (`kodeAfd`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, `luasArealTanam` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `m_blok` (`id` INTEGER, `kodePsa` TEXT, `kodeAfd` TEXT, `kodeBlok` TEXT, `namaBlok` TEXT, `tahunTanam` TEXT, `luasArealTanam` TEXT, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_apel_pagi` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_hanca` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `brondolanTidakDikutip` INTEGER, `buahBusuk` INTEGER, `buahLewatMarangTidakDipanen` INTEGER, `buahLewatMatangTidakDiangkutKeTph` INTEGER, `pelepahTidakDipotongTiga` INTEGER, `pelepahTidakDiturunkan` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_inspeksi_tph` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `kapveld` INTEGER, `mandor` TEXT, `pemanen` TEXT, `noTph` INTEGER, `panenBuahSangatMentah` INTEGER, `tbsBusuk` INTEGER, `gagangTandanPanjang` INTEGER, `tbsTidakDiberiNomor` INTEGER, `tbsTidakDisusunRapi` INTEGER, `tangkaiTidakBerbentukV` INTEGER, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `brondolan` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_pencurian_tbs` (`id` INTEGER, `tanggal` TEXT, `mobileCreatedAt` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `realisasiPencurianTbsTandan` INTEGER, `realisasiPencurianTbsKg` INTEGER, `brondolan` INTEGER, `rtl` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_lap_kerusakan` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afd` TEXT, `foto` TEXT, `createdBy` TEXT, `long` TEXT, `lat` TEXT, `keterangan` TEXT, `rencana_tindaklanjut` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_mandor` (`nikSap` TEXT, `namaMandor` TEXT, `kodeAfd` TEXT, PRIMARY KEY (`nikSap`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_pemanen` (`nikSapPemanen` TEXT, `namaPemanen` TEXT, `nikSapMandor` TEXT, PRIMARY KEY (`nikSapPemanen`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` INTEGER, `realisasiLuasPenunasan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` INTEGER, `realisasiLuasPenunasan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_restan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `jmlTandanDipanen` INTEGER, `jmlTandanDiangkut` INTEGER, `restanHi` INTEGER, `restanKemarin` INTEGER, `restanTotal` INTEGER, `ketKendala` TEXT, `ketTindakLanjut` TEXT, `kapasitasAngkutanPerton` INTEGER, `kebutuhanArmadaAngkut` INTEGER, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `createdBy` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_restan` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `jmlTandanDipanen` INTEGER, `jmlTandanDiangkut` INTEGER, `restanHi` INTEGER, `restanKemarin` INTEGER, `restanTotal` INTEGER, `ketKendala` TEXT, `ketTindakLanjut` TEXT, `kapasitasAngkutanPerton` INTEGER, `kebutuhanArmadaAngkut` INTEGER, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `createdBy` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pemeliharaan_jalan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `rencanaluaspemeliharaanjalan` INTEGER, `realisasiluaspemeliharaanjalan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `hasRtl` INTEGER, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_pemeliharaan_jalan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `rencanaluaspemeliharaanjalan` INTEGER, `realisasiluaspemeliharaanjalan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `hasRtl` INTEGER, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pengendalian_hama` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPengendalianHama` INTEGER, `realisasiLuasPengendalianHama` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_pengendalian_hama` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPengendalianHama` INTEGER, `realisasiLuasPengendalianHama` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pusingan_panen` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `rotasipanen` INTEGER, `normapusingan` INTEGER, `pusingan9hari` INTEGER, `pusingan10hari` INTEGER, `pusingan11hari` INTEGER, `pusingan12harilebih` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_real_pusingan_panen` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `rotasipanen` INTEGER, `normapusingan` INTEGER, `pusingan9hari` INTEGER, `pusingan10hari` INTEGER, `pusingan11hari` INTEGER, `pusingan12harilebih` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_apel_pagi_pengolahan` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `rowstamp` TEXT, `tanggal` TEXT, `unitKerja` TEXT, `jenisApel` TEXT, `jamMulai` TEXT, `jamSelesai` TEXT, `latMulai` REAL, `longMulai` REAL, `latSelesai` REAL, `longSelesai` REAL, `keterangan` TEXT, `createdBy` TEXT, `createdAt` TEXT, `updatedBy` TEXT, `updatedAt` TEXT, `foto` TEXT, `isSend` INTEGER)');
+            'CREATE TABLE IF NOT EXISTS `t_apel_pagi_pengolahan` (`id` INTEGER, `rowstamp` TEXT, `tanggal` TEXT, `unitKerja` TEXT, `jenisApel` TEXT, `jamMulai` TEXT, `jamSelesai` TEXT, `latMulai` REAL, `longMulai` REAL, `latSelesai` REAL, `longSelesai` REAL, `keterangan` TEXT, `createdBy` TEXT, `createdAt` TEXT, `updatedBy` TEXT, `updatedAt` TEXT, `foto` TEXT, `isSend` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -964,6 +964,12 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   }
 
   @override
+  Future<bool?> deleteDataWhichHasSend() async {
+    return _queryAdapter.query('DELETE FROM t_pencurian_tbs where isSend = 1',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
   Future<bool?> deleteDataPencurianTbs() async {
     return _queryAdapter.query('DELETE FROM t_pencurian_tbs',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
@@ -972,7 +978,7 @@ class _$TPencurianTbsDao extends TPencurianTbsDao {
   @override
   Future<bool?> deleteDataPencurianTbsByDate(String tanggal) async {
     return _queryAdapter.query(
-        'DELETE FROM t_pencurian_tbs WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
+        'DELETE FROM t_pencurian_tbs WHERE date(tanggal) = ?1',
         mapper: (Map<String, Object?> row) => (row.values.first as int) != 0,
         arguments: [tanggal]);
   }

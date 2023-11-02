@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "t_real_pengendalian_hama")
+@Entity(tableName: "t_real_pengendalian_hama", primaryKeys: ['id'])
 class RealPengendalianHamaFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;

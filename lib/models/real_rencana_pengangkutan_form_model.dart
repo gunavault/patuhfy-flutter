@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "t_real_rencana_pengangkutan")
+@Entity(tableName: "t_real_rencana_pengangkutan", primaryKeys: ['id'])
 class RealRencanapengangkutanFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;
@@ -24,7 +24,7 @@ class RealRencanapengangkutanFormModel {
   String? mobileCreatedAt;
 
   RealRencanapengangkutanFormModel({
-this.tanggal,
+    this.tanggal,
     this.createdBy,
     this.afdeling,
     // this.company,
@@ -42,7 +42,7 @@ this.tanggal,
     this.lat,
     this.long,
     this.mobileCreatedAt,
-      });
+  });
 
   RealRencanapengangkutanFormModel.fromJson(Map<String, dynamic> json) {
     tanggal = json["TANGGAL"];
@@ -66,7 +66,7 @@ this.tanggal,
   }
 
   Map<String, dynamic> toJson() {
-     final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["TANGGAL"] = tanggal;
     data["CREATED_BY"] = createdBy;
     data["AFDELING"] = afdeling;

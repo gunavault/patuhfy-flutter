@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "m_blok")
+@Entity(tableName: "m_blok", primaryKeys: ['id'])
 class BlokModel {
   @PrimaryKey(autoGenerate: true)
   int? id;

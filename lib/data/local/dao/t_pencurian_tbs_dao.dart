@@ -26,11 +26,13 @@ abstract class TPencurianTbsDao {
   @Query('DELETE FROM t_pencurian_tbs where id = :id')
   Future<bool?> deleteDataById(int id);
 
+  @Query('DELETE FROM t_pencurian_tbs where isSend = 1')
+  Future<bool?> deleteDataWhichHasSend();
+
   @Query('DELETE FROM t_pencurian_tbs')
   Future<bool?> deleteDataPencurianTbs();
 
-  @Query(
-      'DELETE FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal ORDER BY tanggal DESC')
+  @Query('DELETE FROM t_pencurian_tbs WHERE date(tanggal) = :tanggal')
   Future<bool?> deleteDataPencurianTbsByDate(String tanggal);
 
   @Insert(onConflict: OnConflictStrategy.rollback)

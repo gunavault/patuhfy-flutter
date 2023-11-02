@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(tableName: "t_pencurian_tbs")
+@Entity(tableName: "t_pencurian_tbs", primaryKeys: ['id'])
 class PencurianTbsFormModel {
   @PrimaryKey(autoGenerate: true)
   int? id;

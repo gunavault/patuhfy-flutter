@@ -293,24 +293,28 @@ class LocalDataSource {
   getDataPencurianTbsByTanggalOnlineOrOffline(String tanggal) async {
     // cek off line dlu
     List<PencurianTbsFormModel> dataForm;
-    dataForm = await tPencurianTbsDao.getDataPencurianTbsByTanggal(tanggal);
-    if (dataForm.isEmpty) {
-      // Jika data 0 lokal data, cek ke online
-      UserModel userModel = await getCurrentUser();
-      PencurianTbsFormModelSelectResponse response = await RemoteDataSource()
-          .getDataPencurianTbsByTanggal(
-              tanggal, userModel.nik_sap, userModel.token);
-      if (response.dataForm.isNotEmpty) {
-        for (var data in response.dataForm) {
-          addDataPencurianTbs(data);
-        }
+    await deletePencurianDataWhichHasSend();
+    // dataForm = await tPencurianTbsDao.getDataPencurianTbsByTanggal(tanggal);
+    // if (dataForm.isEmpty) {
+    // Jika data 0 lokal data, cek ke online
+    UserModel userModel = await getCurrentUser();
+    PencurianTbsFormModelSelectResponse response = await RemoteDataSource()
+        .getDataPencurianTbsByTanggal(
+            tanggal, userModel.nik_sap, userModel.token);
+    if (response.dataForm.isNotEmpty) {
+      for (var data in response.dataForm) {
+        addDataPencurianTbs(data);
+      }
 
-        return response.dataForm;
+      int count = await getPencurianTbsDataNotSend() ?? 0;
+
+      if (count > 0) {
+        return [PencurianTbsFormModel(isSend: 0)];
       } else {
-        return dataForm;
+        return [PencurianTbsFormModel(isSend: 1)];
       }
     } else {
-      return dataForm;
+      return [PencurianTbsFormModel(isSend: 0)];
     }
   }
 
@@ -784,6 +788,10 @@ class LocalDataSource {
     return tApelPagiPengolahanDao.getCountNotSend();
   }
 
+  Future<int?> getRealPenyianganDataNotSend() {
+    return tApelPagiPengolahanDao.getCountNotSend();
+  }
+
   // delete data
 
   Future<bool?> deleteApelPagiById(id) {
@@ -800,6 +808,10 @@ class LocalDataSource {
 
   Future<bool?> deletePencurianTbsById(int id) {
     return tPencurianTbsDao.deleteDataById(id);
+  }
+
+  Future<bool?> deletePencurianDataWhichHasSend() {
+    return tPencurianTbsDao.deleteDataWhichHasSend();
   }
 
   Future<bool?> deleteLapKerusakanById(int id) {
@@ -835,6 +847,10 @@ class LocalDataSource {
   }
 
   Future<bool?> deleteApelPagiPengolahanById(int id) {
+    return tApelPagiPengolahanDao.deleteDataById(id);
+  }
+
+  Future<bool?> deleteRealPenyianganById(int id) {
     return tApelPagiPengolahanDao.deleteDataById(id);
   }
 
@@ -894,6 +910,10 @@ class LocalDataSource {
   Future<List<ApelPagiPengolahanFormModel>>
       getAllDataApelPagiPengolahanDataNotSend() {
     return tApelPagiPengolahanDao.getAllDataNotSend();
+  }
+
+  Future<List<RealPenyianganFormModel>> getAllDataRealPenyianganDataNotSend() {
+    return tRealPenyianganDao.getAllDataNotSend();
   }
 
   Future<int> getCountNotSend() async {

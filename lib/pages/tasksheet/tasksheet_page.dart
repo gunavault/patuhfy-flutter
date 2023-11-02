@@ -4,6 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
+import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
+import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
+import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
+import 'package:patuhfy/blocs/real_restan/real_restan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/sync_to_server/sync_to_server_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
@@ -114,28 +124,49 @@ class Tasksheet extends StatelessWidget {
 
   void btnSync(context) {
     BlocProvider.of<SyncToServerCubit>(context).syncData();
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) => RtlUpdateStatusForm(
-    //               dataForm: dataRtl,
-    //             )));
+  }
+
+  void responseAfterSync(context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    showAlertSuccessOkActionV2(context, 'Sinkronisasi database berhasil.', () {
+      print('update data');
+      BlocProvider.of<ApelPagiCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+      BlocProvider.of<InspeksiHancaCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+      BlocProvider.of<InspeksiTphCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+      BlocProvider.of<PencurianTbsCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+      BlocProvider.of<RealPemupukanCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealPenyianganCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealPenunasanCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealRestanCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealPemeliharaanJalanCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealPengendalianHamaCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      BlocProvider.of<RealPusinganPanenCardCubit>(context)
+          .checkIsAnwered(dateNow.toString().substring(0, 10));
+
+      BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
+      // Navigator.pop(context);
+    });
   }
 
   Widget _bottomNavigation(context, dateNow) {
     return BlocListener<SyncToServerCubit, SyncToServerState>(
       listener: (context, state) {
         if (state is SuccessSyncToServerState) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          showAlertSuccessOkActionV2(context, 'Sinkronisasi database berhasil.',
-              () {
-            print('update data');
-            BlocProvider.of<ApelPagiCardCubit>(context)
-                .checkIsAnwered(dateNow.toString().substring(0, 10));
-
-            BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
-            // Navigator.pop(context);
-          });
+          responseAfterSync(context);
         }
       },
       child: BlocBuilder<SyncToServerCubit, SyncToServerState>(
