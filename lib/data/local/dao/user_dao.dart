@@ -12,6 +12,9 @@ abstract class UserDao {
   @Query('DELETE FROM user WHERE nik_sap=:nikSap')
   Future<bool?> deleteUserByNikSAP(String nikSap);
 
+  @Query('DELETE FROM user')
+  Future<bool?> deleteUser();
+
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertUser(UserModel user);
 }

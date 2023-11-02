@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'page_state.dart';
 
@@ -96,11 +98,36 @@ class PageCubit extends Cubit<PageState> {
     emit(HomePageState());
   }
 
+  /// this will delete cache
+  Future<void> _deleteCacheDir() async {
+    final cacheDir = await getTemporaryDirectory();
+
+    if (cacheDir.existsSync()) {
+      print('ke sini hapus cache');
+      cacheDir.deleteSync(recursive: true);
+    }
+  }
+
+  /// this will delete app's storage
+  Future<void> _deleteAppDir() async {
+    final appDir = await getApplicationSupportDirectory();
+
+    if (appDir.existsSync()) {
+      appDir.deleteSync(recursive: true);
+    }
+  }
+
   logout() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool(keyIsAuth, false);
+      await _deleteCacheDir();
       await localDataSource.deleteUser(prefs.getString(keyNikSap) as String);
+
+      final UserModel user =
+          await localDataSource.getCurrentUser() ?? UserModel();
+
+      print('usserModel role ${user.role}');
       await localDataSource.deleteAfdeling();
       await localDataSource.deleteBlok();
       await localDataSource.deleteMandor();
@@ -111,7 +138,15 @@ class PageCubit extends Cubit<PageState> {
       await localDataSource.deleteAllPencurianTbs();
       await localDataSource.deleteAllLapKerusakan();
       await localDataSource.deleteAllRealPemupukan();
+      await localDataSource.deleteAllRealPengendalianHama();
+      await localDataSource.deleteAllRealPemeliharaanJalan();
+      await localDataSource.deleteAllRealPenunasan();
+      await localDataSource.deleteAllRealPenyiangan();
+      await localDataSource.deleteAllRealPusinganPanen();
+      await localDataSource.deleteAllRealRestan();
+      await localDataSource.deleteAllApelPagiPengolahan();
 
+      // await _deleteAppDir();
       emit(LoginPageState());
     } catch (e) {
       print('errrprr $e');

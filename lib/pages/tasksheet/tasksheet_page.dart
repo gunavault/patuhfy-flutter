@@ -400,8 +400,17 @@ class Tasksheet extends StatelessWidget {
                               ),
                             ),
                           ),
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
+                          placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              enabled: true,
+                              child: Container(
+                                  height: 50.0,
+                                  width: 50.0,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black,
+                                    shape: BoxShape.circle,
+                                  ))),
                           errorWidget: (context, url, error) => Container(
                             height: 50,
                             width: 50,

@@ -332,6 +332,12 @@ class _$UserDao extends UserDao {
   }
 
   @override
+  Future<bool?> deleteUser() async {
+    return _queryAdapter.query('DELETE FROM user',
+        mapper: (Map<String, Object?> row) => (row.values.first as int) != 0);
+  }
+
+  @override
   Future<void> insertUser(UserModel user) async {
     await _userModelInsertionAdapter.insert(user, OnConflictStrategy.replace);
   }
