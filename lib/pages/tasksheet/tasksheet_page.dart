@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -147,6 +148,20 @@ class Tasksheet extends StatelessWidget {
         )
       ];
     }
+  }
+
+  ImageProvider<Object> getCharacterAvatar(String url) {
+    final image = Image.network(
+      url,
+      errorBuilder: (BuildContext context, Object object, trace) {
+        print('context $context');
+        print('object $object');
+        print('trace $trace');
+
+        return Image(image: AssetImage('assets/icons/avatar2.png'));
+      },
+    ).image;
+    return image;
   }
 
   void btnSync(context) {
@@ -371,26 +386,48 @@ class Tasksheet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        state.userModel!.foto != Container()
-                            ? Container(
-                                height: 50.0,
-                                width: 50.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${state.userModel!.foto}"),
-                                      // AssetImage('assets/images/profile.png'),
-                                      fit: BoxFit.cover),
-                                ),
-                              )
-                            : Container(
-                                height: 50.0,
-                                width: 50.0,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
+                        CachedNetworkImage(
+                          imageUrl: "${state.userModel!.foto}",
+                          imageBuilder: (context, imageProvider) => Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.black,
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.fill,
                               ),
+                            ),
+                          ),
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.black,
+                              image: DecorationImage(
+                                image: AssetImage('assets/icons/avatar2.png'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Container(
+                        //   height: 50.0,
+                        //   width: 50.0,
+                        //   decoration: BoxDecoration(
+                        //     shape: BoxShape.circle,
+                        //     image: DecorationImage(
+                        //         image: getCharacterAvatar(
+                        //             "${state.userModel!.foto}"),
+                        //         // Image.network("${state.userModel!.foto}"),
+                        //         // AssetImage('assets/images/profile.png'),
+                        //         fit: BoxFit.cover),
+                        //   ),
+                        // ),
                         const SizedBox(width: 10.0),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,8 +457,9 @@ class Tasksheet extends StatelessWidget {
                             const SizedBox(height: 10.0),
                             BlocBuilder<PerformaCubit, PerformaState>(
                                 builder: (context, state) {
+                              print('Currstate $state');
                               if (state is SuccessPerformaListState) {
-                                double? value = state.dataForm.PERSEN_TASK;
+                                double? value = state.dataForm.PERSEN_TASK ?? 0;
 
                                 Color getColorForValue(double value) {
                                   if (value < 0.5) {
@@ -458,15 +496,15 @@ class Tasksheet extends StatelessWidget {
                                             children: [
                                               RichText(
                                                 text: TextSpan(
-                                                  text: state
-                                                      .dataForm.JUMLAH_TASK,
+                                                  text:
+                                                      "${state.dataForm.JUMLAH_TASK ?? '0'}",
                                                   style: kTextStyle.copyWith(
                                                       fontSize: 11,
                                                       color: kBlueColor),
                                                   children: [
                                                     TextSpan(
                                                       text:
-                                                          ' / ${state.dataForm.HARI_PRODUKTIF} Pekerjaan',
+                                                          ' / ${state.dataForm.HARI_PRODUKTIF ?? '0'} Pekerjaan',
                                                       style:
                                                           kTextStyle.copyWith(
                                                               fontSize: 11,
@@ -482,7 +520,7 @@ class Tasksheet extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 120),
                                               Text(
-                                                "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
+                                                "${(state.dataForm.PERSEN_TASK ?? 0 * 100).toStringAsFixed(2)}%",
                                                 style:
                                                     CommonStyle.getRalewayFont(
                                                   color: CommonColors.textColor,
@@ -508,7 +546,7 @@ class Tasksheet extends StatelessWidget {
                                                     AlwaysStoppedAnimation<
                                                             Color>(
                                                         getColorForValue(
-                                                            value!)),
+                                                            value ?? 0)),
                                                 backgroundColor:
                                                     const Color(0xffFF4444)
                                                         .withOpacity(0.1),

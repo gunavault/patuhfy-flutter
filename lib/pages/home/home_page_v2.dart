@@ -6,6 +6,7 @@ import 'package:patuhfy/pages/rtl/rtl_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_tekpol_page.dart';
 import 'package:patuhfy/pages/user_page/user_page.dart';
+import 'package:patuhfy/widgets/connectivity.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -26,12 +27,10 @@ class HomePageV2 extends StatelessWidget {
         key: const PageStorageKey('tasksheet'),
       );
     } else if (activeTab == TabState.approval) {
-      return const RtlPage(
-        key: PageStorageKey('approval'),
-      );
-    }else if  (activeTab == TabState.mantap ) {
-      return Tasksheet_Tekpol(
-        key: const PageStorageKey('asdasd'),
+      return ConnectivityWidget(
+        child: const RtlPage(
+          key: PageStorageKey('approval'),
+        ),
       );
     }
     // else if (activeTab == TabState.lapor) {
@@ -80,10 +79,6 @@ class HomePageV2 extends StatelessWidget {
                 label: "RTL",
               ),
 
-              BottomNavigationBarItem(
-                icon: Icon(IconlyLight.shieldDone),
-                label: "TEKPOL",
-              ),
               // BottomNavigationBarItem(
               //   icon: Icon(IconlyLight.ticket),
               //   label: "Close RTL",
@@ -421,7 +416,7 @@ class Content extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontSize: 18.0),
                       ),
-                      Container(  
+                      Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         height: 5,
                         child: ClipRRect(

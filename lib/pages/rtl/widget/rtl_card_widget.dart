@@ -12,9 +12,10 @@ class RtlCard extends StatelessWidget {
   final Function onClickFunction;
 
   String _changeDateForm(RtlListModel dataForm) {
-    final dataTanggal = dataForm.mobileCreatedAt.toString();
+    final dataTanggal = dataForm.mobileCreatedAt.toString() ?? '';
     final format = DateFormat("yyyy-MM-dd HH:mm:ss");
-    final DateTime result = format.parse(dataTanggal);
+    final DateTime result =
+        dataTanggal == '' ? format.parse(dataTanggal) : DateTime.now();
     print('opo iki $result'); //2022-10-27 11:02:50.000
 
     final newFormatter = DateFormat("EEEE, MMMM dd, yyyy");

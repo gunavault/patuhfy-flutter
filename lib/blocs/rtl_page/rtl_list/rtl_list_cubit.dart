@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:meta/meta.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
@@ -17,15 +18,24 @@ class RtlListCubit extends Cubit<RtlListState> {
   getData(String status) async {
     emit(LoadingRtlListListState());
 
+    final connectivityResult = await (Connectivity()
+        .checkConnectivity()); // cCheck if there is connection post to local and database
     UserModel userModel = await localDataSource.getCurrentUser();
-    String nikSap = userModel.nik_sap.toString();
-    String psa = userModel.psa.toString();
-    String role = userModel.role.toString();
+    print('awwwwww');
+    if (connectivityResult != ConnectivityResult.none) {
+      print('awwwwww ada koneksi');
+      String nikSap = userModel.nik_sap.toString();
+      String psa = userModel.psa.toString();
+      String role = userModel.role.toString();
 
-    RtlListModelSelectResponse data = await remoteDataSource
-        .getDataListRtlByPsa(psa, nikSap, status, role, userModel.token);
+      RtlListModelSelectResponse data = await remoteDataSource
+          .getDataListRtlByPsa(psa, nikSap, status, role, userModel.token);
 
-    print('data pencurian tsb $data');
-    emit(SuccessRtlListListState(data.dataForm, userModel));
+      print('data pencurian tsb $data');
+      emit(SuccessRtlListListState(data.dataForm, userModel));
+    } else {
+      emit(NoConnectionRtlListListState());
+      print('awwwwww tidak ada ada koneksi');
+    }
   }
 }
