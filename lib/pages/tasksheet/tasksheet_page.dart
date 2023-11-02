@@ -32,9 +32,11 @@ import 'package:patuhfy/pages/tasksheet/task_cards/real_penunasan/real_penunasan
 import 'package:patuhfy/pages/tasksheet/task_cards/real_penyiangan/real_penyiangan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pusingan_panen/real_pusingan_panen_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_restan/real_restan_card.dart';
+import 'package:patuhfy/pages/tasksheet/widget/card_loading.dart';
 import 'package:patuhfy/pages/tasksheet/widget/label_task_to_do.dart';
 import 'package:patuhfy/pages/tasksheet/widget/pilih_tanggal_widget.dart';
 import 'package:patuhfy/utils/common_colors.dart';
+import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/constant.dart';
 import 'package:shimmer/shimmer.dart';
@@ -48,8 +50,33 @@ class Tasksheet extends StatelessWidget {
 
   List<Widget> taskList(
       UserModel userModel, bool isToday, state, selectedDate) {
-    print('userModel ${userModel.psa_tipe}');
-    if (userModel.psa_tipe == 'KEBUN') {
+    if (userModel.psa_tipe == 'KEBUN' && userModel.role == 'MANAGER') {
+      return [
+        LabelTaskDoTo(
+          selectedDate: selectedDate,
+        ),
+        ApelPagiCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        InspeksiHancaCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        InspeksiTphCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        PencurianTbsCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+        LapKerusakanCard(
+          selectedDate: state.selectedDate,
+          isToday: isToday,
+        ),
+      ];
+    } else if (userModel.psa_tipe == 'KEBUN' && userModel.role != 'MANAGER') {
       return [
         LabelTaskDoTo(
           selectedDate: selectedDate,
@@ -101,7 +128,7 @@ class Tasksheet extends StatelessWidget {
         RealRestanCard(
           selectedDate: state.selectedDate,
           isToday: isToday,
-        ),
+        )
       ];
     } else if (userModel.psa_tipe == 'PABRIK') {
       return [
@@ -406,39 +433,94 @@ class Tasksheet extends StatelessWidget {
                                   }
                                 }
 
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                return Row(
+                                  // mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Progress till ${DateTime.now().toString().split(' ')[0]}", // Display current date
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
-                                    const SizedBox(
-                                        height: 10), // Add vertical space here
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Text(
+                                        //   "Progress till ${DateTime.now().toString().split(' ')[0]}", // Display current date
+                                        //   style: const TextStyle(fontSize: 13),
+                                        // ),
+                                        // const SizedBox(
+                                        //     height: 10), // Add vertical space here
 
-                                    Center(
-                                      child: SizedBox(
-                                        width: 265,
-                                        height: 5,
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10)),
-                                          child: LinearProgressIndicator(
-                                            value: value,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    getColorForValue(value!)),
-                                            backgroundColor:
-                                                const Color(0xffFF4444)
-                                                    .withOpacity(0.1),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, bottom: 04),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  text: state
+                                                      .dataForm.JUMLAH_TASK,
+                                                  style: kTextStyle.copyWith(
+                                                      fontSize: 11,
+                                                      color: kBlueColor),
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          ' / ${state.dataForm.HARI_PRODUKTIF} Pekerjaan',
+                                                      style:
+                                                          kTextStyle.copyWith(
+                                                              fontSize: 11,
+                                                              color:
+                                                                  kTitleColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              height: 0),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(width: 120),
+                                              Text(
+                                                "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
+                                                style:
+                                                    CommonStyle.getRalewayFont(
+                                                  color: CommonColors.textColor,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    Text(
-                                      "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
-                                      style: const TextStyle(fontSize: 14),
+
+                                        Center(
+                                          child: SizedBox(
+                                            width: 265,
+                                            height: 10,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10)),
+                                              child: LinearProgressIndicator(
+                                                value: value,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                            Color>(
+                                                        getColorForValue(
+                                                            value!)),
+                                                backgroundColor:
+                                                    const Color(0xffFF4444)
+                                                        .withOpacity(0.1),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Text(
+                                        //   "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(2)}%",
+                                        //   style: const TextStyle(fontSize: 14),
+                                        // ),
+                                      ],
                                     ),
                                   ],
                                 );
@@ -461,44 +543,6 @@ class Tasksheet extends StatelessWidget {
                               // return CircularProgressIndicator();
                             }),
                             const SizedBox(height: 10.0),
-                            BlocBuilder<PerformaCubit, PerformaState>(
-                              builder: (context, state) {
-                                if (state is SuccessPerformaListState) {
-                                  return RichText(
-                                    text: TextSpan(
-                                      text: state.dataForm.JUMLAH_TASK,
-                                      style: kTextStyle.copyWith(
-                                          fontSize: 11, color: kBlueColor),
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              ' / ${state.dataForm.HARI_PRODUKTIF} Pekerjaan',
-                                          style: kTextStyle.copyWith(
-                                              fontSize: 11,
-                                              color: kTitleColor,
-                                              fontWeight: FontWeight.w500,
-                                              height: 0),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                }
-                                return Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.grey.shade100,
-                                  enabled: true,
-                                  child: Container(
-                                    width: 100,
-                                    // width: double.infinity,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
                           ],
                         ),
                         const Spacer(),
@@ -510,20 +554,7 @@ class Tasksheet extends StatelessWidget {
                     );
                   }
 
-                  return Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    enabled: true,
-                    child: Container(
-                      width: 250,
-                      // width: double.infinity,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                  );
+                  return CardDashboardLoading();
                 },
               ),
             ),
