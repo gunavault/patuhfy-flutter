@@ -800,7 +800,6 @@ class RemoteDataSource {
           message: callback['msg'],
           dataForm: PerformaModel.fromJson(parsedData));
     } on DioError catch (err) {
-      print('rrtot $err');
       return PerformaModelSelectResponse(
           status_code: 500,
           message: err.response.toString(),

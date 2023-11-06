@@ -31,8 +31,12 @@ class RtlListCubit extends Cubit<RtlListState> {
       RtlListModelSelectResponse data = await remoteDataSource
           .getDataListRtlByPsa(psa, nikSap, status, role, userModel.token);
 
+      if (data.status_code == 200) {
+        emit(SuccessRtlListListState(data.dataForm, userModel));
+      } else {
+        emit(ErrorRtlListListState());
+      }
       print('data pencurian tsb $data');
-      emit(SuccessRtlListListState(data.dataForm, userModel));
     } else {
       emit(NoConnectionRtlListListState());
       print('awwwwww tidak ada ada koneksi');

@@ -7,6 +7,8 @@ class LoadingRtlListListState extends RtlListState {}
 
 class NoConnectionRtlListListState extends RtlListState {}
 
+class ErrorRtlListListState extends RtlListState {}
+
 class SuccessRtlListListState extends RtlListState {
   final List<RtlListModel> dataForm;
   final UserModel userModel;

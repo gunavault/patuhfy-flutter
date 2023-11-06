@@ -111,6 +111,10 @@ class RtlPage extends StatelessWidget {
                       );
                     }
 
+                    if (state is ErrorRtlListListState) {
+                      return const NotFoundWidget();
+                    }
+
                     if (state is SuccessRtlListListState) {
                       if (state.dataForm.isEmpty) {
                         return const NotFoundWidget();

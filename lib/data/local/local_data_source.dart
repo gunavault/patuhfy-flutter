@@ -315,7 +315,7 @@ class LocalDataSource {
         return [PencurianTbsFormModel(isSend: 1)];
       }
     } else {
-      return [PencurianTbsFormModel(isSend: 0)];
+      return [];
     }
   }
 
