@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
+import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
@@ -181,8 +182,8 @@ class Tasksheet extends StatelessWidget {
       BlocProvider.of<InspeksiTphCardCubit>(context)
           .checkIsAnwered(dateNow.toString().substring(0, 10));
 
-      BlocProvider.of<PencurianTbsCardCubit>(context)
-          .checkIsAnwered(dateNow.toString().substring(0, 10));
+      // BlocProvider.of<PencurianTbsCardCubit>(context)
+      //     .checkIsAnwered(dateNow.toString().substring(0, 10));
 
       BlocProvider.of<RealPemupukanCardCubit>(context)
           .checkIsAnwered(dateNow.toString().substring(0, 10));
@@ -211,98 +212,213 @@ class Tasksheet extends StatelessWidget {
           responseAfterSync(context);
         }
       },
-      child: BlocBuilder<SyncToServerCubit, SyncToServerState>(
+      child: BlocBuilder<ConnectivityCubit, ConnectivityState>(
         builder: (context, state) {
-          print('what is state $state');
-          if (state is HasDataToSyncState) {
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                children: [
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.sync),
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 10.0),
-                        ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            CommonColors.containerTextB),
-                      ),
-                      onPressed: () {
-                        btnSync(context);
-                      },
-                      label: Text(
-                        '${state.totalData} Task Belum dikirim ke server',
-                        style: kTextStyle.copyWith(color: kWhite, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          if (state is LoadingSyncToServerState) {
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                children: [
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: ElevatedButton(
-                      // icon: const Icon(Icons.sync),
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(
-                              horizontal: 15.0, vertical: 10.0),
-                        ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            CommonColors.containerTextO),
-                      ),
-                      onPressed: () {},
+          if (state is HasConnection) {
+            if (state.connection) {
+              BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
+              return BlocBuilder<SyncToServerCubit, SyncToServerState>(
+                builder: (context, state) {
+                  print('what is state $state');
+                  if (state is HasDataToSyncState) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                              width: 15,
-                              child: Lottie.asset(
-                                  'assets/animation/loading.json')),
-                          SizedBox(width: 10),
-                          Text(
-                            'Mengirim data ke server..',
-                            style: kTextStyle.copyWith(
-                                color: kWhite, fontSize: 15),
+                          const SizedBox(width: 10.0),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.sync),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 10.0),
+                                ),
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        CommonColors.containerTextB),
+                              ),
+                              onPressed: () {
+                                btnSync(context);
+                              },
+                              label: Text(
+                                '${state.totalData} Task Belum dikirim ke server',
+                                style: kTextStyle.copyWith(
+                                    color: kWhite, fontSize: 15),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ),
+                    );
+                  }
+
+                  if (state is LoadingSyncToServerState) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 10.0),
+                          Expanded(
+                            child: ElevatedButton(
+                              // icon: const Icon(Icons.sync),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<
+                                    EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 15.0, vertical: 10.0),
+                                ),
+                                shape:
+                                    MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        CommonColors.containerTextO),
+                              ),
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 15,
+                                      child: Lottie.asset(
+                                          'assets/animation/loading.json')),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Mengirim data ke server..',
+                                    style: kTextStyle.copyWith(
+                                        color: kWhite, fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (state is NoDataToSyncState) {
+                    return const Padding(
+                      padding: EdgeInsets.all(1.0),
+                    );
+                  }
+
+                  return const Padding(
+                    padding: EdgeInsets.all(1.0),
+                  );
+                },
+              );
+            }
+          }
+
+          return BlocBuilder<SyncToServerCubit, SyncToServerState>(
+            builder: (context, state) {
+              print('what is state $state');
+              if (state is HasDataToSyncState) {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10.0),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.sync),
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 10.0),
+                            ),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                CommonColors.containerTextB),
+                          ),
+                          onPressed: () {
+                            btnSync(context);
+                          },
+                          label: Text(
+                            '${state.totalData} Task Belum dikirim ke server',
+                            style: kTextStyle.copyWith(
+                                color: kWhite, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
+                );
+              }
 
-          if (state is NoDataToSyncState) {
-            return const Padding(
-              padding: EdgeInsets.all(1.0),
-            );
-          }
+              if (state is LoadingSyncToServerState) {
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          // icon: const Icon(Icons.sync),
+                          style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all<EdgeInsetsGeometry>(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 10.0),
+                            ),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                            ),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                CommonColors.containerTextO),
+                          ),
+                          onPressed: () {},
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  width: 15,
+                                  child: Lottie.asset(
+                                      'assets/animation/loading.json')),
+                              SizedBox(width: 10),
+                              Text(
+                                'Mengirim data ke server..',
+                                style: kTextStyle.copyWith(
+                                    color: kWhite, fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
 
-          return const Padding(
-            padding: EdgeInsets.all(1.0),
+              if (state is NoDataToSyncState) {
+                return const Padding(
+                  padding: EdgeInsets.all(1.0),
+                );
+              }
+
+              return const Padding(
+                padding: EdgeInsets.all(1.0),
+              );
+            },
           );
         },
       ),
@@ -529,7 +645,7 @@ class Tasksheet extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 120),
                                               Text(
-                                                "${(state.dataForm.PERSEN_TASK ?? 0 * 100).toStringAsFixed(2)}%",
+                                                "${(state.dataForm.PERSEN_TASK! * 100).toStringAsFixed(0)}%",
                                                 style:
                                                     CommonStyle.getRalewayFont(
                                                   color: CommonColors.textColor,

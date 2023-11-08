@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
@@ -99,7 +98,7 @@ class InspeksiTphDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task Inspeksi Hanca Panen',
+                    'Isian Task Inspeksi TPH',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,

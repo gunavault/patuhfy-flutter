@@ -345,7 +345,6 @@ class RemoteDataSource {
       token, RealPemupukanFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('apa ini data pemupukan ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/real-pemupukan",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
@@ -389,7 +388,6 @@ class RemoteDataSource {
       token, RealPengendalianHamaFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('apa ini data pemupukan ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/real-pengendalian-hama",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
@@ -433,7 +431,7 @@ class RemoteDataSource {
       token, RealPenyianganFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('apa ini data pemupukan ${dataForm.toJson()}');
+      print('apa ini data penyiangan ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/real-penyiangan",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
@@ -476,8 +474,7 @@ class RemoteDataSource {
       token, RealPusinganPanenFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('apa ini data pemupukan ${dataForm.toJson()}');
-      var response = await dio.post("$baseUrl/tasksheet/real-penyiangan",
+      var response = await dio.post("$baseUrl/tasksheet/real-pusingan-panen",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
       return RealPusinganPanenFormModelResponse(
@@ -495,7 +492,7 @@ class RemoteDataSource {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet/real-penyiangan/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          "$baseUrl/tasksheet/real-pusingan-panen/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -519,7 +516,6 @@ class RemoteDataSource {
       token, RealPenunasanFormModel dataForm) async {
     try {
       var dio = Dio();
-      print('apa ini data pemupukan ${dataForm.toJson()}');
       var response = await dio.post("$baseUrl/tasksheet/real-penunasan",
           data: dataForm.toJson(), options: optionAuth(token));
       dynamic callback = response.data;
@@ -631,6 +627,7 @@ class RemoteDataSource {
 
       dynamic callback = response.data;
       List<dynamic> parsedData = callback['data'];
+      print('awwwww $parsedData');
       return RealPemeliharaanJalanFormModelSelectResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg'],

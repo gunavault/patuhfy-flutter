@@ -16,7 +16,8 @@ import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
 class FormRealPemeliharaanJalan extends StatelessWidget {
-  FormRealPemeliharaanJalan({Key? key, required this.selectedDate}) : super(key: key);
+  FormRealPemeliharaanJalan({Key? key, required this.selectedDate})
+      : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
@@ -88,9 +89,11 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<RealPemeliharaanJalanFormCubit, RealPemeliharaanJalanFormState>(
+      child: BlocListener<RealPemeliharaanJalanFormCubit,
+          RealPemeliharaanJalanFormState>(
         listener: (context, RealPemeliharaanJalanFormState) {
-          if (RealPemeliharaanJalanFormState is LoadingRealPemeliharaanJalanFormState) {
+          if (RealPemeliharaanJalanFormState
+              is LoadingRealPemeliharaanJalanFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -106,10 +109,11 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (RealPemeliharaanJalanFormState is SuccessRealPemeliharaanJalanFormState) {
+          } else if (RealPemeliharaanJalanFormState
+              is SuccessRealPemeliharaanJalanFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, RealPemeliharaanJalanFormState.message,
-                () {
+            showAlertSuccessOkActionV2(
+                context, RealPemeliharaanJalanFormState.message, () {
               BlocProvider.of<RealPemeliharaanJalanCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               Navigator.pop(context);
@@ -131,7 +135,8 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (RealPemeliharaanJalanFormState is ErrorRealPemeliharaanJalanFormState) {
+          } else if (RealPemeliharaanJalanFormState
+              is ErrorRealPemeliharaanJalanFormState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
@@ -173,16 +178,22 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
                           onChangeFunc: onChangeSelectboxAfdeling,
                         ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Rencana Luas Realisai Pemeliharaan Jalan',
-                          fieldKeterangan: 'Rencana Luas Realisai Pemeliharaan Jalan',
+                          fieldText:
+                              'Rencana Luas Realisasi Pemeliharaan Jalan',
+                          fieldKeterangan:
+                              'Rencana Luas Realisasi Pemeliharaan Jalan',
                           fieldType: 'number',
-                          fieldController: rencanaluaspemeliharaanjalanController,
+                          fieldController:
+                              rencanaluaspemeliharaanjalanController,
                         ),
                         TextFormFieldWidgetForm(
-                          fieldText: 'Realisasi Luas Realisai Pemeliharaan Jalan',
-                          fieldKeterangan: 'Rencana Luas Realisai Pemeliharaan Jalan',
+                          fieldText:
+                              'Realisasi Luas Realisasi Pemeliharaan Jalan',
+                          fieldKeterangan:
+                              'Rencana Luas Realisasi Pemeliharaan Jalan',
                           fieldType: 'number',
-                          fieldController: realisasiluaspemeliharaanjalanController,
+                          fieldController:
+                              realisasiluaspemeliharaanjalanController,
                         ),
                         TextFormFieldWidgetForm(
                           fieldText: 'Penyebab',
@@ -191,7 +202,7 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
                           fieldController: penyebabController,
                         ),
                         UploadFoto(
-                          fieldName: 'Evidence Realisasi Realisai Pemeliharaan Jalan',
+                          fieldName: 'Evidence Realisasi Pemeliharaan Jalan',
                           imageNameController: fotoController,
                         ),
                         const SizedBox(

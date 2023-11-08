@@ -173,7 +173,7 @@ class LocalDataSource {
       ApelPagiFormModelSelectResponse response = await RemoteDataSource()
           .getDataApelPagiByTanggal(
               tanggal, userModel.nik_sap, userModel.token);
-      print('data dari remote ${response.dataForm.first}');
+      // print('data dari remote ${response.dataForm.first}');
       if (response.dataForm.isNotEmpty) {
         await addDataApelPagi(response.dataForm.first);
         return response.dataForm;
@@ -527,6 +527,7 @@ class LocalDataSource {
     List<RealPusinganPanenFormModel> dataForm;
     dataForm =
         await tRealPusinganPanenDao.getDataRealPusinganPanenByTanggal(tanggal);
+
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
@@ -616,6 +617,7 @@ class LocalDataSource {
     // cek off line dlu
     List<RealPenyianganFormModel> dataForm;
     dataForm = await tRealPenyianganDao.getDataRealPenyianganByTanggal(tanggal);
+
     if (dataForm.isEmpty) {
       // Jika data 0 lokal data, cek ke online
       UserModel userModel = await getCurrentUser();
@@ -790,7 +792,7 @@ class LocalDataSource {
   }
 
   Future<int?> getRealPenyianganDataNotSend() {
-    return tApelPagiPengolahanDao.getCountNotSend();
+    return tRealPenyianganDao.getCountNotSend();
   }
 
   // delete data
@@ -852,7 +854,7 @@ class LocalDataSource {
   }
 
   Future<bool?> deleteRealPenyianganById(int id) {
-    return tApelPagiPengolahanDao.deleteDataById(id);
+    return tRealPenyianganDao.deleteDataById(id);
   }
 
   // Get Sync List

@@ -21,7 +21,8 @@ class RealPusinganPanenCardCubit extends Cubit<RealPusinganPanenCardState> {
 
     if (connectivityResult != ConnectivityResult.none) {
       cekData = await localDataSource
-          .getDataRealPusinganPanenByTanggalOnlineOrOffline(taskDate.toString());
+          .getDataRealPusinganPanenByTanggalOnlineOrOffline(
+              taskDate.toString());
 
       if (cekData.isEmpty) {
         emit(IsRealPusinganPanenAswered(false, null));

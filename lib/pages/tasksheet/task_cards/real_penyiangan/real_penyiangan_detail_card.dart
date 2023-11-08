@@ -129,7 +129,7 @@ class RealPenyianganDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task Pemupukan',
+                    'Isian Task Penyiangan',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,
@@ -153,7 +153,6 @@ class RealPenyianganDetailCard extends StatelessWidget {
                 fieldText: 'Afdeling',
                 fieldValue: dataForm!.afdeling,
               ),
-
               textFieldWidget(
                 fieldText: 'Luas Areal (ha)',
                 fieldValue: dataForm!.luas,

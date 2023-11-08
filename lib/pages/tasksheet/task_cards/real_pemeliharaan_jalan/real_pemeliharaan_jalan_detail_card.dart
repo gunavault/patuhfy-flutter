@@ -20,7 +20,7 @@ class RealPemeliharaanJalanDetailCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Evidence Realisasi Pemupukan",
+          "Evidence Realisasi Pemeliharaan Jalan",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ class RealPemeliharaanJalanDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task Pemupukan',
+                    'Isian Task Realisasi Pemeliharaan Jalan',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,
@@ -158,11 +158,11 @@ class RealPemeliharaanJalanDetailCard extends StatelessWidget {
               //   fieldValue: dataForm!.luas,
               // ),
               textFieldWidget(
-                fieldText: 'Rencana Luas Pemupukan',
+                fieldText: 'Rencana Luas Realisasi Pemeliharaan Jalan',
                 fieldValue: dataForm!.rencanaluaspemeliharaanjalan,
               ),
               textFieldWidget(
-                fieldText: 'Realisasi Luas Pemupukan',
+                fieldText: 'Realisasi Luas Realisasi Pemeliharaan Jalan',
                 fieldValue: dataForm!.realisasiluaspemeliharaanjalan,
               ),
               textFieldWidget(

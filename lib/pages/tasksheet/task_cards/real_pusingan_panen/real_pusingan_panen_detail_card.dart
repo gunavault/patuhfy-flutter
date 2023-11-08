@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
@@ -10,7 +9,6 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
   const RealPusinganPanenDetailCard({super.key, required this.dataForm});
 
   final RealPusinganPanenFormModel? dataForm;
-
 
   Widget textFieldWidget({fieldText, fieldValue}) {
     return Column(
@@ -100,7 +98,7 @@ class RealPusinganPanenDetailCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Isian Task pengendalian hama',
+                    'Isian Task Pusingan Panen',
                     style: kTextStyle.copyWith(
                         fontSize: 17,
                         color: kTitleColor,

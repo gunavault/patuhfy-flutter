@@ -291,6 +291,7 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
 
 // Function for RealPenyianganFormModel
   Future<bool> syncRealPenyiangan(String token) async {
+    print('kesini penyiangan');
     try {
       int count = await localDataSource.getRealPenyianganDataNotSend() ?? 0;
       if (count > 0) {

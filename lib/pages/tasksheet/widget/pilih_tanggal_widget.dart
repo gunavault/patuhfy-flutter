@@ -47,8 +47,8 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
     BlocProvider.of<InspeksiTphCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
 
-    BlocProvider.of<PencurianTbsCardCubit>(context)
-        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+    // BlocProvider.of<PencurianTbsCardCubit>(context)
+    //     .checkIsAnwered(selectedDate.toString().substring(0, 10));
 
     BlocProvider.of<RealPemupukanCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
@@ -64,7 +64,6 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
     BlocProvider.of<RealPusinganPanenCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
-
 
     Navigator.pop(context);
   }

@@ -48,6 +48,7 @@ class RealPusinganPanenFormModel {
       this.hasRtl});
 
   RealPusinganPanenFormModel.fromJson(Map<String, dynamic> json) {
+    print('jeson $json');
     tanggal = json["TANGGAL"];
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
@@ -62,8 +63,8 @@ class RealPusinganPanenFormModel {
     pusingan12harilebih = json["PUSINGAN_12_HARI_LEBIH"];
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
-    lat = json["LAT"];
-    long = json["LONG"];
+    lat = json["LAT"].toString();
+    long = json["LONG"].toString();
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
     hasRtl = json['HAS_RTL'];

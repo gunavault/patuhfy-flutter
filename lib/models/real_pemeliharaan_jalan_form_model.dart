@@ -47,14 +47,14 @@ class RealPemeliharaanJalanFormModel {
     unitKerja = json["UNIT_KERJA"];
     rencanaluaspemeliharaanjalan = json["RENCANA_LUAS_PEMELIHARAAN_JALAN"];
     realisasiluaspemeliharaanjalan = json["REALISASI_LUAS_PEMELIHARAAN_JALAN"];
-    penyebab = json["PENYEBAB"];
+    penyebab = json["PENYEBAB"].toString();
     rtl = json["RTL"];
     foto = json["FOTO"];
     lat = json["LAT"].toString();
     long = json["LONG"].toString();
     mobileCreatedAt = json["MOBILE_CREATED_AT"];
     isSend = 1;
-    hasRtl = json['HAS_RTL'];
+    hasRtl = int.parse(json['HAS_RTL']);
   }
 
   Map<String, dynamic> toJson() {

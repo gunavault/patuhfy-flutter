@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
@@ -19,7 +18,7 @@ class RealRestanDetailCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Evidence Realisasi Pemupukan",
+          "Evidence Realisasi Restan",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -175,13 +174,11 @@ class RealRestanDetailCard extends StatelessWidget {
                 fieldValue: dataForm!.ketTindakLanjut,
               ),
               textFieldWidget(
-                fieldText: 'Kapasitas Angkutan Perton',
-                fieldValue: dataForm!.kapasitasAngkutanPerton
-              ),
+                  fieldText: 'Kapasitas Angkutan Perton',
+                  fieldValue: dataForm!.kapasitasAngkutanPerton),
               textFieldWidget(
-                fieldText: 'Kebutuhan Armada Angkut',
-                fieldValue: dataForm!.kebutuhanArmadaAngkut
-              ),
+                  fieldText: 'Kebutuhan Armada Angkut',
+                  fieldValue: dataForm!.kebutuhanArmadaAngkut),
               evidenceRealRestan(context),
               const SizedBox(height: 30.0),
             ],
