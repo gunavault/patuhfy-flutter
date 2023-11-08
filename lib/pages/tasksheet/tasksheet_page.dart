@@ -68,14 +68,14 @@ class Tasksheet extends StatelessWidget {
           selectedDate: state.selectedDate,
           isToday: isToday,
         ),
-        PencurianTbsCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        LapKerusakanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
+        // PencurianTbsCard(
+        //   selectedDate: state.selectedDate,
+        //   isToday: isToday,
+        // ),
+        // LapKerusakanCard(
+        //   selectedDate: state.selectedDate,
+        //   isToday: isToday,
+        // ),
       ];
     } else if (userModel.psa_tipe == 'KEBUN' && userModel.role != 'MANAGER') {
       return [
@@ -94,14 +94,14 @@ class Tasksheet extends StatelessWidget {
           selectedDate: state.selectedDate,
           isToday: isToday,
         ),
-        PencurianTbsCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        LapKerusakanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
+        // PencurianTbsCard(
+        //   selectedDate: state.selectedDate,
+        //   isToday: isToday,
+        // ),
+        // LapKerusakanCard(
+        //   selectedDate: state.selectedDate,
+        //   isToday: isToday,
+        // ),
         RealPemupukanCard(
           selectedDate: state.selectedDate,
           isToday: isToday,

@@ -157,7 +157,7 @@ class FormRealPenunasan extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Realisasi penunasan",
+              title: "Form Realisasi Penunasan",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);

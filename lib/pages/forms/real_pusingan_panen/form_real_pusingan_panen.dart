@@ -163,7 +163,7 @@ class FormRealPusinganPanen extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Realisasi Pemupukan",
+              title: "Form Realisasi Pusingan Panen",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
