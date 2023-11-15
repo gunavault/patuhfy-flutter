@@ -42,6 +42,7 @@ import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
+import 'package:patuhfy/blocs/sync_masterdata/sync_masterdata_cubit.dart';
 import 'package:patuhfy/blocs/sync_to_server/sync_to_server_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/type_user/type_user_cubit.dart';
@@ -262,6 +263,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               ApelPagiPengolahanFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              SyncMasterdataCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>

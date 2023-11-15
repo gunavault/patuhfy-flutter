@@ -66,14 +66,6 @@ class Tasksheet extends StatelessWidget {
           selectedDate: state.selectedDate,
           isToday: isToday,
         ),
-        // PencurianTbsCard(
-        //   selectedDate: state.selectedDate,
-        //   isToday: isToday,
-        // ),
-        // LapKerusakanCard(
-        //   selectedDate: state.selectedDate,
-        //   isToday: isToday,
-        // ),
       ];
     } else if (userModel.psa_tipe == 'KEBUN' && userModel.role != 'MANAGER') {
       return [
@@ -206,7 +198,6 @@ class Tasksheet extends StatelessWidget {
               BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
               return BlocBuilder<SyncToServerCubit, SyncToServerState>(
                 builder: (context, state) {
-                  print('what is state $state');
                   if (state is HasDataToSyncState) {
                     return Padding(
                       padding: const EdgeInsets.all(5.0),

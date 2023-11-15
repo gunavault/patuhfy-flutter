@@ -132,13 +132,13 @@ class ApelPagiCard extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.attachment_outlined,
-                              color: kTitleColor,
-                            ),
-                          ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: const Icon(
+                          //     Icons.attachment_outlined,
+                          //     color: kTitleColor,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

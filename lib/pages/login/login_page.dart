@@ -20,23 +20,15 @@ class LoginPage extends StatelessWidget {
     TextEditingController nikSapController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
-    final scaffoldKey = GlobalKey<ScaffoldState>();
-    final GlobalKey<FormFieldState<String>> passwordKey =
-        GlobalKey<FormFieldState<String>>();
-    final GlobalKey<FormFieldState<String>> userIdKey =
-        GlobalKey<FormFieldState<String>>();
 
     void _login() {
       FocusScope.of(context).requestFocus(FocusNode());
-
       context.read<AuthUserCubit>().submitFormLogin(
             FormLoginModel(
               nikSapController.text,
               passwordController.text,
             ),
           );
-
-      // _loginBloc.add(LoginPressed(_loginData));
     }
 
     void _submit() {

@@ -128,13 +128,13 @@ class InspeksiTphCard extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.cloud_upload,
-                              color: kNeutralColor,
-                            ),
-                          ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: const Icon(
+                          //     Icons.cloud_upload,
+                          //     color: kNeutralColor,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
