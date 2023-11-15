@@ -9,7 +9,7 @@ import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'real_penyiangan_form_state.dart';
+part 'real_penunasan_form_state.dart';
 
 class RealPenunasanFormCubit extends Cubit<RealPenunasanFormState> {
   final LocalDataSource localDataSource;

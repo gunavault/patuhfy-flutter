@@ -5,7 +5,7 @@ import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 
-part 'real_penyiangan_card_state.dart';
+part 'real_penunasan_card_state.dart';
 
 class RealPenunasanCardCubit extends Cubit<RealPenunasanCardState> {
   final LocalDataSource localDataSource;

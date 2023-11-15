@@ -4,10 +4,10 @@ import 'package:shimmer/shimmer.dart';
 
 class CardDashboardLoading extends StatelessWidget {
   // DashboardDataModel item;this.item
-  CardDashboardLoading();
+  const CardDashboardLoading({super.key});
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,

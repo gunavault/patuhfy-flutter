@@ -35,34 +35,20 @@ class FormRealPenyiangan extends StatelessWidget {
     TextEditingController rtlController = TextEditingController();
     TextEditingController hasRtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
-    // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDipotongTigaController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDiturunkanController =
-    //     TextEditingController();
-
-    // File pickedImage;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
-      //, rencanaLuaspenyiangan: int.parse(rencanaLuaspenyianganController.text), realisasiLuaspenyiangan: int.parse(realisasiLuaspenyianganController.text),
 
       context.read<RealPenyianganFormCubit>().submitToDatabase(
           RealPenyianganFormModel(
               afdeling: kodeAfdelingController.text,
-
               luas: '0',
-              rencanaLuasPenyiangan:
-                  int.parse(rencanaLuaspenyianganController.text),
-              realisasiLuasPenyiangan:
-                  int.parse(realisasiLuaspenyianganController.text),
+              rencanaLuasPenyiangan: rencanaLuaspenyianganController.text,
+              realisasiLuasPenyiangan: realisasiLuaspenyianganController.text,
               penyebab: penyebabController.text,
               rtl: rtlController.text,
               foto: fotoController.text,
               hasRtl: int.parse(hasRtlController.text)));
-
-      // _loginBloc.add(LoginPressed(_loginData));
     }
 
     void _submit() {
@@ -96,7 +82,6 @@ class FormRealPenyiangan extends StatelessWidget {
       child: BlocListener<RealPenyianganFormCubit, RealPenyianganFormState>(
         listener: (context, RealPenyianganFormState) {
           if (RealPenyianganFormState is LoadingRealPenyianganFormState) {
-            print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
@@ -111,7 +96,8 @@ class FormRealPenyiangan extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (RealPenyianganFormState is SuccessRealPenyianganFormState) {
+          } else if (RealPenyianganFormState
+              is SuccessRealPenyianganFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             showAlertSuccessOkActionV2(context, RealPenyianganFormState.message,
                 () {
@@ -177,7 +163,6 @@ class FormRealPenyiangan extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxAfdeling,
                         ),
-                        
                         TextFormFieldWidgetForm(
                           fieldText: 'Rencana Luas penyiangan',
                           fieldKeterangan: 'Rencana Luas penyiangan',

@@ -72,7 +72,7 @@ class SelectboxJenisApel extends StatelessWidget {
           onChanged: (value) {
             onChangeFunc!(value);
           },
-          items: ["Pagi", "Malam"],
+          items: const ["Pagi", "Malam"],
           dropdownDecoratorProps: DropDownDecoratorProps(
             dropdownSearchDecoration: InputDecoration(
               contentPadding: const EdgeInsets.only(

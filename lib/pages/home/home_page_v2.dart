@@ -4,7 +4,6 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/pages/rtl/rtl_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
-import 'package:patuhfy/pages/tasksheet/tasksheet_tekpol_page.dart';
 import 'package:patuhfy/pages/user_page/user_page.dart';
 import 'package:patuhfy/widgets/connectivity.dart';
 import 'package:patuhfy/widgets/constant.dart';
@@ -27,8 +26,8 @@ class HomePageV2 extends StatelessWidget {
         key: const PageStorageKey('tasksheet'),
       );
     } else if (activeTab == TabState.approval) {
-      return ConnectivityWidget(
-        child: const RtlPage(
+      return const ConnectivityWidget(
+        child: RtlPage(
           key: PageStorageKey('approval'),
         ),
       );

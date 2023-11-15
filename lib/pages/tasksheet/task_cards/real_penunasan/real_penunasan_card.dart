@@ -1,9 +1,8 @@
 import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
-import 'package:patuhfy/pages/forms/real_penunasan/form_real_penyiangan.dart';
-
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penunasan_card_cubit.dart';
+import 'package:patuhfy/pages/forms/real_penunasan/form_real_penunasan.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_penunasan/real_penunasan_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -109,7 +108,7 @@ class RealPenunasanCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Realisasi penunasan',
+                                  'Realisasi Penunasan',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -130,7 +129,7 @@ class RealPenunasanCard extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          
+
                           // IconButton(
                           //   onPressed: () {},
                           //   icon: const Icon(

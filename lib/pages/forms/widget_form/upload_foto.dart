@@ -21,6 +21,7 @@ class UploadFoto extends StatefulWidget {
 class _UploadFotoState extends State<UploadFoto> {
   File? pickedImage;
   String? pickedImageBase64Image;
+  
   Future getFoto(ImageSource src) async {
     final ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: src);

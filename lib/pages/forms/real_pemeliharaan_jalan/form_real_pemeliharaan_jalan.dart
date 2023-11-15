@@ -23,9 +23,7 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController kodeAfdelingController = TextEditingController();
-    TextEditingController kodeBlokController = TextEditingController();
-    TextEditingController tahunTanamController = TextEditingController();
-    TextEditingController luasController = TextEditingController();
+
     TextEditingController rencanaluaspemeliharaanjalanController =
         TextEditingController();
     TextEditingController realisasiluaspemeliharaanjalanController =
@@ -34,32 +32,21 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
     TextEditingController rtlController = TextEditingController();
     TextEditingController hasRtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
-    // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDipotongTigaController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDiturunkanController =
-    //     TextEditingController();
-
-    // File pickedImage;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
-      //, rencanaLuasPemupukan: int.parse(rencanaLuasPemupukanController.text), realisasiLuasPemupukan: int.parse(realisasiLuasPemupukanController.text),
 
       context.read<RealPemeliharaanJalanFormCubit>().submitToDatabase(
           RealPemeliharaanJalanFormModel(
               afdeling: kodeAfdelingController.text,
               rencanaluaspemeliharaanjalan:
-                  int.parse(rencanaluaspemeliharaanjalanController.text),
+                  rencanaluaspemeliharaanjalanController.text,
               realisasiluaspemeliharaanjalan:
-                  int.parse(realisasiluaspemeliharaanjalanController.text),
+                  realisasiluaspemeliharaanjalanController.text,
               penyebab: penyebabController.text,
               rtl: rtlController.text,
               foto: fotoController.text,
               hasRtl: int.parse(hasRtlController.text)));
-
-      // _loginBloc.add(LoginPressed(_loginData));
     }
 
     void _submit() {
@@ -78,12 +65,6 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
     void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
     }
-
-    // void onChangeSelectboxBlok(BlokModel value) {
-    //   tahunTanamController.text = value.tahunTanam.toString();
-    //   kodeBlokController.text = value.kodeBlok.toString();
-    //   luasController.text = value.luasArealTanam.toString();
-    // }
 
     return GestureDetector(
       onTap: () {

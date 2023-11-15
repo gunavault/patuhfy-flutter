@@ -1,4 +1,4 @@
-part of 'real_penyiangan_card_cubit.dart';
+part of 'real_penunasan_card_cubit.dart';
 
 @immutable
 abstract class RealPenunasanCardState {}

@@ -139,17 +139,17 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `m_pemanen` (`nikSapPemanen` TEXT, `namaPemanen` TEXT, `nikSapMandor` TEXT, PRIMARY KEY (`nikSapPemanen`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` INTEGER, `realisasiLuasPemupukan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `t_real_pemupukan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPemupukan` TEXT, `realisasiLuasPemupukan` TEXT, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` INTEGER, `realisasiLuasPenyiangan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `t_real_penyiangan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenyiangan` TEXT, `realisasiLuasPenyiangan` TEXT, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` INTEGER, `realisasiLuasPenunasan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `t_real_penunasan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `luas` TEXT, `rencanaLuasPenunasan` TEXT, `realisasiLuasPenunasan` TEXT, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_restan` (`id` INTEGER, `tanggal` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `jmlTandanDipanen` INTEGER, `jmlTandanDiangkut` INTEGER, `restanHi` INTEGER, `restanKemarin` INTEGER, `restanTotal` INTEGER, `ketKendala` TEXT, `ketTindakLanjut` TEXT, `kapasitasAngkutanPerton` INTEGER, `kebutuhanArmadaAngkut` INTEGER, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `createdBy` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pemeliharaan_jalan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `rencanaluaspemeliharaanjalan` INTEGER, `realisasiluaspemeliharaanjalan` INTEGER, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `hasRtl` INTEGER, `isSend` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `t_real_pemeliharaan_jalan` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `rencanaluaspemeliharaanjalan` TEXT, `realisasiluaspemeliharaanjalan` TEXT, `penyebab` TEXT, `rtl` TEXT, `foto` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `hasRtl` INTEGER, `isSend` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `t_real_pengendalian_hama` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPengendalianHama` INTEGER, `realisasiLuasPengendalianHama` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `t_real_pengendalian_hama` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `unitKerja` TEXT, `afdeling` TEXT, `luas` TEXT, `rencanaLuasPengendalianHama` TEXT, `realisasiLuasPengendalianHama` TEXT, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `foto` TEXT, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `t_real_pusingan_panen` (`id` INTEGER, `tanggal` TEXT, `createdBy` TEXT, `afdeling` TEXT, `unitKerja` TEXT, `blok` TEXT, `tahunTanam` INTEGER, `rotasipanen` INTEGER, `normapusingan` INTEGER, `pusingan9hari` INTEGER, `pusingan10hari` INTEGER, `pusingan11hari` INTEGER, `pusingan12harilebih` INTEGER, `penyebab` TEXT, `rtl` TEXT, `lat` TEXT, `long` TEXT, `mobileCreatedAt` TEXT, `isSend` INTEGER, `hasRtl` INTEGER, PRIMARY KEY (`id`))');
         await database.execute(
@@ -1294,7 +1294,7 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemupukan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemupukanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as String?, realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as String?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1308,8 +1308,8 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
-            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
+            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as String?,
+            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             lat: row['lat'] as String?,
@@ -1338,8 +1338,8 @@ class _$TRealPemupukanDao extends TRealPemupukanDao {
             unitKerja: row['unitKerja'] as String?,
             afdeling: row['afdeling'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as int?,
-            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as int?,
+            rencanaLuasPemupukan: row['rencanaLuasPemupukan'] as String?,
+            realisasiLuasPemupukan: row['realisasiLuasPemupukan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             lat: row['lat'] as String?,
@@ -1419,7 +1419,7 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penyiangan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPenyianganFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as String?, realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as String?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1433,8 +1433,8 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?,
-            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?,
+            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as String?,
+            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1463,8 +1463,8 @@ class _$TRealPenyianganDao extends TRealPenyianganDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as int?,
-            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as int?,
+            rencanaLuasPenyiangan: row['rencanaLuasPenyiangan'] as String?,
+            realisasiLuasPenyiangan: row['realisasiLuasPenyiangan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1544,7 +1544,7 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
       String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_penunasan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?, realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPenunasanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, luas: row['luas'] as String?, rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as String?, realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as String?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1558,8 +1558,8 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?,
-            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?,
+            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as String?,
+            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1588,8 +1588,8 @@ class _$TRealPenunasanDao extends TRealPenunasanDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             luas: row['luas'] as String?,
-            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as int?,
-            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as int?,
+            rencanaLuasPenunasan: row['rencanaLuasPenunasan'] as String?,
+            realisasiLuasPenunasan: row['realisasiLuasPenunasan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1804,7 +1804,7 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
       getDataRealPemeliharaanJalanByTanggal(String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pemeliharaan_jalan WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, rencanaluaspemeliharaanjalan: row['rencanaluaspemeliharaanjalan'] as int?, realisasiluaspemeliharaanjalan: row['realisasiluaspemeliharaanjalan'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, hasRtl: row['hasRtl'] as int?, isSend: row['isSend'] as int?),
+        mapper: (Map<String, Object?> row) => RealPemeliharaanJalanFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, afdeling: row['afdeling'] as String?, unitKerja: row['unitKerja'] as String?, rencanaluaspemeliharaanjalan: row['rencanaluaspemeliharaanjalan'] as String?, realisasiluaspemeliharaanjalan: row['realisasiluaspemeliharaanjalan'] as String?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, foto: row['foto'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, hasRtl: row['hasRtl'] as int?, isSend: row['isSend'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1819,9 +1819,9 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             rencanaluaspemeliharaanjalan:
-                row['rencanaluaspemeliharaanjalan'] as int?,
+                row['rencanaluaspemeliharaanjalan'] as String?,
             realisasiluaspemeliharaanjalan:
-                row['realisasiluaspemeliharaanjalan'] as int?,
+                row['realisasiluaspemeliharaanjalan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1850,9 +1850,9 @@ class _$TRealPemeliharaanJalanDao extends TRealPemeliharaanJalanDao {
             afdeling: row['afdeling'] as String?,
             unitKerja: row['unitKerja'] as String?,
             rencanaluaspemeliharaanjalan:
-                row['rencanaluaspemeliharaanjalan'] as int?,
+                row['rencanaluaspemeliharaanjalan'] as String?,
             realisasiluaspemeliharaanjalan:
-                row['realisasiluaspemeliharaanjalan'] as int?,
+                row['realisasiluaspemeliharaanjalan'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             foto: row['foto'] as String?,
@@ -1936,7 +1936,7 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
       getDataRealPengendalianHamaByTanggal(String tanggal) async {
     return _queryAdapter.queryList(
         'SELECT * FROM t_real_pengendalian_hama WHERE date(tanggal) = ?1 ORDER BY tanggal DESC',
-        mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPengendalianHama: row['rencanaLuasPengendalianHama'] as int?, realisasiLuasPengendalianHama: row['realisasiLuasPengendalianHama'] as int?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
+        mapper: (Map<String, Object?> row) => RealPengendalianHamaFormModel(id: row['id'] as int?, tanggal: row['tanggal'] as String?, createdBy: row['createdBy'] as String?, unitKerja: row['unitKerja'] as String?, afdeling: row['afdeling'] as String?, luas: row['luas'] as String?, rencanaLuasPengendalianHama: row['rencanaLuasPengendalianHama'] as String?, realisasiLuasPengendalianHama: row['realisasiLuasPengendalianHama'] as String?, penyebab: row['penyebab'] as String?, rtl: row['rtl'] as String?, lat: row['lat'] as String?, long: row['long'] as String?, mobileCreatedAt: row['mobileCreatedAt'] as String?, isSend: row['isSend'] as int?, foto: row['foto'] as String?, hasRtl: row['hasRtl'] as int?),
         arguments: [tanggal]);
   }
 
@@ -1952,9 +1952,9 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
             afdeling: row['afdeling'] as String?,
             luas: row['luas'] as String?,
             rencanaLuasPengendalianHama:
-                row['rencanaLuasPengendalianHama'] as int?,
+                row['rencanaLuasPengendalianHama'] as String?,
             realisasiLuasPengendalianHama:
-                row['realisasiLuasPengendalianHama'] as int?,
+                row['realisasiLuasPengendalianHama'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             lat: row['lat'] as String?,
@@ -1984,9 +1984,9 @@ class _$TRealPengendalianHamaDao extends TRealPengendalianHamaDao {
             afdeling: row['afdeling'] as String?,
             luas: row['luas'] as String?,
             rencanaLuasPengendalianHama:
-                row['rencanaLuasPengendalianHama'] as int?,
+                row['rencanaLuasPengendalianHama'] as String?,
             realisasiLuasPengendalianHama:
-                row['realisasiLuasPengendalianHama'] as int?,
+                row['realisasiLuasPengendalianHama'] as String?,
             penyebab: row['penyebab'] as String?,
             rtl: row['rtl'] as String?,
             lat: row['lat'] as String?,

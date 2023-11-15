@@ -1,5 +1,4 @@
 import 'package:patuhfy/data/local/local_data_source.dart';
-import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 
 class Sync extends LocalDataSource {
@@ -36,6 +35,7 @@ class Sync extends LocalDataSource {
     } catch (e) {}
   }
 
+  @override
   Future<int> getCountNotSend() async {
     int? apelPagi = await tApelPagiDao.getCountNotSend();
     int? inspeksiHanca = await tInspeksiHancaDao.getCountNotSend();

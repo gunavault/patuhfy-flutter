@@ -16,15 +16,14 @@ import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
 class FormRealPengendalianHama extends StatelessWidget {
-  FormRealPengendalianHama({Key? key, required this.selectedDate}) : super(key: key);
+  FormRealPengendalianHama({Key? key, required this.selectedDate})
+      : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
   Widget build(BuildContext context) {
     TextEditingController kodeAfdelingController = TextEditingController();
-    TextEditingController kodeBlokController = TextEditingController();
-    TextEditingController tahunTanamController = TextEditingController();
-    TextEditingController luasController = TextEditingController();
+
     TextEditingController rencanaLuasPemupukanController =
         TextEditingController();
     TextEditingController realisasiLuasPemupukanController =
@@ -33,32 +32,20 @@ class FormRealPengendalianHama extends StatelessWidget {
     TextEditingController rtlController = TextEditingController();
     TextEditingController hasRtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
-    // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDipotongTigaController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDiturunkanController =
-    //     TextEditingController();
-
-    // File pickedImage;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
-      //, rencanaLuasPemupukan: int.parse(rencanaLuasPemupukanController.text), realisasiLuasPemupukan: int.parse(realisasiLuasPemupukanController.text),
 
       context.read<RealPengendalianHamaFormCubit>().submitToDatabase(
           RealPengendalianHamaFormModel(
               afdeling: kodeAfdelingController.text,
-              rencanaLuasPengendalianHama:
-                  int.parse(rencanaLuasPemupukanController.text),
+              rencanaLuasPengendalianHama: rencanaLuasPemupukanController.text,
               realisasiLuasPengendalianHama:
-                  int.parse(realisasiLuasPemupukanController.text),
+                  realisasiLuasPemupukanController.text,
               penyebab: penyebabController.text,
               rtl: rtlController.text,
               foto: fotoController.text,
               hasRtl: int.parse(hasRtlController.text)));
-
-      // _loginBloc.add(LoginPressed(_loginData));
     }
 
     void _submit() {
@@ -78,19 +65,15 @@ class FormRealPengendalianHama extends StatelessWidget {
       kodeAfdelingController.text = value!.toString();
     }
 
-    // void onChangeSelectboxBlok(BlokModel value) {
-    //   tahunTanamController.text = value.tahunTanam.toString();
-    //   kodeBlokController.text = value.kodeBlok.toString();
-    //   luasController.text = value.luasArealTanam.toString();
-    // }
-
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<RealPengendalianHamaFormCubit, RealPengendalianHamaFormState>(
+      child: BlocListener<RealPengendalianHamaFormCubit,
+          RealPengendalianHamaFormState>(
         listener: (context, RealPengendalianHamaFormState) {
-          if (RealPengendalianHamaFormState is LoadingRealPengendalianHamaFormState) {
+          if (RealPengendalianHamaFormState
+              is LoadingRealPengendalianHamaFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -106,10 +89,11 @@ class FormRealPengendalianHama extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (RealPengendalianHamaFormState is SuccessRealPengendalianHamaFormState) {
+          } else if (RealPengendalianHamaFormState
+              is SuccessRealPengendalianHamaFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, RealPengendalianHamaFormState.message,
-                () {
+            showAlertSuccessOkActionV2(
+                context, RealPengendalianHamaFormState.message, () {
               BlocProvider.of<RealPengendalianHamaCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               Navigator.pop(context);
@@ -131,7 +115,8 @@ class FormRealPengendalianHama extends StatelessWidget {
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (RealPengendalianHamaFormState is ErrorRealPengendalianHamaFormState) {
+          } else if (RealPengendalianHamaFormState
+              is ErrorRealPengendalianHamaFormState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

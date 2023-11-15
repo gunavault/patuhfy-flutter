@@ -94,7 +94,7 @@ class LocalDataSource {
   deleteUser(String nikSap) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var nikSap = prefs.getString(keyNikSap) ?? "";
-    print('niksappp delete ${nikSap}');
+    print('niksappp delete $nikSap');
     return await userDao.deleteUser();
   }
 

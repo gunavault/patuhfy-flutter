@@ -78,8 +78,8 @@ class LoginPage extends StatelessWidget {
                               ),
                             );
                         } else if (authUserState is AuthUserSuccessState) {
-                          print('authhhhhhh');
                           context.read<PageCubit>().setLoginPage();
+
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(

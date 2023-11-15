@@ -8,8 +8,8 @@ class RealPemeliharaanJalanFormModel {
   String? createdBy;
   String? afdeling;
   String? unitKerja;
-  int? rencanaluaspemeliharaanjalan;
-  int? realisasiluaspemeliharaanjalan;
+  String? rencanaluaspemeliharaanjalan;
+  String? realisasiluaspemeliharaanjalan;
   String? penyebab;
   String? rtl;
   String? foto;
@@ -45,8 +45,10 @@ class RealPemeliharaanJalanFormModel {
     createdBy = json["CREATED_BY"];
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
-    rencanaluaspemeliharaanjalan = json["RENCANA_LUAS_PEMELIHARAAN_JALAN"];
-    realisasiluaspemeliharaanjalan = json["REALISASI_LUAS_PEMELIHARAAN_JALAN"];
+    rencanaluaspemeliharaanjalan =
+        json["RENCANA_LUAS_PEMELIHARAAN_JALAN"].toString();
+    realisasiluaspemeliharaanjalan =
+        json["REALISASI_LUAS_PEMELIHARAAN_JALAN"].toString();
     penyebab = json["PENYEBAB"].toString();
     rtl = json["RTL"];
     foto = json["FOTO"];

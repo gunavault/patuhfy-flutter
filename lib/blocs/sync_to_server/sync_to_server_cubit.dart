@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
-import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
@@ -19,10 +17,8 @@ import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
 import 'package:patuhfy/models/real_penunasan_form_model.dart';
 import 'package:patuhfy/models/real_penyiangan_form_model.dart';
 import 'package:patuhfy/models/real_pusingan_panen_form_model.dart';
-import 'package:patuhfy/models/real_rencana_pengangkutan_form_model.dart';
 import 'package:patuhfy/models/real_restan_form_model.dart';
 import 'package:patuhfy/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sync_to_server_state.dart';
 
@@ -36,7 +32,7 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
   getCountDataNotSend() async {
     print('kesini nih');
     int total = await localDataSource.getCountNotSend();
-    print('kesini nih ${total}');
+    print('kesini nih $total');
     if (total == 0) {
       emit(NoDataToSyncState(totalData: total));
     } else {
@@ -50,7 +46,7 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (apelPagi > 0) {
         List<ApelPagiFormModel> listData =
             await localDataSource.getAllDataApelPagiDataNotSend();
-        print('listData ${listData}');
+        print('listData $listData');
         listData.forEach((dataForm) async {
           print('awww ${dataForm.toJson()}');
           ApelPagiFormModelResponse dataResponse =
@@ -386,7 +382,7 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       await syncRealPusinganPanen(userModel.token.toString());
       await syncRealRestan(userModel.token.toString());
 
-      Timer(Duration(seconds: 2), () async {
+      Timer(const Duration(seconds: 2), () async {
         emit(SuccessSyncToServerState(message: 'Sussess', status_code: 200));
       });
     } else {

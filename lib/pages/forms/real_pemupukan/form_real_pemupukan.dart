@@ -22,9 +22,6 @@ class FormRealPemupukan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController kodeAfdelingController = TextEditingController();
-    TextEditingController kodeBlokController = TextEditingController();
-    TextEditingController tahunTanamController = TextEditingController();
-    TextEditingController luasController = TextEditingController();
     TextEditingController rencanaLuasPemupukanController =
         TextEditingController();
     TextEditingController realisasiLuasPemupukanController =
@@ -33,26 +30,15 @@ class FormRealPemupukan extends StatelessWidget {
     TextEditingController rtlController = TextEditingController();
     TextEditingController hasRtlController = TextEditingController();
     TextEditingController fotoController = TextEditingController();
-    // TextEditingController buahLewatMatangTidakDiangkutKeTphController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDipotongTigaController =
-    //     TextEditingController();
-    // TextEditingController pelepahTidakDiturunkanController =
-    //     TextEditingController();
-
-    // File pickedImage;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
-      //, rencanaLuasPemupukan: int.parse(rencanaLuasPemupukanController.text), realisasiLuasPemupukan: int.parse(realisasiLuasPemupukanController.text),
 
       context.read<RealPemupukanFormCubit>().submitToDatabase(
           RealPemupukanFormModel(
               afdeling: kodeAfdelingController.text,
-              rencanaLuasPemupukan:
-                  int.parse(rencanaLuasPemupukanController.text),
-              realisasiLuasPemupukan:
-                  int.parse(realisasiLuasPemupukanController.text),
+              rencanaLuasPemupukan: rencanaLuasPemupukanController.text,
+              realisasiLuasPemupukan: realisasiLuasPemupukanController.text,
               penyebab: penyebabController.text,
               rtl: rtlController.text,
               foto: fotoController.text,

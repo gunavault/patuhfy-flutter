@@ -1,4 +1,4 @@
-part of 'real_penyiangan_form_cubit.dart';
+part of 'real_penunasan_form_cubit.dart';
 
 @immutable
 abstract class RealPenunasanFormState {}

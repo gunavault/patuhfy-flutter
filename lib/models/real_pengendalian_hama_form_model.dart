@@ -9,8 +9,8 @@ class RealPengendalianHamaFormModel {
   String? unitKerja;
   String? afdeling;
   String? luas;
-  int? rencanaLuasPengendalianHama;
-  int? realisasiLuasPengendalianHama;
+  String? rencanaLuasPengendalianHama;
+  String? realisasiLuasPengendalianHama;
   String? penyebab;
   String? rtl;
   String? lat;
@@ -45,8 +45,10 @@ class RealPengendalianHamaFormModel {
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
     luas = json["LUAS"].toString();
-    rencanaLuasPengendalianHama = json["RENCANA_LUAS_PENGENDALIAN"];
-    realisasiLuasPengendalianHama = json["REALISASI_LUAS_PENGENDALIAN"];
+    rencanaLuasPengendalianHama =
+        json["RENCANA_LUAS_PENGENDALIAN_HAMA"].toString();
+    realisasiLuasPengendalianHama =
+        json["REALISASI_LUAS_PENGENDALIAN_HAMA"].toString();
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
     lat = json["LAT"].toString();
@@ -65,8 +67,8 @@ class RealPengendalianHamaFormModel {
     data["AFDELING"] = afdeling;
     data["UNIT_KERJA"] = unitKerja;
     data["LUAS"] = luas;
-    data["RENCANA_LUAS_PENGENDALIAN"] = rencanaLuasPengendalianHama;
-    data["REALISASI_LUAS_PENGENDALIAN"] = realisasiLuasPengendalianHama;
+    data["RENCANA_LUAS_PENGENDALIAN_HAMA"] = rencanaLuasPengendalianHama;
+    data["REALISASI_LUAS_PENGENDALIAN_HAMA"] = realisasiLuasPengendalianHama;
     data["PENYEBAB"] = penyebab;
     data["RTL"] = rtl;
     data["HAS_RTL"] = hasRtl;

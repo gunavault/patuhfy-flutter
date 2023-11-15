@@ -9,8 +9,8 @@ class RealPenunasanFormModel {
   String? afdeling;
   String? unitKerja;
   String? luas;
-  int? rencanaLuasPenunasan;
-  int? realisasiLuasPenunasan;
+  String? rencanaLuasPenunasan;
+  String? realisasiLuasPenunasan;
   String? penyebab;
   String? rtl;
   String? foto;
@@ -44,8 +44,8 @@ class RealPenunasanFormModel {
     afdeling = json["AFDELING"];
     unitKerja = json["UNIT_KERJA"];
     luas = json["LUAS"].toString();
-    rencanaLuasPenunasan = json["RENCANA_LUAS_PENUNASAN"];
-    realisasiLuasPenunasan = json["REALISASI_LUAS_PENUNASAN"];
+    rencanaLuasPenunasan = json["RENCANA_LUAS_PENUNASAN"].toString();
+    realisasiLuasPenunasan = json["REALISASI_LUAS_PENUNASAN"].toString();
     penyebab = json["PENYEBAB"];
     rtl = json["RTL"];
     foto = json["FOTO"];

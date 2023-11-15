@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_form/real_penyiangan_form_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penunasan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_form/real_penunasan_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/blok_model.dart';
@@ -51,12 +51,9 @@ class FormRealPenunasan extends StatelessWidget {
       context.read<RealPenunasanFormCubit>().submitToDatabase(
           RealPenunasanFormModel(
               afdeling: kodeAfdelingController.text,
-
               luas: '0',
-              rencanaLuasPenunasan:
-                  int.parse(rencanaLuaspenunasanController.text),
-              realisasiLuasPenunasan:
-                  int.parse(realisasiLuaspenunasanController.text),
+              rencanaLuasPenunasan: rencanaLuaspenunasanController.text,
+              realisasiLuasPenunasan: realisasiLuaspenunasanController.text,
               penyebab: penyebabController.text,
               rtl: rtlController.text,
               foto: fotoController.text,
@@ -177,7 +174,6 @@ class FormRealPenunasan extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxAfdeling,
                         ),
-                        
                         TextFormFieldWidgetForm(
                           fieldText: 'Rencana Luas penunasan',
                           fieldKeterangan: 'Rencana Luas penunasan',

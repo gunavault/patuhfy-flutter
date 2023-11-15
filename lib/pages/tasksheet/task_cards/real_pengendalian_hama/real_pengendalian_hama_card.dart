@@ -17,7 +17,8 @@ class RealPengendalianHamaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RealPengendalianHamaCardCubit, RealPengendalianHamaCardState>(
+    return BlocBuilder<RealPengendalianHamaCardCubit,
+        RealPengendalianHamaCardState>(
       builder: (context, state) {
         if (state is IsRealPengendalianHamaAswered) {
           void timesheetAddPopUp(context) {
@@ -108,7 +109,7 @@ class RealPengendalianHamaCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Realisasi pengendalian hama',
+                                  'Realisasi Pengendalian Hama',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,

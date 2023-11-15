@@ -21,7 +21,7 @@ class MainPage extends StatelessWidget {
           BlocListener<PageCubit, PageState>(
             listener: (context, state) {
               if (state is HomePageState) {
-                // context.read<AuthUserCubit>().getCurrentUser();
+                // context.read<PageCubit>().checkForUpdates();
                 context.read<AuthSessionCubit>().getUser();
               }
             },

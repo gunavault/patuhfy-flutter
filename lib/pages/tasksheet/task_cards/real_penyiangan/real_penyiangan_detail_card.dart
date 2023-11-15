@@ -20,7 +20,7 @@ class RealPenyianganDetailCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Evidence Realisasi Pemupukan",
+          "Evidence Realisasi Penyiangan",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -158,11 +158,11 @@ class RealPenyianganDetailCard extends StatelessWidget {
                 fieldValue: dataForm!.luas,
               ),
               textFieldWidget(
-                fieldText: 'Rencana Luas Pemupukan',
+                fieldText: 'Rencana Luas Penyiangan',
                 fieldValue: dataForm!.rencanaLuasPenyiangan,
               ),
               textFieldWidget(
-                fieldText: 'Realisasi Luas Pemupukan',
+                fieldText: 'Realisasi Luas Penyiangan',
                 fieldValue: dataForm!.realisasiLuasPenyiangan,
               ),
               textFieldWidget(

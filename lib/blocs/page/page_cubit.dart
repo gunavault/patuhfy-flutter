@@ -7,6 +7,7 @@ import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 part 'page_state.dart';
 
 class PageCubit extends Cubit<PageState> {
@@ -69,7 +70,7 @@ class PageCubit extends Cubit<PageState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var hasOnBoarding = prefs.getBool(keyHasOnBoarding) == true;
     if (hasOnBoarding) {
-      checkIsAuth();
+      await checkIsAuth();
     } else {
       emit(OnBoardingPageState());
       prefs.setBool(keyHasOnBoarding, true);
@@ -83,6 +84,19 @@ class PageCubit extends Cubit<PageState> {
       emit(HomePageState());
     } else {
       emit(LoginPageState());
+    }
+  }
+
+  Future<void> checkForUpdates() async {
+    final shorebirdCodePush = ShorebirdCodePush();
+    print('coding...');
+    // Check whether a patch is available to install.
+    final isUpdateAvailable =
+        await shorebirdCodePush.isNewPatchAvailableForDownload();
+
+    if (isUpdateAvailable) {
+      // Download the new patch if it's available.
+      await shorebirdCodePush.downloadUpdateIfAvailable();
     }
   }
 

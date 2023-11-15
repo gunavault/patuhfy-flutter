@@ -8,11 +8,10 @@ import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
-import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penunasan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
 import 'package:patuhfy/blocs/real_restan/real_restan_card/real_pemupukan_card_cubit.dart';
@@ -25,8 +24,6 @@ import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/lap_kerusakan/lap_kerusakan_card.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/pencurian_tbs/pencurian_tbs_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemupukan/real_pemupukan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pengendalian_hama_card.dart';
@@ -151,18 +148,8 @@ class Tasksheet extends StatelessWidget {
     }
   }
 
-  ImageProvider<Object> getCharacterAvatar(String url) {
-    final image = Image.network(
-      url,
-      errorBuilder: (BuildContext context, Object object, trace) {
-        print('context $context');
-        print('object $object');
-        print('trace $trace');
-
-        return Image(image: AssetImage('assets/icons/avatar2.png'));
-      },
-    ).image;
-    return image;
+  void btnRefresh(context) {
+    BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
   }
 
   void btnSync(context) {
@@ -289,11 +276,11 @@ class Tasksheet extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                       width: 15,
                                       child: Lottie.asset(
                                           'assets/animation/loading.json')),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     'Mengirim data ke server..',
                                     style: kTextStyle.copyWith(
@@ -390,11 +377,11 @@ class Tasksheet extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                   width: 15,
                                   child: Lottie.asset(
                                       'assets/animation/loading.json')),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Text(
                                 'Mengirim data ke server..',
                                 style: kTextStyle.copyWith(
@@ -442,9 +429,9 @@ class Tasksheet extends StatelessWidget {
         ),
         leading: Builder(builder: (context) {
           return IconButton(
-            onPressed: () => Scaffold.of(context).openDrawer(),
+            onPressed: () => btnRefresh(context),
             icon: const Icon(
-              Icons.sort_rounded,
+              Icons.refresh,
               color: kTitleColor,
             ),
           );
@@ -533,26 +520,13 @@ class Tasksheet extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               color: Colors.black,
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                 image: AssetImage('assets/icons/avatar2.png'),
                                 fit: BoxFit.fill,
                               ),
                             ),
                           ),
                         ),
-                        // Container(
-                        //   height: 50.0,
-                        //   width: 50.0,
-                        //   decoration: BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     image: DecorationImage(
-                        //         image: getCharacterAvatar(
-                        //             "${state.userModel!.foto}"),
-                        //         // Image.network("${state.userModel!.foto}"),
-                        //         // AssetImage('assets/images/profile.png'),
-                        //         fit: BoxFit.cover),
-                        //   ),
-                        // ),
                         const SizedBox(width: 10.0),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -621,8 +595,9 @@ class Tasksheet extends StatelessWidget {
                                             children: [
                                               RichText(
                                                 text: TextSpan(
-                                                  text:
-                                                      "${state.dataForm.JUMLAH_TASK ?? '0'}",
+                                                  text: state.dataForm
+                                                          .JUMLAH_TASK ??
+                                                      '0',
                                                   style: kTextStyle.copyWith(
                                                       fontSize: 11,
                                                       color: kBlueColor),
@@ -659,7 +634,10 @@ class Tasksheet extends StatelessWidget {
 
                                         Center(
                                           child: SizedBox(
-                                            width: 265,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.6,
                                             height: 10,
                                             child: ClipRRect(
                                               borderRadius:
@@ -694,7 +672,8 @@ class Tasksheet extends StatelessWidget {
                                 highlightColor: Colors.grey.shade100,
                                 enabled: true,
                                 child: Container(
-                                  width: 250,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.6,
                                   // width: double.infinity,
                                   height: 10,
                                   decoration: BoxDecoration(
@@ -717,7 +696,7 @@ class Tasksheet extends StatelessWidget {
                     );
                   }
 
-                  return CardDashboardLoading();
+                  return const CardDashboardLoading();
                 },
               ),
             ),
@@ -737,7 +716,7 @@ class Tasksheet extends StatelessWidget {
                 return Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                      padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,

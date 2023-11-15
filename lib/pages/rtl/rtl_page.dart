@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/user_model.dart';
-import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/network/notfound.dart';
 import 'package:patuhfy/pages/rtl/rtl_detail_v2/rtl_detail_list_v2.dart';
 import 'package:patuhfy/pages/rtl/widget/rtl_card_widget.dart';
@@ -69,7 +68,7 @@ class RtlPage extends StatelessWidget {
                     if (state is NoConnectionRtlListListState) {
                       return Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 100,
                           ),
                           Container(

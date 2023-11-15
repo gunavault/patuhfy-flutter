@@ -25,8 +25,8 @@ import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_form/real_pemupukan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_card/real_pengendalian_hama_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pengendalian_hama/real_pengendalian_hama_form/real_pengendalian_hama_form_cubit.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penyiangan_card_cubit.dart';
-import 'package:patuhfy/blocs/real_penunasan/real_penunasan_form/real_penyiangan_form_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_card/real_penunasan_card_cubit.dart';
+import 'package:patuhfy/blocs/real_penunasan/real_penunasan_form/real_penunasan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_card/real_penyiangan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_penyiangan/real_penyiangan_form/real_penyiangan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pusingan_panen/real_pusingan_panen_card/real_pusingan_panen_card_cubit.dart';
@@ -54,6 +54,7 @@ import 'package:patuhfy/pages/main/main_page.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 Future<void> main() async {
+  // Create an instance of the ShorebirdCodePush class
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: CommonColors.transparent, // navigation bar color
@@ -94,7 +95,8 @@ Future<void> main() async {
           ),
         ),
         BlocProvider(
-            create: (BuildContext context) => PageCubit(localDataSource)),
+            create: (BuildContext context) =>
+                PageCubit(localDataSource)..checkForUpdates()),
         BlocProvider(
           create: (BuildContext context) => AuthUserCubit(localDataSource),
         ),
