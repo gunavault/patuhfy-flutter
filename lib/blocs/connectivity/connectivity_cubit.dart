@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:patuhfy/configs/connection_util.dart';
 import 'package:patuhfy/data/local/local_data_source.dart';
 import 'package:patuhfy/data/remote/remote_data_source.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 part 'connectivity_state.dart';
 

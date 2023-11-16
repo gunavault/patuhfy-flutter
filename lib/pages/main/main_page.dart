@@ -7,6 +7,7 @@ import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/pages/home/home_page_v2.dart';
 import 'package:patuhfy/pages/login/login_page.dart';
+import 'package:patuhfy/pages/network/has_update.dart';
 import 'package:patuhfy/pages/onboarding/onboard.dart';
 import 'package:patuhfy/pages/splash/splash_page.dart';
 
@@ -50,6 +51,8 @@ class MainPage extends StatelessWidget {
                 create: (BuildContext context) => TabCubit(),
                 child: HomePageV2(),
               );
+            } else if (pageState is HasNewUpdate) {
+              return HasUpdateAppPage();
             } else {
               return const SplashPage();
             }

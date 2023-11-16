@@ -13,8 +13,10 @@ part 'page_state.dart';
 class PageCubit extends Cubit<PageState> {
   final LocalDataSource localDataSource;
   PageCubit(this.localDataSource) : super(SplashPageState()) {
-    checkHasOnBoarding();
+    // checkHasOnBoarding();
   }
+
+  final _shorebirdCodePush = ShorebirdCodePush();
 
   Future<Position> _getGeoLocationPosition() async {
     bool serviceEnabled;
@@ -64,12 +66,25 @@ class PageCubit extends Cubit<PageState> {
     print('saved geo ${position.latitude.toString()}');
   }
 
+  checkUpdateApp() async {
+    final isUpdateAvailable =
+        await _shorebirdCodePush.isNewPatchAvailableForDownload();
+
+    print('isUpdateAvaiable $isUpdateAvailable');
+    if (isUpdateAvailable) {
+      emit(HasNewUpdate());
+    } else {
+      await checkHasOnBoarding();
+    }
+  }
+
   checkHasOnBoarding() async {
     await Future.delayed(const Duration(seconds: 3));
     _saveGeoLoc();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var hasOnBoarding = prefs.getBool(keyHasOnBoarding) == true;
     if (hasOnBoarding) {
+      // await checkUpdateApp();
       await checkIsAuth();
     } else {
       emit(OnBoardingPageState());
@@ -87,18 +102,18 @@ class PageCubit extends Cubit<PageState> {
     }
   }
 
-  Future<void> checkForUpdates() async {
-    final shorebirdCodePush = ShorebirdCodePush();
-    print('coding...');
-    // Check whether a patch is available to install.
-    final isUpdateAvailable =
-        await shorebirdCodePush.isNewPatchAvailableForDownload();
+  // Future<void> checkForUpdates() async {
+  //   final shorebirdCodePush = ShorebirdCodePush();
+  //   print('coding...');
+  //   // Check whether a patch is available to install.
+  //   final isUpdateAvailable =
+  //       await shorebirdCodePush.isNewPatchAvailableForDownload();
 
-    if (isUpdateAvailable) {
-      // Download the new patch if it's available.
-      await shorebirdCodePush.downloadUpdateIfAvailable();
-    }
-  }
+  //   if (isUpdateAvailable) {
+  //     // Download the new patch if it's available.
+  //     await shorebirdCodePush.downloadUpdateIfAvailable();
+  //   }
+  // }
 
   setHasOnBoarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

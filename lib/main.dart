@@ -7,6 +7,7 @@ import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_card/ape
 import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_form/apel_pagi_pengolahan_form_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
+import 'package:patuhfy/blocs/check_update_app/check_update_app_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
@@ -53,9 +54,11 @@ import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/main/main_page.dart';
 import 'package:patuhfy/utils/common_colors.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 Future<void> main() async {
   // Create an instance of the ShorebirdCodePush class
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: CommonColors.transparent, // navigation bar color
@@ -97,7 +100,7 @@ Future<void> main() async {
         ),
         BlocProvider(
             create: (BuildContext context) =>
-                PageCubit(localDataSource)..checkForUpdates()),
+                PageCubit(localDataSource)..checkUpdateApp()),
         BlocProvider(
           create: (BuildContext context) => AuthUserCubit(localDataSource),
         ),
@@ -278,6 +281,9 @@ Future<void> main() async {
               SyncToServerCubit(localDataSource, remoteDataSource)
                 ..getCountDataNotSend(),
         ),
+        BlocProvider(
+            create: (BuildContext context) =>
+                CheckUpdateAppCubit(localDataSource, remoteDataSource)),
       ],
       child: MyApp(
         localDataSource: localDataSource,

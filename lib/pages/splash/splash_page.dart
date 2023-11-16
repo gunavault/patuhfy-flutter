@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patuhfy/widgets/constant.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
