@@ -88,7 +88,8 @@ class FormInspeksiTph extends StatelessWidget {
         // setState(() => _autovalidate = true);
       }
     }
-        void onChangeSelectboxAfdeling(value) {
+
+    void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
       BlocProvider.of<SelectboxBlokCubit>(context).setParam(value!.toString());
     }
@@ -156,6 +157,7 @@ class FormInspeksiTph extends StatelessWidget {
                 ),
               );
           } else if (InspeksiTphFormState is ErrorInspeksiTphFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
@@ -213,7 +215,7 @@ class FormInspeksiTph extends StatelessWidget {
                           fieldType: 'number',
                           fieldController: kavpeldController,
                         ),
-                         SelectboxMandorWidget(
+                        SelectboxMandorWidget(
                           titleName: "Mandor",
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxMandor,

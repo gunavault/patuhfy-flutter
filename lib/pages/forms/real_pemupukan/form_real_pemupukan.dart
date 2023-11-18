@@ -118,6 +118,7 @@ class FormRealPemupukan extends StatelessWidget {
                 ),
               );
           } else if (RealPemupukanFormState is ErrorRealPemupukanFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

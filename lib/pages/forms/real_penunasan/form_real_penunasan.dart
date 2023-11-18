@@ -134,6 +134,7 @@ class FormRealPenunasan extends StatelessWidget {
                 ),
               );
           } else if (RealPenunasanFormState is ErrorRealPenunasanFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

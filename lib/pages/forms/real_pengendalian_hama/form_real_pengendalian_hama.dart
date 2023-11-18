@@ -117,6 +117,7 @@ class FormRealPengendalianHama extends StatelessWidget {
               );
           } else if (RealPengendalianHamaFormState
               is ErrorRealPengendalianHamaFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

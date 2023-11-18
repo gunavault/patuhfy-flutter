@@ -81,10 +81,9 @@ class FormApelPagi extends StatelessWidget {
             showAlertSuccessOkActionV2(context, apelPagiFormState.message, () {
               BlocProvider.of<ApelPagiCardCubit>(context)
                   .checkIsAnwered(selectedDate);
-                      BlocProvider.of<PerformaCubit>(context).getData();
+              BlocProvider.of<PerformaCubit>(context).getData();
 
               Navigator.pop(context);
-              
             });
           } else if (apelPagiFormState is DuplicatedApelPagiFormState) {
             context.loaderOverlay.hide();
@@ -103,6 +102,7 @@ class FormApelPagi extends StatelessWidget {
                 ),
               );
           } else if (apelPagiFormState is ErrorApelPagiFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

@@ -23,8 +23,10 @@ class FormLapKerusakan extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
     TextEditingController kodeAfdelingController = TextEditingController();
-    TextEditingController keteranganKerusakanController = TextEditingController();
-    TextEditingController rencanaTindakLanjutController = TextEditingController();
+    TextEditingController keteranganKerusakanController =
+        TextEditingController();
+    TextEditingController rencanaTindakLanjutController =
+        TextEditingController();
     // File pickedImage;
 
     void _postToDatabase() {
@@ -53,7 +55,8 @@ class FormLapKerusakan extends StatelessWidget {
         // setState(() => _autovalidate = true);
       }
     }
-      void onChangeSelectboxAfdeling(value) {
+
+    void onChangeSelectboxAfdeling(value) {
       kodeAfdelingController.text = value!.toString();
     }
 
@@ -81,7 +84,8 @@ class FormLapKerusakan extends StatelessWidget {
               );
           } else if (LapKerusakanFormState is SuccessLapKerusakanFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, LapKerusakanFormState.message, () {
+            showAlertSuccessOkActionV2(context, LapKerusakanFormState.message,
+                () {
               BlocProvider.of<LapKerusakanCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               Navigator.pop(context);
@@ -103,6 +107,7 @@ class FormLapKerusakan extends StatelessWidget {
                 ),
               );
           } else if (LapKerusakanFormState is ErrorLapKerusakanFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
@@ -149,7 +154,6 @@ class FormLapKerusakan extends StatelessWidget {
                           fieldType: 'text',
                           fieldController: keteranganKerusakanController,
                         ),
-                        
                         TextFormFieldWidgetForm(
                           fieldText: 'Rencana Tindak Lanjut',
                           fieldKeterangan: 'Rencana Tindak Lanjut',
@@ -160,7 +164,6 @@ class FormLapKerusakan extends StatelessWidget {
                           fieldName: 'Evidence Laporan Kerusakan',
                           imageNameController: imageNameController,
                         ),
-
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 30),
                           child: SizedBox(

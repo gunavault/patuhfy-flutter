@@ -118,6 +118,7 @@ class FormRealPemeliharaanJalan extends StatelessWidget {
               );
           } else if (RealPemeliharaanJalanFormState
               is ErrorRealPemeliharaanJalanFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

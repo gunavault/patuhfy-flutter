@@ -156,6 +156,7 @@ class FormInspeksiHanca extends StatelessWidget {
                 ),
               );
           } else if (inspeksiHancaFormState is ErrorInspeksiHancaFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

@@ -137,6 +137,7 @@ class FormRealRestan extends StatelessWidget {
                 ),
               );
           } else if (RealRestanFormState is ErrorRealRestanFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

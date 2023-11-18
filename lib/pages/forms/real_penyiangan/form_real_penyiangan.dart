@@ -123,6 +123,7 @@ class FormRealPenyiangan extends StatelessWidget {
                 ),
               );
           } else if (RealPenyianganFormState is ErrorRealPenyianganFormState) {
+            context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(

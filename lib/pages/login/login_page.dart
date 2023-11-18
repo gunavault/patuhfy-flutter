@@ -143,7 +143,7 @@ class LoginPage extends StatelessWidget {
                           children: [
                             Center(
                               child: Text(
-                                'Hii Planters, Silahkan Login',
+                                'Hi Planters, Silahkan Login',
                                 style: kTextStyle.copyWith(
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold,

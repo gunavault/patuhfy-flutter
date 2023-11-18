@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
 import 'package:patuhfy/blocs/sync_masterdata/sync_masterdata_cubit.dart';
 import 'package:patuhfy/configs/constants.dart';
@@ -124,36 +125,51 @@ class UserProfilePage extends StatelessWidget {
                   );
               }
             },
+            //
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                _createListMenu('Tarik Afdeling', () {
-                  {
-                    BlocProvider.of<SyncMasterdataCubit>(context)
-                        .refreshDataAfdeling();
-                  }
-                }),
-                Divider(height: 0, color: Colors.grey[400]),
-                _createListMenu('Tarik Blok', () {
-                  {
-                    BlocProvider.of<SyncMasterdataCubit>(context)
-                        .refreshDataBlok();
-                  }
-                }),
-                Divider(height: 0, color: Colors.grey[400]),
-                _createListMenu('Tarik Mandor', () {
-                  {
-                    BlocProvider.of<SyncMasterdataCubit>(context)
-                        .refreshDataMandor();
-                  }
-                }),
-                Divider(height: 0, color: Colors.grey[400]),
-                _createListMenu('Tarik Pemanen', () {
-                  {
-                    BlocProvider.of<SyncMasterdataCubit>(context)
-                        .refreshDataPemanen();
-                  }
-                }),
+                BlocBuilder<AuthSessionCubit, AuthUserSessionState>(
+                  builder: (context, state) {
+                    if (state is AuthUserSessionUpdatedState) {
+                      if (state.userModel!.psa_tipe == 'KEBUN') {
+                        return Column(
+                          children: [
+                            _createListMenu('Tarik Afdeling', () {
+                              {
+                                BlocProvider.of<SyncMasterdataCubit>(context)
+                                    .refreshDataAfdeling();
+                              }
+                            }),
+                            Divider(height: 0, color: Colors.grey[400]),
+                            _createListMenu('Tarik Blok', () {
+                              {
+                                BlocProvider.of<SyncMasterdataCubit>(context)
+                                    .refreshDataBlok();
+                              }
+                            }),
+                            Divider(height: 0, color: Colors.grey[400]),
+                            _createListMenu('Tarik Mandor', () {
+                              {
+                                BlocProvider.of<SyncMasterdataCubit>(context)
+                                    .refreshDataMandor();
+                              }
+                            }),
+                            Divider(height: 0, color: Colors.grey[400]),
+                            _createListMenu('Tarik Pemanen', () {
+                              {
+                                BlocProvider.of<SyncMasterdataCubit>(context)
+                                    .refreshDataPemanen();
+                              }
+                            }),
+                          ],
+                        );
+                      }
+                    }
+
+                    return Container();
+                  },
+                ),
                 Divider(height: 0, color: Colors.grey[400]),
                 Padding(
                   padding: const EdgeInsets.all(10.0),

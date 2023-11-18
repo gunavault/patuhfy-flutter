@@ -34,6 +34,51 @@ class AuthUserCubit extends Cubit<AuthUserState> {
     }
   }
 
+  getMasterdataCardKebun(UserModelResponse userModelRespone) async {
+    var afdelingModelResponse = await RemoteDataSource().getAfdelingData(
+        userModelRespone.userModel!.psa, userModelRespone.userModel!.token);
+    // Get data blok dari server
+    var blokModelResponse = await RemoteDataSource().getBlokData(
+        userModelRespone.userModel!.psa.toString(),
+        userModelRespone.userModel!.company_code.toString(),
+        userModelRespone.userModel!.token.toString());
+    // Get data mandor dari server
+    var mandorModelResponse = await RemoteDataSource().getMandorByPsa(
+        userModelRespone.userModel!.psa.toString(),
+        userModelRespone.userModel!.token.toString());
+    // Get data pemanen dari server
+    var pemanenModelResponse = await RemoteDataSource().getPemanenByPsa(
+        userModelRespone.userModel!.psa.toString(),
+        userModelRespone.userModel!.token.toString());
+    // Check data tidak null
+    if (userModelRespone.userModel != null &&
+        userModelRespone.userModel!.role != null) {
+      var userModel = userModelRespone.userModel ?? UserModel();
+
+      // Inisiasi data afdeling dan blok
+      List<AfdelingModel> afdelingModel =
+          afdelingModelResponse.afdelingModel ?? AfdelingModel();
+      List<BlokModel> blokModel = blokModelResponse.blokModel ?? BlokModel();
+      List<MandorModel> mandorModel =
+          mandorModelResponse.mandorModel ?? MandorModel();
+      List<PemanenModel> pemanenModel =
+          pemanenModelResponse.pemanenModel ?? PemanenModel();
+
+      for (var afd in afdelingModel) {
+        localDataSource.addAfdeling(afd);
+      }
+      for (var blok in blokModel) {
+        localDataSource.addBlok(blok);
+      }
+      for (var mandor in mandorModel) {
+        localDataSource.addMandor(mandor);
+      }
+      for (var pemanen in pemanenModel) {
+        localDataSource.addPemanen(pemanen);
+      }
+    }
+  }
+
   submitFormLogin(FormLoginModel formLoginModel) async {
     try {
       emit(AuthUserLoadingState());
@@ -41,55 +86,27 @@ class AuthUserCubit extends Cubit<AuthUserState> {
       var userModelRespone = await RemoteDataSource()
           .login(formLoginModel.nik_sap, formLoginModel.password);
       // Get data afdeling dari server
-      var afdelingModelResponse = await RemoteDataSource().getAfdelingData(
-          userModelRespone.userModel!.psa, userModelRespone.userModel!.token);
-      // Get data blok dari server
-      var blokModelResponse = await RemoteDataSource().getBlokData(
-          userModelRespone.userModel!.psa.toString(),
-          userModelRespone.userModel!.company_code.toString(),
-          userModelRespone.userModel!.token.toString());
-      // Get data mandor dari server
-      var mandorModelResponse = await RemoteDataSource().getMandorByPsa(
-          userModelRespone.userModel!.psa.toString(),
-          userModelRespone.userModel!.token.toString());
-      // Get data pemanen dari server
-      var pemanenModelResponse = await RemoteDataSource().getPemanenByPsa(
-          userModelRespone.userModel!.psa.toString(),
-          userModelRespone.userModel!.token.toString());
+
       // Check data tidak null
       if (userModelRespone.userModel != null &&
           userModelRespone.userModel!.role != null) {
         var userModel = userModelRespone.userModel ?? UserModel();
 
+        print(
+            'userModelRespone.userModel!.psa_tipe ${userModelRespone.userModel!.psa_tipe}');
+        if (userModelRespone.userModel!.psa_tipe == 'KEBUN') {
+          await getMasterdataCardKebun(userModelRespone);
+        } else {
+          print('tidak download data');
+        }
         // Inisiasi data afdeling dan blok
-        List<AfdelingModel> afdelingModel =
-            afdelingModelResponse.afdelingModel ?? AfdelingModel();
-        List<BlokModel> blokModel = blokModelResponse.blokModel ?? BlokModel();
-        List<MandorModel> mandorModel =
-            mandorModelResponse.mandorModel ?? MandorModel();
-        List<PemanenModel> pemanenModel =
-            pemanenModelResponse.pemanenModel ?? PemanenModel();
+
         // Simpen NIK SAP dan GeoLocation ke sharedpreferences
-        final connectivityResult = await (Connectivity().checkConnectivity());
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString(keyNikSap, userModel.nik_sap ?? "");
-
         // insert ke lokal database
         await localDataSource.addUser(userModel);
-        for (var afd in afdelingModel) {
-          localDataSource.addAfdeling(afd);
-        }
-        for (var blok in blokModel) {
-          localDataSource.addBlok(blok);
-        }
-        for (var mandor in mandorModel) {
-          localDataSource.addMandor(mandor);
-        }
-        for (var pemanen in pemanenModel) {
-          localDataSource.addPemanen(pemanen);
-        }
-
         print('sukses nih ${userModelRespone.userModel!.role}');
         print('sukses nih userModel ${userModelRespone.userModel}');
 
