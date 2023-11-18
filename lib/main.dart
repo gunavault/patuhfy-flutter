@@ -54,7 +54,6 @@ import 'package:patuhfy/data/remote/remote_data_source.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/main/main_page.dart';
 import 'package:patuhfy/utils/common_colors.dart';
-import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 Future<void> main() async {
   // Create an instance of the ShorebirdCodePush class

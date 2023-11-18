@@ -9,7 +9,11 @@ class OnBoardingPageState extends PageState {}
 
 class LoginPageState extends PageState {}
 
-class HomePageState extends PageState {}
+class HomePageState extends PageState {
+  final UserModel userModel;
+
+  HomePageState(this.userModel);
+}
 
 class HasNewUpdate extends PageState {}
 

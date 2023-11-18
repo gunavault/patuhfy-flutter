@@ -22,34 +22,23 @@ class MainPage extends StatelessWidget {
           BlocListener<PageCubit, PageState>(
             listener: (context, state) {
               if (state is HomePageState) {
-                // context.read<PageCubit>().checkForUpdates();
                 context.read<AuthSessionCubit>().getUser();
               }
             },
           ),
-          // BlocListener<AuthUserCubit, AuthUserState>(
-          //   listener: (context, state) {
-          //     if (state is AuthUserSuccessState) {
-          //       print('kesini gan bos');
-          //       // context.read<TypeUserCubit>().setTypeUser(state.typeUserState);
-          //       // context.read<AuthSessionCubit>().getUser();
-          //       print('kesini gan bos 2');
-          //     }
-          //   },
-          // ),
         ],
         child: BlocBuilder<PageCubit, PageState>(
           builder: (context, pageState) {
-            print('pageState $pageState');
             if (pageState is OnBoardingPageState) {
               return const OnBoardingPage();
             } else if (pageState is LoginPageState) {
               return const LoginPage();
             } else if (pageState is HomePageState) {
-              // return LaporPage();
               return BlocProvider(
                 create: (BuildContext context) => TabCubit(),
-                child: HomePageV2(),
+                child: HomePageV2(
+                  userModel: pageState.userModel,
+                ),
               );
             } else if (pageState is HasNewUpdate) {
               return HasUpdateAppPage();

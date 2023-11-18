@@ -46,7 +46,7 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (apelPagi > 0) {
         List<ApelPagiFormModel> listData =
             await localDataSource.getAllDataApelPagiDataNotSend();
-        print('listData $listData');
+
         listData.forEach((dataForm) async {
           print('awww ${dataForm.toJson()}');
           ApelPagiFormModelResponse dataResponse =
@@ -71,9 +71,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<ApelPagiPengolahanFormModel> listData =
             await localDataSource.getAllDataApelPagiPengolahanDataNotSend();
-        print('listData $listData');
+
         for (ApelPagiPengolahanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           ApelPagiPengolahanFormModelResponse dataResponse =
               await remoteDataSource.createApelPagiPengolahan(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -96,9 +95,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<InspeksiHancaFormModel> listData =
             await localDataSource.getAllDataInspeksiHancaDataNotSend();
-        print('listData $listData');
+
         for (InspeksiHancaFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           InspeksiHancaFormModelResponse dataResponse =
               await remoteDataSource.createInspeksiHanca(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -142,9 +140,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<LapKerusakanFormModel> listData =
             await localDataSource.getAllDataLapKerusakanDataNotSend();
-        print('listData $listData');
+
         for (LapKerusakanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           LapKerusakanFormModelResponse dataResponse =
               await remoteDataSource.createLapKerusakan(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -166,9 +163,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<PencurianTbsFormModel> listData =
             await localDataSource.getAllDataPencurianTbsDataNotSend();
-        print('listData $listData');
+
         for (PencurianTbsFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           PencurianTbsFormModelResponse dataResponse =
               await remoteDataSource.createPencurianTbs(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -191,9 +187,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealPemeliharaanJalanFormModel> listData =
             await localDataSource.getAllDataRealPemeliharaanJalanDataNotSend();
-        print('listData $listData');
+
         for (RealPemeliharaanJalanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPemeliharaanJalanFormModelResponse dataResponse =
               await remoteDataSource.createRealPemeliharaanJalan(
                   token, dataForm);
@@ -217,9 +212,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealPemupukanFormModel> listData =
             await localDataSource.getAllDataRealPemupukanDataNotSend();
-        print('listData $listData');
+
         for (RealPemupukanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPemupukanFormModelResponse dataResponse =
               await remoteDataSource.createRealPemupukan(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -242,9 +236,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealPengendalianHamaFormModel> listData =
             await localDataSource.getAllDataRealPengendalianHamaDataNotSend();
-        print('listData $listData');
+
         for (RealPengendalianHamaFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPengendalianHamaFormModelResponse dataResponse =
               await remoteDataSource.createRealPengendalianHama(
                   token, dataForm);
@@ -268,9 +261,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealPenunasanFormModel> listData =
             await localDataSource.getAllDataRealPenunasanDataNotSend();
-        print('listData $listData');
+
         for (RealPenunasanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPenunasanFormModelResponse dataResponse =
               await remoteDataSource.createRealPenunasan(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -287,15 +279,13 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
 
 // Function for RealPenyianganFormModel
   Future<bool> syncRealPenyiangan(String token) async {
-    print('kesini penyiangan');
     try {
       int count = await localDataSource.getRealPenyianganDataNotSend() ?? 0;
       if (count > 0) {
         List<RealPenyianganFormModel> listData =
             await localDataSource.getAllDataRealPenyianganDataNotSend();
-        print('listData $listData');
+
         for (RealPenyianganFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPenyianganFormModelResponse dataResponse =
               await remoteDataSource.createRealPenyiangan(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -318,9 +308,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealPusinganPanenFormModel> listData =
             await localDataSource.getAllDataRealPusinganPanenDataNotSend();
-        print('listData $listData');
+
         for (RealPusinganPanenFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealPusinganPanenFormModelResponse dataResponse =
               await remoteDataSource.createRealPusinganPanen(token, dataForm);
           if (dataResponse.status_code == 200 ||
@@ -343,9 +332,8 @@ class SyncToServerCubit extends Cubit<SyncToServerState> {
       if (count > 0) {
         List<RealRestanFormModel> listData =
             await localDataSource.getAllDataRealRestanDataNotSend();
-        print('listData $listData');
+
         for (RealRestanFormModel dataForm in listData) {
-          print('Processing form: ${dataForm.toJson()}');
           RealRestanFormModelResponse dataResponse =
               await remoteDataSource.createRealRestan(token, dataForm);
           if (dataResponse.status_code == 200 ||

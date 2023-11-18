@@ -96,7 +96,8 @@ class PageCubit extends Cubit<PageState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var isAuth = prefs.getBool(keyIsAuth) == true;
     if (isAuth) {
-      emit(HomePageState());
+      UserModel userModel = await localDataSource.getCurrentUser();
+      emit(HomePageState(userModel));
     } else {
       emit(LoginPageState());
     }
@@ -124,7 +125,8 @@ class PageCubit extends Cubit<PageState> {
   setLoginPage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(keyIsAuth, true);
-    emit(HomePageState());
+    UserModel userModel = await localDataSource.getCurrentUser();
+    emit(HomePageState(userModel));
   }
 
   /// this will delete cache
