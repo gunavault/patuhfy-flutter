@@ -1,25 +1,25 @@
 import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
-import 'package:patuhfy/pages/forms_pengolahan/estetika_pabrik/form_estetika_pabrik.dart';
+import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_card/proses_pengolahan_card_cubit.dart';
+import 'package:patuhfy/pages/forms_pengolahan/proses_pengolahan/form_proses_pengolahan.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/estetika_pabrik/estetika_pabrik_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/proses_pengolahan/proses_pengolahan_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class EstetikaPabrikCard extends StatelessWidget {
-  const EstetikaPabrikCard(
+class ProsesPengolahanCard extends StatelessWidget {
+  const ProsesPengolahanCard(
       {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
   final bool isToday;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EstetikaPabrikCardCubit, EstetikaPabrikCardState>(
+    return BlocBuilder<ProsesPengolahanCardCubit, ProsesPengolahanCardState>(
       builder: (context, state) {
-        if (state is IsEstetikaPabrikAswered) {
+        if (state is IsProsesPengolahanAswered) {
           if (state.dataForm != null) {}
 
           void timesheetAddPopUp(context) {
@@ -27,7 +27,7 @@ class EstetikaPabrikCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                return EstetikaPabrikDetailCard(
+                return ProsesPengolahanDetailCard(
                   dataForm: state.dataForm,
                 );
               },
@@ -46,7 +46,7 @@ class EstetikaPabrikCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormEstetikaPabrik(
+                              builder: (context) => FormProsesPengolahan(
                                 selectedDate: selectedDate,
                               ),
                             ),
@@ -107,7 +107,7 @@ class EstetikaPabrikCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Estetika Pabrik ',
+                                  'Proses Pengolahan ',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -117,7 +117,7 @@ class EstetikaPabrikCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Monitoring Estetika Pabrik',
+                                  'Melakukan Monitoring Proses Pengolahan',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,

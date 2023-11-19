@@ -6,7 +6,7 @@ class JenisKebersihanModel {
 
   JenisKebersihanModel.fromJson(Map<String, dynamic> json) {
     kodeJenisKebersihan = json["KODE"];
-    kodeJenisKebersihan = json["JENIS_KEBERSIHAN"];
+    namaJenisKebersihan = json["JENIS_KEBERSIHAN"];
   }
 
   @override

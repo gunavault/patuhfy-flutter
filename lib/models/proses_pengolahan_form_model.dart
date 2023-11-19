@@ -1,4 +1,4 @@
-class EstetikaPabrikFormModel {
+class ProsesPengolahanFormModel {
   String? rowstamp;
   String? pks;
   String? stasiun;
@@ -8,9 +8,10 @@ class EstetikaPabrikFormModel {
   String? mobile_created_at;
   String? createdBy;
   String? waktuPengamatan;
-  String? jenisKebersihan;
+  String? tenagaKerjaPengoperasian;
+  String? kondisiProses;
 
-  EstetikaPabrikFormModel(
+  ProsesPengolahanFormModel(
       {this.rowstamp,
       this.pks,
       this.stasiun,
@@ -20,9 +21,10 @@ class EstetikaPabrikFormModel {
       this.mobile_created_at,
       this.createdBy,
       this.waktuPengamatan,
-      this.jenisKebersihan});
+      this.tenagaKerjaPengoperasian,
+      this.kondisiProses});
 
-  EstetikaPabrikFormModel.fromJson(Map<String, dynamic> json) {
+  ProsesPengolahanFormModel.fromJson(Map<String, dynamic> json) {
     // print('afd ga ${json["afdeling"]}');
     rowstamp = json["ROWSTAMP"];
     pks = json["PKS"];
@@ -33,7 +35,8 @@ class EstetikaPabrikFormModel {
     mobile_created_at = json["MOBILE_CREATED_AT"];
     createdBy = json["CREATED_BY"];
     waktuPengamatan = json["WAKTU_PENGAMATAN"];
-    jenisKebersihan = json["JENIS_KEBERSIHAN"];
+    tenagaKerjaPengoperasian = json["TENAGA_KERJA_PENGOPERASIAN"];
+    kondisiProses = json["KONDISI_PROSES"];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,28 +48,29 @@ class EstetikaPabrikFormModel {
     data["LONG"] = long;
     data["LAT"] = lat;
     data["WAKTU_PENGAMATAN"] = waktuPengamatan;
-    data["JENIS_KEBERSIHAN"] = jenisKebersihan;
+    data["TENAGA_KERJA_PENGOPERASIAN"] = tenagaKerjaPengoperasian;
+    data["KONDISI_PROSES"] = kondisiProses;
     data["FOTO"] = foto;
 
     return data;
   }
 }
 
-class EstetikaPabrikFormModelResponse {
+class ProsesPengolahanFormModelResponse {
   final int status_code;
   final String message;
-  final EstetikaPabrikFormModel? dataForm;
+  final ProsesPengolahanFormModel? dataForm;
 
-  EstetikaPabrikFormModelResponse(
+  ProsesPengolahanFormModelResponse(
       {required this.status_code, required this.message, this.dataForm});
 }
 
-class EstetikaPabrikFormModelSelectResponse {
+class ProsesPengolahanFormModelSelectResponse {
   final int status_code;
   final String message;
-  final List<EstetikaPabrikFormModel> dataForm;
+  final List<ProsesPengolahanFormModel> dataForm;
 
-  EstetikaPabrikFormModelSelectResponse(
+  ProsesPengolahanFormModelSelectResponse(
       {required this.status_code,
       required this.message,
       required this.dataForm});

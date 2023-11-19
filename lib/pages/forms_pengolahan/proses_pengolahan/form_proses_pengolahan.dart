@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
 import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_form/estetika_pabrik_form_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
+import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_card/proses_pengolahan_card_cubit.dart';
+import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_form/proses_pengolahan_form_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
+import 'package:patuhfy/models/proses_pengolahan_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kondisi_proses.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_tenaga_pengoperasian.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_waktu_pengamatan.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -16,8 +20,9 @@ import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
-class FormEstetikaPabrik extends StatelessWidget {
-  FormEstetikaPabrik({Key? key, required this.selectedDate}) : super(key: key);
+class FormProsesPengolahan extends StatelessWidget {
+  FormProsesPengolahan({Key? key, required this.selectedDate})
+      : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
@@ -26,19 +31,21 @@ class FormEstetikaPabrik extends StatelessWidget {
     TextEditingController kodeStasiunController = TextEditingController();
     TextEditingController kodeWaktuPengamatanController =
         TextEditingController();
-    TextEditingController kodeJenisKebersihanController =
-        TextEditingController();
+    TextEditingController kodeTenagaKerjaController = TextEditingController();
+    TextEditingController kodeKondisiProses = TextEditingController();
+
     // File pickedImage;
     String? pickedImageBase64Image;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
 
-      context.read<EstetikaPabrikFormCubit>().submitToDatabase(
-            EstetikaPabrikFormModel(
+      context.read<ProsesPengolahanFormCubit>().submitToDatabase(
+            ProsesPengolahanFormModel(
                 stasiun: kodeStasiunController.text,
                 waktuPengamatan: kodeWaktuPengamatanController.text,
-                jenisKebersihan: kodeJenisKebersihanController.text,
+                tenagaKerjaPengoperasian: kodeTenagaKerjaController.text,
+                kondisiProses: kodeKondisiProses.text,
                 foto: imageNameController.text),
           );
     }
@@ -64,17 +71,21 @@ class FormEstetikaPabrik extends StatelessWidget {
       kodeWaktuPengamatanController.text = value!.toString();
     }
 
-    void onChangeSelectboxJenisKebersihan(value) {
-      kodeJenisKebersihanController.text = value!.toString();
+    void onChangeSelectboxTenagaKerjaPengoperasian(value) {
+      kodeTenagaKerjaController.text = value!.toString();
+    }
+
+    void onChangeSelectboxKondisiProses(value) {
+      kodeKondisiProses.text = value!.toString();
     }
 
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<EstetikaPabrikFormCubit, EstetikaPabrikFormState>(
-        listener: (context, EstetikaPabrikFormState) {
-          if (EstetikaPabrikFormState is LoadingEstetikaPabrikFormState) {
+      child: BlocListener<ProsesPengolahanFormCubit, ProsesPengolahanFormState>(
+        listener: (context, ProsesPengolahanFormState) {
+          if (ProsesPengolahanFormState is LoadingProsesPengolahanFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -90,19 +101,19 @@ class FormEstetikaPabrik extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (EstetikaPabrikFormState
-              is SuccessEstetikaPabrikFormState) {
+          } else if (ProsesPengolahanFormState
+              is SuccessProsesPengolahanFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, EstetikaPabrikFormState.message,
-                () {
-              BlocProvider.of<EstetikaPabrikCardCubit>(context)
+            showAlertSuccessOkActionV2(
+                context, ProsesPengolahanFormState.message, () {
+              BlocProvider.of<ProsesPengolahanCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               BlocProvider.of<PerformaCubit>(context).getData();
 
               Navigator.pop(context);
             });
-          } else if (EstetikaPabrikFormState
-              is DuplicatedEstetikaPabrikFormState) {
+          } else if (ProsesPengolahanFormState
+              is DuplicatedProsesPengolahanFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -111,21 +122,22 @@ class FormEstetikaPabrik extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(EstetikaPabrikFormState.message),
+                      Text(ProsesPengolahanFormState.message),
                       const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (EstetikaPabrikFormState is ErrorEstetikaPabrikFormState) {
+          } else if (ProsesPengolahanFormState
+              is ErrorProsesPengolahanFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(EstetikaPabrikFormState.message.toString()),
+                    Text(ProsesPengolahanFormState.message.toString()),
                     const Icon(Icons.error)
                   ],
                 ),
@@ -140,7 +152,7 @@ class FormEstetikaPabrik extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Estetika Pabrik",
+              title: "Form Proses Pengolahan",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
@@ -165,10 +177,16 @@ class FormEstetikaPabrik extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxWaktuPengamatan,
                         ),
-                        SelectboxJenisKebersihan(
-                          titleName: "Jenis Kebersihan",
+                        SelectboxTenagaPengoperasian(
+                          titleName: "Tenaga Kerja Pengoperasian",
                           isTitleName: true,
-                          onChangeFunc: onChangeSelectboxJenisKebersihan,
+                          onChangeFunc:
+                              onChangeSelectboxTenagaKerjaPengoperasian,
+                        ),
+                        SelectboxKondisiProses(
+                          titleName: "Kondisi Proses",
+                          isTitleName: true,
+                          onChangeFunc: onChangeSelectboxKondisiProses,
                         ),
                         UploadFoto(
                           fieldName: 'Evidence Foto',

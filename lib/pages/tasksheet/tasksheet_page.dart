@@ -25,6 +25,7 @@ import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pag
 import 'package:patuhfy/pages/tasksheet/task_cards/estetika_pabrik/estetika_pabrik_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/proses_pengolahan/proses_pengolahan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemupukan/real_pemupukan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pengendalian_hama/real_pengendalian_hama_card.dart';
@@ -132,6 +133,10 @@ class Tasksheet extends StatelessWidget {
           isToday: isToday,
         ),
         EstetikaPabrikCard(
+          isToday: isToday,
+          selectedDate: state.selectedDate,
+        ),
+        ProsesPengolahanCard(
           isToday: isToday,
           selectedDate: state.selectedDate,
         )

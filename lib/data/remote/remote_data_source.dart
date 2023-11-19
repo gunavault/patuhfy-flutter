@@ -8,11 +8,13 @@ import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/jenis_kebersihan_model.dart';
+import 'package:patuhfy/models/kondisi_proses_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
 import 'package:patuhfy/models/peroftma_model.dart';
+import 'package:patuhfy/models/proses_pengolahan_form_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
 import 'package:patuhfy/models/real_pemupukan_form_model.dart';
 import 'package:patuhfy/models/real_pengendalian_hama_form_model.dart';
@@ -26,6 +28,7 @@ import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/rtl_update_status_model.dart';
 import 'package:patuhfy/models/stasiun_model.dart';
+import 'package:patuhfy/models/tenaga_pengoperasian_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/models/waktu_pengamatan_model.dart';
 
@@ -890,6 +893,51 @@ class RemoteDataSource {
     }
   }
 
+  //  proses pengolahan
+
+  Future<ProsesPengolahanFormModelResponse> createProsesPengolahan(
+      token, ProsesPengolahanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/proses-pengolahan",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return ProsesPengolahanFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return ProsesPengolahanFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<ProsesPengolahanFormModelSelectResponse> getProsesPengolahanByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/proses-pengolahan/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return ProsesPengolahanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => ProsesPengolahanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return ProsesPengolahanFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
   // SELECTBOX Stasiun
   Future<StasiunModelResponse> getAllStasiun(String token) async {
     try {
@@ -944,6 +992,44 @@ class RemoteDataSource {
     } on DioError {
       return JenisKebersihanModelResponse(jenisKebersihanModel: []);
       // return err.response.toString();
+    }
+  }
+
+  // SELECTBOX Tenaga Pengoperasian
+  Future<TenagaPengoperasianModelResponse> getAllTenagaPengoperasian(
+      String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/masterdata/get-tenaga-pengoperasian",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return TenagaPengoperasianModelResponse(
+          tenagaPengoperasianModel: parsedData
+              .map((value) => TenagaPengoperasianModel.fromJson(value))
+              .toList());
+    } on DioError {
+      return TenagaPengoperasianModelResponse(tenagaPengoperasianModel: []);
+    }
+  }
+
+  // SELECTBOX Kondisi Proses
+  Future<KondisiProsesModelResponse> getAllKondisiProses(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-kondisi-proses",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return KondisiProsesModelResponse(
+          kondisiProsesModel: parsedData
+              .map((value) => KondisiProsesModel.fromJson(value))
+              .toList());
+    } on DioError {
+      return KondisiProsesModelResponse(kondisiProsesModel: []);
     }
   }
 }
