@@ -9,6 +9,8 @@ import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
 import 'package:patuhfy/blocs/check_update_app/check_update_app_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
+import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
+import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_form/estetika_pabrik_form_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
@@ -41,8 +43,11 @@ import 'package:patuhfy/blocs/rtl_page/rtl_list/rtl_list_cubit.dart';
 import 'package:patuhfy/blocs/rtl_page/rtl_update_status_form/rtl_update_status_form_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_jenis_kebersihan/selectbox_jenis_kebersihan_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_stasiun/selectbox_stasiun_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_waktu_pengamatan/selectbox_waktu_pengamatan_cubit.dart';
 import 'package:patuhfy/blocs/sync_masterdata/sync_masterdata_cubit.dart';
 import 'package:patuhfy/blocs/sync_to_server/sync_to_server_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
@@ -120,6 +125,18 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (context) => SelectboxPemanenCubit(localDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxStasiunCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxWaktuPengamatanCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxJenisKebersihanCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>
@@ -283,6 +300,13 @@ Future<void> main() async {
         BlocProvider(
             create: (BuildContext context) =>
                 CheckUpdateAppCubit(localDataSource, remoteDataSource)),
+        BlocProvider(
+            create: (BuildContext context) =>
+                EstetikaPabrikCardCubit(localDataSource, remoteDataSource)
+                  ..checkIsAnwered(today.toString())),
+        BlocProvider(
+            create: (BuildContext context) =>
+                EstetikaPabrikFormCubit(localDataSource, remoteDataSource)),
       ],
       child: MyApp(
         localDataSource: localDataSource,

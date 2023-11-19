@@ -22,6 +22,7 @@ import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/estetika_pabrik/estetika_pabrik_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_tph/inspeksi_tph_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card.dart';
@@ -130,6 +131,10 @@ class Tasksheet extends StatelessWidget {
           selectedDate: state.selectedDate,
           isToday: isToday,
         ),
+        EstetikaPabrikCard(
+          isToday: isToday,
+          selectedDate: state.selectedDate,
+        )
       ];
     } else {
       return [

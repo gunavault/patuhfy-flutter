@@ -4,8 +4,10 @@ import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
+import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
+import 'package:patuhfy/models/jenis_kebersihan_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
@@ -23,7 +25,9 @@ import 'package:patuhfy/models/rtl_detail_list_model.dart';
 import 'package:patuhfy/models/rtl_detail_update_status_model.dart';
 import 'package:patuhfy/models/rtl_list_model.dart';
 import 'package:patuhfy/models/rtl_update_status_model.dart';
+import 'package:patuhfy/models/stasiun_model.dart';
 import 'package:patuhfy/models/user_model.dart';
+import 'package:patuhfy/models/waktu_pengamatan_model.dart';
 
 class RemoteDataSource {
   static final RemoteDataSource _singleton = RemoteDataSource._internal();
@@ -839,9 +843,107 @@ class RemoteDataSource {
               .toList());
     } on DioError catch (err) {
       return ApelPagiPengolahanFormModelSelectResponse(
-          status_code: 500,
-          message: err.response.toString(),
-          dataForm: [ApelPagiPengolahanFormModel()]);
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+  Future<EstetikaPabrikFormModelResponse> createEstetikaPabrik(
+      token, EstetikaPabrikFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/estetika-pabrik",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return EstetikaPabrikFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return EstetikaPabrikFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<EstetikaPabrikFormModelSelectResponse> getEstetikaPabrikByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/estetika-pabrik/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return EstetikaPabrikFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => EstetikaPabrikFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return EstetikaPabrikFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+  // SELECTBOX Stasiun
+  Future<StasiunModelResponse> getAllStasiun(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-stasiun",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return StasiunModelResponse(
+          stasiunModel:
+              parsedData.map((value) => StasiunModel.fromJson(value)).toList());
+    } on DioError {
+      return StasiunModelResponse(stasiunModel: []);
+      // return err.response.toString();
+    }
+  }
+
+  // SELECTBOX Waktu Pengamatan
+  Future<WaktuPengamatanModelResponse> getAllWaktuPengamatan(
+      String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-waktu-pengamatan",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return WaktuPengamatanModelResponse(
+          waktuPengamatanModel: parsedData
+              .map((value) => WaktuPengamatanModel.fromJson(value))
+              .toList());
+    } on DioError {
+      return WaktuPengamatanModelResponse(waktuPengamatanModel: []);
+    }
+  }
+
+  // SELECTBOX Jenis kebersihan
+  Future<JenisKebersihanModelResponse> getAllJenisKebersihan(
+      String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-jenis-kebersihan",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return JenisKebersihanModelResponse(
+          jenisKebersihanModel: parsedData
+              .map((value) => JenisKebersihanModel.fromJson(value))
+              .toList());
+    } on DioError {
+      return JenisKebersihanModelResponse(jenisKebersihanModel: []);
+      // return err.response.toString();
     }
   }
 }

@@ -1,26 +1,25 @@
 import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_card/apel_pagi_pengolahan_card_cubit.dart';
-import 'package:patuhfy/pages/forms/apel_pagi_pengolahan/form_apel_pagi_pengolahan.dart';
+import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
+import 'package:patuhfy/pages/forms_pengolahan/estetika_pabrik/form_estetika_pabrik.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
-import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_detail_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/estetika_pabrik/estetika_pabrik_detail_card.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-class ApelPagiPengolahanCard extends StatelessWidget {
-  const ApelPagiPengolahanCard(
+class EstetikaPabrikCard extends StatelessWidget {
+  const EstetikaPabrikCard(
       {super.key, required this.selectedDate, required this.isToday});
   final String selectedDate;
   final bool isToday;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApelPagiPengolahanCardCubit,
-        ApelPagiPengolahanCardState>(
+    return BlocBuilder<EstetikaPabrikCardCubit, EstetikaPabrikCardState>(
       builder: (context, state) {
-        if (state is IsApelPagiPengolahanAswered) {
+        if (state is IsEstetikaPabrikAswered) {
           if (state.dataForm != null) {
             print('aww is sent ${state.dataForm!.isSend}');
           }
@@ -30,7 +29,7 @@ class ApelPagiPengolahanCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                return ApelPagiPengolahanDetailCard(
+                return EstetikaPabrikDetailCard(
                   dataForm: state.dataForm,
                 );
               },
@@ -49,7 +48,7 @@ class ApelPagiPengolahanCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormApelPagiPengolahan(
+                              builder: (context) => FormEstetikaPabrik(
                                 selectedDate: selectedDate,
                               ),
                             ),
@@ -96,9 +95,7 @@ class ApelPagiPengolahanCard extends StatelessWidget {
                                   child: Checkbox(
                                     visualDensity:
                                         const VisualDensity(horizontal: -4),
-                                    activeColor: state.dataForm!.isSend == 1
-                                        ? kGreenColor
-                                        : ratingBarColor,
+                                    activeColor: kGreenColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(6.0),
                                     ),
@@ -112,7 +109,7 @@ class ApelPagiPengolahanCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Apel Pagi Pengolahan',
+                                  'Estetika Pabrik ',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -122,7 +119,7 @@ class ApelPagiPengolahanCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Apel Pagi Pengolahan',
+                                  'Melakukan Monitoring Estetika Pabrik',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,
@@ -133,13 +130,6 @@ class ApelPagiPengolahanCard extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          // IconButton(
-                          //   onPressed: () {},
-                          //   icon: const Icon(
-                          //     Icons.attachment_outlined,
-                          //     color: kTitleColor,
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
