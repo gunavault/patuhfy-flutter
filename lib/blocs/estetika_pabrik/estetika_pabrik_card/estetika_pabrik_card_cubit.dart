@@ -37,7 +37,7 @@ class EstetikaPabrikCardCubit extends Cubit<EstetikaPabrikCardState> {
       }
     } else {
       // Jika Offline
-      emit(NoConnectionEstetikaPabrikCardState());
+      emit(IsEstetikaPabrikAswered(false, null));
     }
   }
 }

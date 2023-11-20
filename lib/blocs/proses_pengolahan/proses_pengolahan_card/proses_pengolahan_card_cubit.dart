@@ -35,7 +35,8 @@ class ProsesPengolahanCardCubit extends Cubit<ProsesPengolahanCardState> {
       }
     } else {
       // Jika Offline
-      emit(NoConnectionProsesPengolahanCardState());
+      emit(IsProsesPengolahanAswered(false, null));
+      // emit(NoConnectionProsesPengolahanCardState());
     }
   }
 }

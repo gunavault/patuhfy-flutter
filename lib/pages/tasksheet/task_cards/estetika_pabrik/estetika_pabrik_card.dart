@@ -19,6 +19,13 @@ class EstetikaPabrikCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EstetikaPabrikCardCubit, EstetikaPabrikCardState>(
       builder: (context, state) {
+        print('asdasdsa $state');
+
+        if (state is NoConnectionEstetikaPabrikCardState) {
+          return Container(
+            child: Text('No Internet'),
+          );
+        }
         if (state is IsEstetikaPabrikAswered) {
           if (state.dataForm != null) {}
 
