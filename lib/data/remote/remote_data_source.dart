@@ -10,6 +10,8 @@ import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/jenis_kebersihan_model.dart';
 import 'package:patuhfy/models/kondisi_proses_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
+import 'package:patuhfy/models/m_jenis_losis_model.dart';
+import 'package:patuhfy/models/m_sampel_losis_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
@@ -31,6 +33,9 @@ import 'package:patuhfy/models/stasiun_model.dart';
 import 'package:patuhfy/models/tenaga_pengoperasian_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/models/waktu_pengamatan_model.dart';
+import 'package:patuhfy/models/cek_sampel_losis_model.dart';
+// import 'package:patuhfy/models/cek_sampel_Losis_Model.dart';
+
 
 class RemoteDataSource {
   static final RemoteDataSource _singleton = RemoteDataSource._internal();
@@ -850,6 +855,7 @@ class RemoteDataSource {
     }
   }
 
+//estetika pabrik
   Future<EstetikaPabrikFormModelResponse> createEstetikaPabrik(
       token, EstetikaPabrikFormModel dataForm) async {
     try {
@@ -889,6 +895,50 @@ class RemoteDataSource {
               .toList());
     } on DioError catch (err) {
       return EstetikaPabrikFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+//cek sampel Losis
+  Future<CekSampelLosisFormModelResponse> createCekSampelLosis(
+      token, CekSampelLosisFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/cek-sampel-losis",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return CekSampelLosisFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return CekSampelLosisFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<CekSampelLosisFormModelSelectResponse> getCekSampelLosisByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/cek-sampel-losis/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return CekSampelLosisFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => CekSampelLosisFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return CekSampelLosisFormModelSelectResponse(
           status_code: 500, message: err.response.toString(), dataForm: []);
     }
   }
@@ -952,6 +1002,39 @@ class RemoteDataSource {
               parsedData.map((value) => StasiunModel.fromJson(value)).toList());
     } on DioError {
       return StasiunModelResponse(stasiunModel: []);
+      // return err.response.toString();
+    }
+  }
+  
+  Future<SampelLosisModelResponse> getSampelLosis(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-sampel-losis",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return SampelLosisModelResponse(
+          sampellosisModel:
+              parsedData.map((value) => SampelLosisModel.fromJson(value)).toList());
+    } on DioError {
+      return SampelLosisModelResponse(sampellosisModel: []);
+      // return err.response.toString();
+    }
+  }
+  Future<JenisSampelModelResponse> getJenisSampel(String token, namasampellosis) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-jenis-losis?SAMPEL_LOSIS=$namasampellosis",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return JenisSampelModelResponse(
+          sampellosisModel:
+              parsedData.map((value) => JenisSampelModel.fromJson(value)).toList());
+    } on DioError {
+      return JenisSampelModelResponse(sampellosisModel: []);
       // return err.response.toString();
     }
   }
