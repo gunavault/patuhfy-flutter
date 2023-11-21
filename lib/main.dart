@@ -7,6 +7,8 @@ import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_card/ape
 import 'package:patuhfy/blocs/apel_pagi_pengolahan/apel_pagi_pengolahan_form/apel_pagi_pengolahan_form_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/auth_user/auth_user_cubit.dart';
+import 'package:patuhfy/blocs/cek_monitoring_ipal/cek_monitoring_ipal_form/cek_sampel_ipal_form_cubit.dart';
+import 'package:patuhfy/blocs/cek_monitoring_ipal/cek_sampel_losis_card/cek_monitoring_ipal_card_cubit.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_card/cek_sampel_losis_card_cubit.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_form/estetika_pabrik_form_cubit.dart';
 import 'package:patuhfy/blocs/check_update_app/check_update_app_cubit.dart';
@@ -49,6 +51,7 @@ import 'package:patuhfy/blocs/selectbox_afdeling/selectbox_afdeling_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_jenis_kebersihan/selectbox_jenis_kebersihan_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_jenis_sampel/selectbox_jenis_sampel_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_kebun/selectbox_kebun_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_kondisi_proses/selectbox_kondisi_proses_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
@@ -145,6 +148,10 @@ Future<void> main() async {
                 BlocProvider(
           create: (context) =>
               SelectboxJenisSampelCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxKebunCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (context) =>
@@ -338,6 +345,13 @@ Future<void> main() async {
         BlocProvider(
             create: (BuildContext context) =>
                 CekSampelLosisFormCubit(localDataSource, remoteDataSource)),
+        BlocProvider(
+            create: (BuildContext context) =>
+                CekMonitoringIpalCardCubit(localDataSource, remoteDataSource)
+                  ..checkIsAnwered(today.toString())),
+        BlocProvider(
+            create: (BuildContext context) =>
+                CekMonitoringIpalFormCubit(localDataSource, remoteDataSource)),
         BlocProvider(
             create: (BuildContext context) =>
                 ProsesPengolahanCardCubit(localDataSource, remoteDataSource)

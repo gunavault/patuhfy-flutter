@@ -6,6 +6,7 @@ import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
+import 'package:patuhfy/blocs/cek_monitoring_ipal/cek_sampel_losis_card/cek_monitoring_ipal_card_cubit.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_card/cek_sampel_losis_card_cubit.dart';
 import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
@@ -74,6 +75,8 @@ class PilihTanggalTaskSheetWidget extends StatelessWidget {
     BlocProvider.of<EstetikaPabrikCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
     BlocProvider.of<CekSampelLosisCardCubit>(context)
+        .checkIsAnwered(selectedDate.toString().substring(0, 10));
+    BlocProvider.of<CekMonitoringIpalCardCubit>(context)
         .checkIsAnwered(selectedDate.toString().substring(0, 10));
 
     Navigator.pop(context);
