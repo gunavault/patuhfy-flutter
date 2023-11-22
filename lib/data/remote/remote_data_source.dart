@@ -4,12 +4,17 @@ import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
+import 'package:patuhfy/models/cek_monitoring_ipal.dart';
+import 'package:patuhfy/models/cek_rutin_sortasi.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/jenis_kebersihan_model.dart';
+import 'package:patuhfy/models/kebun_model.dart';
 import 'package:patuhfy/models/kondisi_proses_model.dart';
 import 'package:patuhfy/models/lap_kerusakan_form_model.dart';
+import 'package:patuhfy/models/m_jenis_losis_model.dart';
+import 'package:patuhfy/models/m_sampel_losis_model.dart';
 import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
@@ -31,6 +36,9 @@ import 'package:patuhfy/models/stasiun_model.dart';
 import 'package:patuhfy/models/tenaga_pengoperasian_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/models/waktu_pengamatan_model.dart';
+import 'package:patuhfy/models/cek_sampel_losis_model.dart';
+// import 'package:patuhfy/models/cek_sampel_Losis_Model.dart';
+
 
 class RemoteDataSource {
   static final RemoteDataSource _singleton = RemoteDataSource._internal();
@@ -81,6 +89,22 @@ class RemoteDataSource {
 
       var response = await dio.get(
           "$baseUrl/masterdata/get-blok-by-psa?psa=$kodePsa&&company=$company",
+          options: optionAuth(token));
+      List<dynamic> parsedData = response.data['data'];
+      return BlokModelResponse(
+          blokModel:
+              parsedData.map((value) => BlokModel.fromJson(value)).toList());
+    } on DioError {
+      return [];
+      // return err.response.toString();
+    }
+  }
+  Future getBlokDataAfd(String kodePsa, String company, String afd, String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/masterdata/get-blok-by-psa-afd?psa=$kodePsa&company=$company&afd=$afd",
           options: optionAuth(token));
       List<dynamic> parsedData = response.data['data'];
       return BlokModelResponse(
@@ -850,6 +874,7 @@ class RemoteDataSource {
     }
   }
 
+//estetika pabrik
   Future<EstetikaPabrikFormModelResponse> createEstetikaPabrik(
       token, EstetikaPabrikFormModel dataForm) async {
     try {
@@ -889,6 +914,140 @@ class RemoteDataSource {
               .toList());
     } on DioError catch (err) {
       return EstetikaPabrikFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+//cek sampel Losis
+  Future<CekSampelLosisFormModelResponse> createCekSampelLosis(
+      token, CekSampelLosisFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/cek-sampel-losis",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return CekSampelLosisFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return CekSampelLosisFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<CekSampelLosisFormModelSelectResponse> getCekSampelLosisByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/cek-sampel-losis/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return CekSampelLosisFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => CekSampelLosisFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return CekSampelLosisFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+// cek monitoring ipal
+  Future<CekMonitoringIpalFormModelResponse> createCekMonitoringIpal(
+      token, CekMonitoringIpalFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/cek-monitoring-ipal",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return CekMonitoringIpalFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return CekMonitoringIpalFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<CekMonitoringIpalFormModelSelectResponse> getCekMonitoringIpalByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/cek-monitoring-ipal/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return CekMonitoringIpalFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => CekMonitoringIpalFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return CekMonitoringIpalFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+
+// cek rutin sortasi
+
+  Future<CekRutinSortasiFormModelResponse> createCekRutinSortasi(
+      token, CekRutinSortasiFormModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/cek-rutin-sortasi",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return CekRutinSortasiFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return CekRutinSortasiFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<CekRutinSortasiFormModelSelectResponse> getCekRutinSortasiByTanggal(
+      tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/cek-rutin-sortasi/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return CekRutinSortasiFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => CekRutinSortasiFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return CekRutinSortasiFormModelSelectResponse(
           status_code: 500, message: err.response.toString(), dataForm: []);
     }
   }
@@ -952,6 +1111,56 @@ class RemoteDataSource {
               parsedData.map((value) => StasiunModel.fromJson(value)).toList());
     } on DioError {
       return StasiunModelResponse(stasiunModel: []);
+      // return err.response.toString();
+    }
+  }
+  
+  Future<KebunModelResponse> getKebunByCompany(token, company) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-kebun-by-company?company=$company",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return KebunModelResponse(
+          Kebunmodel:
+              parsedData.map((value) => KebunModel.fromJson(value)).toList());
+    } on DioError {
+      return KebunModelResponse(Kebunmodel: []);
+      // return err.response.toString();
+    }
+  }
+  
+  Future<SampelLosisModelResponse> getSampelLosis(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-sampel-losis",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return SampelLosisModelResponse(
+          sampellosisModel:
+              parsedData.map((value) => SampelLosisModel.fromJson(value)).toList());
+    } on DioError {
+      return SampelLosisModelResponse(sampellosisModel: []);
+      // return err.response.toString();
+    }
+  }
+  Future<JenisSampelModelResponse> getJenisSampel(String token, namasampellosis) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-jenis-losis?SAMPEL_LOSIS=$namasampellosis",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return JenisSampelModelResponse(
+          sampellosisModel:
+              parsedData.map((value) => JenisSampelModel.fromJson(value)).toList());
+    } on DioError {
+      return JenisSampelModelResponse(sampellosisModel: []);
       // return err.response.toString();
     }
   }

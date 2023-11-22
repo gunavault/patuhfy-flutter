@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_card/cek_sampel_losis_card_cubit.dart';
+import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_form/estetika_pabrik_form_cubit.dart';
+import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
 import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_form/estetika_pabrik_form_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
-import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_card/proses_pengolahan_card_cubit.dart';
-import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_form/proses_pengolahan_form_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_jenis_sampel/selectbox_jenis_sampel_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
+import 'package:patuhfy/models/cek_sampel_losis_model.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
-import 'package:patuhfy/models/proses_pengolahan_form_model.dart';
 import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
+import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
-import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kebun.dart';
-import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kondisi_proses.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_sampel_losis.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_jenis_sampel.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
-import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_tenaga_pengoperasian.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_waktu_pengamatan.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -21,33 +23,34 @@ import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
-class FormProsesPengolahan extends StatelessWidget {
-  FormProsesPengolahan({Key? key, required this.selectedDate})
-      : super(key: key);
+class FormCekSampelLosis extends StatelessWidget {
+  FormCekSampelLosis({Key? key, required this.selectedDate}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
     TextEditingController kodeStasiunController = TextEditingController();
-    TextEditingController kodeWaktuPengamatanController =
-        TextEditingController();
-    TextEditingController kodeTenagaKerjaController = TextEditingController();
-    TextEditingController kodeKondisiProses = TextEditingController();
-
+    TextEditingController kodeWaktuPengamatanController = TextEditingController();
+    TextEditingController sampeLosisController = TextEditingController();
+    TextEditingController jenisSampelController = TextEditingController();
+    TextEditingController beratSampelController = TextEditingController();
+    TextEditingController hasilLosisController = TextEditingController();
     // File pickedImage;
     String? pickedImageBase64Image;
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
 
-      context.read<ProsesPengolahanFormCubit>().submitToDatabase(
-            ProsesPengolahanFormModel(
+      context.read<CekSampelLosisFormCubit>().submitToDatabase(
+            CekSampelLosisFormModel(
                 stasiun: kodeStasiunController.text,
                 waktuPengamatan: kodeWaktuPengamatanController.text,
-                tenagaKerjaPengoperasian: kodeTenagaKerjaController.text,
-                kondisiProses: kodeKondisiProses.text,
-                foto: imageNameController.text),
+                sampellosis: sampeLosisController.text,
+                jenissampel: jenisSampelController.text,
+                beratsampel: beratSampelController.text,
+                hasillosis: hasilLosisController.text,
+                foto64: imageNameController.text),
           );
     }
 
@@ -72,21 +75,23 @@ class FormProsesPengolahan extends StatelessWidget {
       kodeWaktuPengamatanController.text = value!.toString();
     }
 
-    void onChangeSelectboxTenagaKerjaPengoperasian(value) {
-      kodeTenagaKerjaController.text = value!.toString();
-    }
+    void onChangeSelectboxSampelLosis(value) {
+      sampeLosisController.text = value!.toString();
+      BlocProvider.of<SelectboxJenisSampelCubit>(context).setParam(value!.toString());
 
-    void onChangeSelectboxKondisiProses(value) {
-      kodeKondisiProses.text = value!.toString();
+    }
+        void onChangeSelectboxJenisSampel(value) {
+      jenisSampelController.text = value!.toString();
+
     }
 
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<ProsesPengolahanFormCubit, ProsesPengolahanFormState>(
-        listener: (context, ProsesPengolahanFormState) {
-          if (ProsesPengolahanFormState is LoadingProsesPengolahanFormState) {
+      child: BlocListener<CekSampelLosisFormCubit, CekSampelLosisFormState>(
+        listener: (context, CekSampelLosisFormState) {
+          if (CekSampelLosisFormState is LoadingCekSampelLosisFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -102,19 +107,19 @@ class FormProsesPengolahan extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (ProsesPengolahanFormState
-              is SuccessProsesPengolahanFormState) {
+          } else if (CekSampelLosisFormState
+              is SuccessCekSampelLosisFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(
-                context, ProsesPengolahanFormState.message, () {
-              BlocProvider.of<ProsesPengolahanCardCubit>(context)
+            showAlertSuccessOkActionV2(context, CekSampelLosisFormState.message,
+                () {
+              BlocProvider.of<CekSampelLosisCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               BlocProvider.of<PerformaCubit>(context).getData();
 
               Navigator.pop(context);
             });
-          } else if (ProsesPengolahanFormState
-              is DuplicatedProsesPengolahanFormState) {
+          } else if (CekSampelLosisFormState
+              is DuplicatedCekSampelLosisFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -123,22 +128,21 @@ class FormProsesPengolahan extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(ProsesPengolahanFormState.message),
+                      Text(CekSampelLosisFormState.message),
                       const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (ProsesPengolahanFormState
-              is ErrorProsesPengolahanFormState) {
+          } else if (CekSampelLosisFormState is ErrorCekSampelLosisFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(ProsesPengolahanFormState.message.toString()),
+                    Text(CekSampelLosisFormState.message.toString()),
                     const Icon(Icons.error)
                   ],
                 ),
@@ -153,7 +157,7 @@ class FormProsesPengolahan extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Proses Pengolahan",
+              title: "Form Sampel Losis",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
@@ -178,16 +182,26 @@ class FormProsesPengolahan extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxWaktuPengamatan,
                         ),
-                        SelectboxTenagaPengoperasian(
-                          titleName: "Tenaga Kerja Pengoperasian",
+                        SelectboxSampelLosis(
+                          titleName: "Sampel Losis",
                           isTitleName: true,
-                          onChangeFunc:
-                              onChangeSelectboxTenagaKerjaPengoperasian,
+                          onChangeFunc: onChangeSelectboxSampelLosis,
                         ),
-                        SelectboxKondisiProses(
-                          titleName: "Kondisi Proses",
+                        SelectboxJenisSampel(
+                          titleName: "Jenis Sampel",
                           isTitleName: true,
-                          onChangeFunc: onChangeSelectboxKondisiProses,
+                          onChangeFunc: onChangeSelectboxJenisSampel,
+                        ),
+                          TextFormFieldWidgetForm(
+                            fieldText: 'Berat Sampel',
+                            fieldKeterangan: 'Berat Sampel',
+                            fieldType: 'number',
+                            fieldController: beratSampelController),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Hasil Losis',
+                          fieldKeterangan: 'Hasil Losis',
+                          fieldType: 'number',
+                          fieldController: hasilLosisController,
                         ),
                         UploadFoto(
                           fieldName: 'Evidence Foto',
