@@ -10,7 +10,7 @@ class JenisKebersihanModel {
   }
 
   @override
-  String toString() => kodeJenisKebersihan.toString();
+  String toString() => namaJenisKebersihan.toString();
 }
 
 class JenisKebersihanModelResponse {

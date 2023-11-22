@@ -8,7 +8,7 @@ import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_form/proses_pe
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/models/proses_pengolahan_form_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kondisi_proses.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
@@ -106,8 +106,6 @@ class FormProsesPengolahan extends StatelessWidget {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             showAlertSuccessOkActionV2(
                 context, ProsesPengolahanFormState.message, () {
-              BlocProvider.of<ProsesPengolahanCardCubit>(context)
-                  .checkIsAnwered(selectedDate);
               BlocProvider.of<PerformaCubit>(context).getData();
 
               Navigator.pop(context);

@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
-import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_form/estetika_pabrik_form_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_form/pelaporan_kerusakan_alat_form_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_alat_by_stasiun/selectbox_alat_by_stasiun_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
-import 'package:patuhfy/models/estetika_pabrik_model.dart';
-import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_jenis_kebersihan.dart';
+import 'package:patuhfy/models/pelaporan_kerusakan_alat_form_model.dart';
+import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_alat_by_stasiun.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kondisi_pks.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
-import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_waktu_pengamatan.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
 import 'package:patuhfy/widgets/alert_success_ok_action.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
-class FormEstetikaPabrik extends StatelessWidget {
-  FormEstetikaPabrik({Key? key, required this.selectedDate}) : super(key: key);
+class FormPelaporanKerusakanAlat extends StatelessWidget {
+  FormPelaporanKerusakanAlat({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
-  final String selectedDate;
+  // final String selectedDate;
   @override
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
     TextEditingController kodeStasiunController = TextEditingController();
-    TextEditingController kodeWaktuPengamatanController =
-        TextEditingController();
-    TextEditingController kodeJenisKebersihanController =
-        TextEditingController();
-    // File pickedImage;
-    String? pickedImageBase64Image;
+    TextEditingController alatController = TextEditingController();
+    TextEditingController kondisiPksController = TextEditingController();
+    TextEditingController keteranganController = TextEditingController();
 
     void _postToDatabase() {
       FocusScope.of(context).requestFocus(FocusNode());
 
-      context.read<EstetikaPabrikFormCubit>().submitToDatabase(
-            EstetikaPabrikFormModel(
+      context.read<PelaporanKerusakanAlatFormCubit>().submitToDatabase(
+            PelaporanKerusakanAlatFormModel(
                 stasiun: kodeStasiunController.text,
-                waktuPengamatan: kodeWaktuPengamatanController.text,
-                jenisKebersihan: kodeJenisKebersihanController.text,
+                alat: alatController.text,
+                kondisiPks: kondisiPksController.text,
+                keterangan: keteranganController.text,
                 foto: imageNameController.text),
           );
     }
@@ -57,24 +56,29 @@ class FormEstetikaPabrik extends StatelessWidget {
     }
 
     void onChangeSelectboxStasiun(value) {
+      print('kodeStasiyun $value');
       kodeStasiunController.text = value!.toString();
+      BlocProvider.of<SelectboxAlatByStasiunCubit>(context)
+          .setParam(value!.toString());
     }
 
-    void onChangeSelectboxWaktuPengamatan(value) {
-      kodeWaktuPengamatanController.text = value!.toString();
+    void onChangeSelectboxAlat(value) {
+      alatController.text = value!.toString();
     }
 
-    void onChangeSelectboxJenisKebersihan(value) {
-      kodeJenisKebersihanController.text = value!.toString();
+    void onChangeSelectboxKondisiPks(value) {
+      kondisiPksController.text = value!.toString();
     }
 
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<EstetikaPabrikFormCubit, EstetikaPabrikFormState>(
-        listener: (context, EstetikaPabrikFormState) {
-          if (EstetikaPabrikFormState is LoadingEstetikaPabrikFormState) {
+      child: BlocListener<PelaporanKerusakanAlatFormCubit,
+          PelaporanKerusakanAlatFormState>(
+        listener: (context, PelaporanKerusakanAlatFormState) {
+          if (PelaporanKerusakanAlatFormState
+              is LoadingPelaporanKerusakanAlatFormState) {
             print('ke sini');
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -90,19 +94,17 @@ class FormEstetikaPabrik extends StatelessWidget {
                   ),
                 ),
               );
-          } else if (EstetikaPabrikFormState
-              is SuccessEstetikaPabrikFormState) {
+          } else if (PelaporanKerusakanAlatFormState
+              is SuccessPelaporanKerusakanAlatFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, EstetikaPabrikFormState.message,
-                () {
-              BlocProvider.of<EstetikaPabrikCardCubit>(context)
-                  .checkIsAnwered(selectedDate);
+            showAlertSuccessOkActionV2(
+                context, PelaporanKerusakanAlatFormState.message, () {
               BlocProvider.of<PerformaCubit>(context).getData();
 
               Navigator.pop(context);
             });
-          } else if (EstetikaPabrikFormState
-              is DuplicatedEstetikaPabrikFormState) {
+          } else if (PelaporanKerusakanAlatFormState
+              is DuplicatedPelaporanKerusakanAlatFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
@@ -111,21 +113,22 @@ class FormEstetikaPabrik extends StatelessWidget {
                   content: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(EstetikaPabrikFormState.message),
+                      Text(PelaporanKerusakanAlatFormState.message),
                       const Icon(Icons.error)
                     ],
                   ),
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (EstetikaPabrikFormState is ErrorEstetikaPabrikFormState) {
+          } else if (PelaporanKerusakanAlatFormState
+              is ErrorPelaporanKerusakanAlatFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(EstetikaPabrikFormState.message.toString()),
+                    Text(PelaporanKerusakanAlatFormState.message.toString()),
                     const Icon(Icons.error)
                   ],
                 ),
@@ -140,7 +143,7 @@ class FormEstetikaPabrik extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Estetika Pabrik",
+              title: "Form Pelaporan Kerusakan Alat",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
@@ -160,15 +163,21 @@ class FormEstetikaPabrik extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxStasiun,
                         ),
-                        SelectboxWaktuPengamatan(
-                          titleName: "Waktu Pengamatan",
+                        SelectboxAlatByStasiun(
+                          titleName: "Alat",
                           isTitleName: true,
-                          onChangeFunc: onChangeSelectboxWaktuPengamatan,
+                          onChangeFunc: onChangeSelectboxAlat,
                         ),
-                        SelectboxJenisKebersihan(
-                          titleName: "Jenis Kebersihan",
+                        SelectboxKondisiPks(
+                          titleName: "Kondisi PKS",
                           isTitleName: true,
-                          onChangeFunc: onChangeSelectboxJenisKebersihan,
+                          onChangeFunc: onChangeSelectboxKondisiPks,
+                        ),
+                        TextFormFieldWidgetForm(
+                          fieldText: 'Keterangan',
+                          fieldKeterangan: 'Keterangan',
+                          fieldType: 'text',
+                          fieldController: keteranganController,
                         ),
                         UploadFoto(
                           fieldName: 'Evidence Foto',

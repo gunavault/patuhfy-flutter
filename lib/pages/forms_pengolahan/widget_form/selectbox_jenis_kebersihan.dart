@@ -1,13 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:patuhfy/blocs/selectbox_stasiun/selectbox_stasiun_cubit.dart';
-import 'package:patuhfy/models/stasiun_model.dart';
+import 'package:patuhfy/blocs/selectbox_jenis_kebersihan/selectbox_jenis_kebersihan_cubit.dart';
+import 'package:patuhfy/models/jenis_kebersihan_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 
-class SelectboxStasiun extends StatelessWidget {
-  const SelectboxStasiun(
+class SelectboxJenisKebersihan extends StatelessWidget {
+  const SelectboxJenisKebersihan(
       {super.key,
       this.titleName,
       this.isTitleName,
@@ -19,9 +19,9 @@ class SelectboxStasiun extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SelectboxStasiunCubit>(context).getData();
+    BlocProvider.of<SelectboxJenisKebersihanCubit>(context).getData();
     Widget _customPopupItemBuilderExample2(
-        BuildContext context, StasiunModel item, bool isSelected) {
+        BuildContext context, JenisKebersihanModel item, bool isSelected) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
         decoration: !isSelected
@@ -33,8 +33,7 @@ class SelectboxStasiun extends StatelessWidget {
               ),
         child: ListTile(
           selected: isSelected,
-          title: Text(
-              '${item.kodeStasiun.toString()} (${item.namaStasiun.toString()})'),
+          title: Text(item.namaJenisKebersihan.toString()),
           leading: const CircleAvatar(
             radius: 13,
             child: Icon(
@@ -63,10 +62,10 @@ class SelectboxStasiun extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        DropdownSearch<StasiunModel>(
+        DropdownSearch<JenisKebersihanModel>(
           validator: (value) {
             if (value == null) {
-              return 'Stasiun Tidak Boleh kosong';
+              return 'Jenis Kebersihan22 Tidak Boleh kosong';
             }
             return null;
           },
@@ -74,14 +73,14 @@ class SelectboxStasiun extends StatelessWidget {
             onChangeFunc!(value);
           },
           asyncItems: (String? filter) =>
-              BlocProvider.of<SelectboxStasiunCubit>(context).getData(),
-          itemAsString: (StasiunModel u) => u.userAsString(),
+              BlocProvider.of<SelectboxJenisKebersihanCubit>(context).getData(),
           popupProps: PopupPropsMultiSelection.modalBottomSheet(
             showSelectedItems: true,
             itemBuilder: _customPopupItemBuilderExample2,
             showSearchBox: true,
           ),
-          compareFn: (item, sItem) => item.kodeStasiun == sItem.kodeStasiun,
+          compareFn: (item, sItem) =>
+              item.kodeJenisKebersihan == sItem.kodeJenisKebersihan,
           dropdownDecoratorProps: DropDownDecoratorProps(
             dropdownSearchDecoration: InputDecoration(
               contentPadding: const EdgeInsets.only(

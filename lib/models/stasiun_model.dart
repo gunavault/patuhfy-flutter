@@ -6,7 +6,7 @@ class StasiunModel {
 
   StasiunModel.fromJson(Map<String, dynamic> json) {
     kodeStasiun = json["KODE"];
-    kodeStasiun = json["NAMA_STASIUN"];
+    namaStasiun = json["NAMA_STASIUN"];
   }
 
   // Map<String, dynamic> toJson() {
@@ -17,6 +17,9 @@ class StasiunModel {
 
   @override
   String toString() => kodeStasiun.toString();
+  String userAsString() {
+    return '$kodeStasiun $namaStasiun';
+  }
 }
 
 class StasiunModelResponse {
