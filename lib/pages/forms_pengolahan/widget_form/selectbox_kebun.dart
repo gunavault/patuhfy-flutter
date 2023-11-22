@@ -35,7 +35,8 @@ class SelectboxKebun extends StatelessWidget {
               ),
         child: ListTile(
           selected: isSelected,
-          title: Text(item.kodeKebun.toString()),
+          title: Text(
+              'Kode : ${item.kodeKebun.toString()} (${item.namaKebun.toString()})'),
           leading: const CircleAvatar(
             radius: 13,
             child: Icon(
@@ -81,7 +82,7 @@ class SelectboxKebun extends StatelessWidget {
             itemBuilder: _customPopupItemBuilderExample2,
             showSearchBox: true,
           ),
-          compareFn: (item, sItem) => item.kodeKebun == sItem.kodeKebun,
+          compareFn: (item, sItem) => item.namaKebun == sItem.namaKebun,
           dropdownDecoratorProps: DropDownDecoratorProps(
             dropdownSearchDecoration: InputDecoration(
               contentPadding: const EdgeInsets.only(

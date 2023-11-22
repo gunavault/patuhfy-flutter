@@ -23,6 +23,7 @@ import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/cek_monitoring_ipal/cek_monitoring_ipal_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/cek_rutin_sortasi/cek_rutin_sortasi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/cek_sampel_losis/cek_sampel_losis_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/estetika_pabrik/estetika_pabrik_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/inspeksi_hanca/inspeksi_hanca_card.dart';
@@ -143,6 +144,10 @@ class Tasksheet extends StatelessWidget {
           selectedDate: state.selectedDate,
         ),
         CekMonitoringIpalCard(
+          isToday: isToday,
+          selectedDate: state.selectedDate,
+        ),
+        CekRutinSortasiCard(
           isToday: isToday,
           selectedDate: state.selectedDate,
         ),
