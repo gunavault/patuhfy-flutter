@@ -22,6 +22,7 @@ import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi_pengolahan/apel_pagi_pengolahan_card.dart';
+import 'package:patuhfy/pages/tasksheet/task_cards/apel_pengolahan/apel_pengolahan_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/cek_monitoring_ipal/cek_monitoring_ipal_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/cek_rutin_sortasi/cek_rutin_sortasi_card.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/cek_sampel_losis/cek_sampel_losis_card.dart';
@@ -52,118 +53,61 @@ class Tasksheet extends StatelessWidget {
   bool isToday = false;
   Tasksheet({super.key});
 
-  List<Widget> taskList(
-      UserModel userModel, bool isToday, state, selectedDate) {
-    if (userModel.psa_tipe == 'KEBUN' && userModel.role == 'MANAGER') {
-      return [
-        LabelTaskDoTo(
-          selectedDate: selectedDate,
-        ),
-        ApelPagiCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        InspeksiHancaCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        InspeksiTphCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-      ];
-    } else if (userModel.psa_tipe == 'KEBUN' && userModel.role != 'MANAGER') {
-      return [
-        LabelTaskDoTo(
-          selectedDate: selectedDate,
-        ),
-        ApelPagiCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        InspeksiHancaCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        InspeksiTphCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        // PencurianTbsCard(
-        //   selectedDate: state.selectedDate,
-        //   isToday: isToday,
-        // ),
-        // LapKerusakanCard(
-        //   selectedDate: state.selectedDate,
-        //   isToday: isToday,
-        // ),
-        RealPemupukanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealPengendalianHamaCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealPusinganPanenCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealPemeliharaanJalanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealPenyianganCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealPenunasanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        RealRestanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        )
-      ];
-    } else if (userModel.psa_tipe == 'PABRIK') {
-      return [
-        LabelTaskDoTo(
-          selectedDate: selectedDate,
-        ),
-        ApelPagiPengolahanCard(
-          selectedDate: state.selectedDate,
-          isToday: isToday,
-        ),
-        EstetikaPabrikCard(
-          isToday: isToday,
-          selectedDate: state.selectedDate,
-        ),
-        CekSampelLosisCard(
-          isToday: isToday,
-          selectedDate: state.selectedDate,
-        ),
-        CekMonitoringIpalCard(
-          isToday: isToday,
-          selectedDate: state.selectedDate,
-        ),
-        CekRutinSortasiCard(
-          isToday: isToday,
-          selectedDate: state.selectedDate,
-        ),
-        ProsesPengolahanCard(
-          isToday: isToday,
-          selectedDate: state.selectedDate,
-        )
-      ];
-    } else {
-      return [
-        Container(
-          child: const Center(child: Text('No Card Found')),
-        )
-      ];
-    }
+List<Widget> taskList(UserModel userModel, bool isToday, state, selectedDate) {
+  List<Widget> commonCards = [
+    LabelTaskDoTo(selectedDate: selectedDate),
+  ];
+
+  switch (userModel.psa_tipe) {
+    case 'KEBUN':
+      commonCards.addAll([
+        ApelPagiCard(selectedDate: state.selectedDate, isToday: isToday),
+        InspeksiHancaCard(selectedDate: state.selectedDate, isToday: isToday),
+        InspeksiTphCard(selectedDate: state.selectedDate, isToday: isToday),
+      ]);
+
+      if (userModel.role != 'MANAGER') {
+        commonCards.addAll([
+          // PencurianTbsCard(selectedDate: state.selectedDate, isToday: isToday),
+          // LapKerusakanCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPemupukanCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPengendalianHamaCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPusinganPanenCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPemeliharaanJalanCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPenyianganCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealPenunasanCard(selectedDate: state.selectedDate, isToday: isToday),
+          RealRestanCard(selectedDate: state.selectedDate, isToday: isToday),
+        ]);
+      }
+      break;
+
+    case 'PABRIK':
+      commonCards.addAll([
+        ApelPengolahanCard(selectedDate: state.selectedDate, isToday: isToday),
+
+      ]);
+        if (userModel.role == 'ASISTEN_QC') {
+        commonCards.addAll([
+        CekSampelLosisCard(isToday: isToday, selectedDate: state.selectedDate),
+        CekMonitoringIpalCard(isToday: isToday, selectedDate: state.selectedDate),
+        CekRutinSortasiCard(isToday: isToday, selectedDate: state.selectedDate),
+        ]);
+      } else if (userModel.role == 'ASISTEN_PENGOLAHAN'){
+        commonCards.addAll([
+        EstetikaPabrikCard(isToday: isToday, selectedDate: state.selectedDate),
+        ProsesPengolahanCard(isToday: isToday, selectedDate: state.selectedDate),
+        ]);
+
+      }
+      break;
+
+    default:
+      commonCards.add(Container(child: const Center(child: Text('No Card Found'))));
+      break;
   }
+
+  return commonCards;
+}
 
   void btnRefresh(context) {
     BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();

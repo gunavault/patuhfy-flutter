@@ -4,6 +4,7 @@ import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/alat_by_stasiun_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
+import 'package:patuhfy/models/apel_pengolahan_model.dart';
 import 'package:patuhfy/models/blok_model.dart';
 import 'package:patuhfy/models/cek_monitoring_ipal.dart';
 import 'package:patuhfy/models/cek_rutin_sortasi.dart';
@@ -874,6 +875,46 @@ class RemoteDataSource {
               .toList());
     } on DioError catch (err) {
       return ApelPagiPengolahanFormModelSelectResponse(
+          status_code: 500, message: err.response.toString(), dataForm: []);
+    }
+  }
+
+//apel_pengolahan FIx
+  Future<ApelPengolahanFormModelResponse> createApelPengolahan(token, ApelPengolahanFormModel dataForm) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.post("$baseUrl/tasksheet-pengolahan/apel-pagi",
+          data: dataForm.toJson(), options: optionAuth(token));
+      dynamic callback = response.data;
+      return ApelPengolahanFormModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      return ApelPengolahanFormModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
+  Future<ApelPengolahanFormModelSelectResponse>
+      getDataApelPengolahanByTanggal(tanggal, createdBy, token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/apel-pagi/get-data-by-date-createdby?tanggal=$tanggal&createdBy=$createdBy",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      return ApelPengolahanFormModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => ApelPengolahanFormModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      return ApelPengolahanFormModelSelectResponse(
           status_code: 500, message: err.response.toString(), dataForm: []);
     }
   }
