@@ -131,7 +131,7 @@ class CekRutinSortasiCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Rutin Sortasi Monitoring Ipal',
+                                  'Melakukan Rutin Sortasi ',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,

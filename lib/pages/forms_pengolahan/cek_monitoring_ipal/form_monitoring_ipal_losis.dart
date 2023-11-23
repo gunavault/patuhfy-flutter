@@ -13,7 +13,6 @@ import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/cek_monitoring_ipal.dart';
 import 'package:patuhfy/models/cek_sampel_losis_model.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_sampel_losis.dart';
@@ -27,13 +26,15 @@ import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/custom_button/custom_buttons.dart';
 
 class FormCekMonitoringIpal extends StatelessWidget {
-  FormCekMonitoringIpal({Key? key, required this.selectedDate}) : super(key: key);
+  FormCekMonitoringIpal({Key? key, required this.selectedDate})
+      : super(key: key);
   final _formKey = GlobalKey<FormState>();
   final String selectedDate;
   @override
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
-    TextEditingController kodeWaktuPengamatanController = TextEditingController();
+    TextEditingController kodeWaktuPengamatanController =
+        TextEditingController();
     TextEditingController debitairmasukController = TextEditingController();
     TextEditingController debitairkeluarController = TextEditingController();
     TextEditingController PHController = TextEditingController();
@@ -68,19 +69,16 @@ class FormCekMonitoringIpal extends StatelessWidget {
       }
     }
 
-
-
     void onChangeSelectboxWaktuPengamatan(value) {
       kodeWaktuPengamatanController.text = value!.toString();
     }
-
-
 
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
-      child: BlocListener<CekMonitoringIpalFormCubit, CekMonitoringIpalFormState>(
+      child:
+          BlocListener<CekMonitoringIpalFormCubit, CekMonitoringIpalFormState>(
         listener: (context, CekMonitoringIpalFormState) {
           if (CekMonitoringIpalFormState is LoadingCekMonitoringIpalFormState) {
             print('ke sini');
@@ -101,8 +99,8 @@ class FormCekMonitoringIpal extends StatelessWidget {
           } else if (CekMonitoringIpalFormState
               is SuccessCekMonitoringIpalFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, CekMonitoringIpalFormState.message,
-                () {
+            showAlertSuccessOkActionV2(
+                context, CekMonitoringIpalFormState.message, () {
               BlocProvider.of<CekMonitoringIpalCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               BlocProvider.of<PerformaCubit>(context).getData();
@@ -126,7 +124,8 @@ class FormCekMonitoringIpal extends StatelessWidget {
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (CekMonitoringIpalFormState is ErrorCekMonitoringIpalFormState) {
+          } else if (CekMonitoringIpalFormState
+              is ErrorCekMonitoringIpalFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -168,7 +167,7 @@ class FormCekMonitoringIpal extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxWaktuPengamatan,
                         ),
-                          TextFormFieldWidgetForm(
+                        TextFormFieldWidgetForm(
                             fieldText: 'Debit Air Masuk',
                             fieldKeterangan: 'Debit Air Masuk',
                             fieldType: 'number',

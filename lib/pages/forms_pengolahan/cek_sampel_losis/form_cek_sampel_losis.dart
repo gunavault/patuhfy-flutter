@@ -10,7 +10,6 @@ import 'package:patuhfy/blocs/selectbox_jenis_sampel/selectbox_jenis_sampel_cubi
 import 'package:patuhfy/configs/styles.dart';
 import 'package:patuhfy/models/cek_sampel_losis_model.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_sampel_losis.dart';
@@ -31,7 +30,8 @@ class FormCekSampelLosis extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController imageNameController = TextEditingController();
     TextEditingController kodeStasiunController = TextEditingController();
-    TextEditingController kodeWaktuPengamatanController = TextEditingController();
+    TextEditingController kodeWaktuPengamatanController =
+        TextEditingController();
     TextEditingController sampeLosisController = TextEditingController();
     TextEditingController jenisSampelController = TextEditingController();
     TextEditingController beratSampelController = TextEditingController();
@@ -77,12 +77,12 @@ class FormCekSampelLosis extends StatelessWidget {
 
     void onChangeSelectboxSampelLosis(value) {
       sampeLosisController.text = value!.toString();
-      BlocProvider.of<SelectboxJenisSampelCubit>(context).setParam(value!.toString());
-
+      BlocProvider.of<SelectboxJenisSampelCubit>(context)
+          .setParam(value!.toString());
     }
-        void onChangeSelectboxJenisSampel(value) {
-      jenisSampelController.text = value!.toString();
 
+    void onChangeSelectboxJenisSampel(value) {
+      jenisSampelController.text = value!.toString();
     }
 
     return GestureDetector(
@@ -192,7 +192,7 @@ class FormCekSampelLosis extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxJenisSampel,
                         ),
-                          TextFormFieldWidgetForm(
+                        TextFormFieldWidgetForm(
                             fieldText: 'Berat Sampel',
                             fieldKeterangan: 'Berat Sampel',
                             fieldType: 'number',

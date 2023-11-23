@@ -60,7 +60,7 @@ class PelaporanKerusakanAlatPageCard extends StatelessWidget {
                             child: Text(
                               data.keterangan.toString(),
                               style: const TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 18,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
                               maxLines: 1,
@@ -72,6 +72,20 @@ class PelaporanKerusakanAlatPageCard extends StatelessWidget {
                           Text(
                             _changeDateForm(data),
                             style: GlobalStyle.textTag,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Stasiun : ${data.namaStasiun.toString()}',
+                            style: GlobalStyle.addressDetailValue,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Nama Alat : ${data.namaAlat.toString()}',
+                            style: GlobalStyle.addressDetailValue,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -90,27 +104,21 @@ class PelaporanKerusakanAlatPageCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    'asdasd',
-                    style: GlobalStyle.cardTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    margin: const EdgeInsets.only(right: 10, left: 10, top: 10),
-                    decoration: BoxDecoration(
-                      color: CommonMethods.colorBadge(data.status),
-                      boxShadow: const [BoxShadow(color: Colors.transparent)],
-                      border: Border.all(color: CommonColors.iconButtonColor),
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    ),
-                    child: Text(
-                      data.status.toString(),
-                      style: const TextStyle(
-                          fontSize: 16, color: Color(0XFFFFFFFF)),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  //   margin: const EdgeInsets.only(right: 10, left: 10, top: 10),
+                  //   decoration: BoxDecoration(
+                  //     color: CommonMethods.colorBadge(data.status),
+                  //     boxShadow: const [BoxShadow(color: Colors.transparent)],
+                  //     border: Border.all(color: CommonColors.iconButtonColor),
+                  //     borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  //   ),
+                  //   child: Text(
+                  //     data.status.toString(),
+                  //     style: const TextStyle(
+                  //         fontSize: 16, color: Color(0XFFFFFFFF)),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

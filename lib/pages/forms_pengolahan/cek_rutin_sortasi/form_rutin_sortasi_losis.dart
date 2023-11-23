@@ -18,7 +18,6 @@ import 'package:patuhfy/models/cek_monitoring_ipal.dart';
 import 'package:patuhfy/models/cek_rutin_sortasi.dart';
 import 'package:patuhfy/models/cek_sampel_losis_model.dart';
 import 'package:patuhfy/models/estetika_pabrik_model.dart';
-import 'package:patuhfy/pages/forms/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/text_form_field.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_afdeling_pengolahan.dart';
@@ -40,9 +39,9 @@ class FormCekRutinSortasi extends StatelessWidget {
   final String selectedDate;
   @override
   Widget build(BuildContext context) {
-    
     TextEditingController imageNameController = TextEditingController();
-    TextEditingController kodeWaktuPengamatanController = TextEditingController();
+    TextEditingController kodeWaktuPengamatanController =
+        TextEditingController();
     TextEditingController kebunController = TextEditingController();
     TextEditingController afdelingController = TextEditingController();
     TextEditingController blokController = TextEditingController();
@@ -95,28 +94,26 @@ class FormCekRutinSortasi extends StatelessWidget {
       }
     }
 
-
-
     void onChangeSelectboxWaktuPengamatan(value) {
       kodeWaktuPengamatanController.text = value!.toString();
     }
+
     void onChangeSelectboxKebun(value) {
       kebunController.text = value!.toString();
-      BlocProvider.of<SelectboxAfdelingPengolahanCubit>(context).setParam(value!.toString());
-
+      BlocProvider.of<SelectboxAfdelingPengolahanCubit>(context)
+          .setParam(value!.toString());
     }
+
     void onChangeSelectboxAfdeling(value) {
       afdelingController.text = value!.toString();
-      BlocProvider.of<SelectboxBlokPengolahanCubit>(context).setParam(kebunController.text,value!.toString());
-
+      BlocProvider.of<SelectboxBlokPengolahanCubit>(context)
+          .setParam(kebunController.text, value!.toString());
     }
+
     void onChangeSelectboxBlok(value) {
       blokController.text = value!.toString();
       tahuntanamController.text = value!.tahunTanam.toString();
-
     }
-
-
 
     return GestureDetector(
       onTap: () {
@@ -143,8 +140,8 @@ class FormCekRutinSortasi extends StatelessWidget {
           } else if (CekRutinSortasiFormState
               is SuccessCekRutinSortasiFormState) {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            showAlertSuccessOkActionV2(context, CekRutinSortasiFormState.message,
-                () {
+            showAlertSuccessOkActionV2(
+                context, CekRutinSortasiFormState.message, () {
               BlocProvider.of<CekRutinSortasiCardCubit>(context)
                   .checkIsAnwered(selectedDate);
               BlocProvider.of<PerformaCubit>(context).getData();
@@ -168,7 +165,8 @@ class FormCekRutinSortasi extends StatelessWidget {
                   backgroundColor: primaryColor,
                 ),
               );
-          } else if (CekRutinSortasiFormState is ErrorCekRutinSortasiFormState) {
+          } else if (CekRutinSortasiFormState
+              is ErrorCekRutinSortasiFormState) {
             context.loaderOverlay.hide();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -215,33 +213,33 @@ class FormCekRutinSortasi extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxKebun,
                         ),
-                          SelectboxAfdelingPengolahan(
+                        SelectboxAfdelingPengolahan(
                           titleName: "Afdeling",
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxAfdeling,
-                          ),
-                          SelectboxBlokPengolahan(
+                        ),
+                        SelectboxBlokPengolahan(
                           titleName: "Blok",
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxBlok,
-                          ),
-                                                TextFormFieldWidgetForm(
+                        ),
+                        TextFormFieldWidgetForm(
                             fieldText: 'Tahun Tanam',
                             fieldKeterangan: 'Tahun Tanam',
                             fieldType: 'number',
                             fieldController: tahuntanamController,
                             isEnabled: true),
-                          TextFormFieldWidgetForm(
+                        TextFormFieldWidgetForm(
                             fieldText: 'no polisi',
                             fieldKeterangan: 'no polisi',
                             fieldType: 'number',
                             fieldController: nopolisiController),
-                          TextFormFieldWidgetForm(
+                        TextFormFieldWidgetForm(
                             fieldText: 'jumlah tandan dari kebun',
                             fieldKeterangan: 'jumlah tandan dari kebun',
                             fieldType: 'number',
                             fieldController: tandandarikebunController),
-                          TextFormFieldWidgetForm(
+                        TextFormFieldWidgetForm(
                             fieldText: 'Jumlah tandan di PKS',
                             fieldKeterangan: 'Jumlah tandan di PKS',
                             fieldType: 'number',
@@ -281,7 +279,6 @@ class FormCekRutinSortasi extends StatelessWidget {
                           fieldType: 'number',
                           fieldController: brondolanController,
                         ),
-                        
                         UploadFoto(
                           fieldName: 'Evidence Foto',
                           imageNameController: imageNameController,
