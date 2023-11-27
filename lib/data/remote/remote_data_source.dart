@@ -856,6 +856,36 @@ class RemoteDataSource {
     }
   }
 
+  Future<ApelPengolahanFormUpdateModelResponse> updateApelPagiPengolahan(
+      token, ApelPengolahanFormUpdateModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('dataForm to json ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/apel-pagi/update-data-by-rowstamp",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('wewew $parsedData');
+      return ApelPengolahanFormUpdateModelResponse(
+        status_code: int.parse(callback['status_code']),
+        message: callback['msg'],
+        isCheckout: callback['is_checkout'],
+        dataForm: parsedData
+            .map((value) => ApelPengolahanFormModel.fromJson(value))
+            .toList(),
+      );
+    } on DioError catch (err) {
+      print('ApelPengolahanFormUpdateModelResponse $err');
+      return ApelPengolahanFormUpdateModelResponse(
+          message: err.response.toString(),
+          status_code: 500,
+          dataForm: [],
+          isCheckout: false);
+    }
+  }
+
   Future<ApelPagiPengolahanFormModelSelectResponse>
       getDataApelPagiPengolahanByTanggal(tanggal, createdBy, token) async {
     try {
@@ -880,7 +910,8 @@ class RemoteDataSource {
   }
 
 //apel_pengolahan FIx
-  Future<ApelPengolahanFormModelResponse> createApelPengolahan(token, ApelPengolahanFormModel dataForm) async {
+  Future<ApelPengolahanFormModelResponse> createApelPengolahan(
+      token, ApelPengolahanFormModel dataForm) async {
     try {
       var dio = Dio();
 
@@ -896,8 +927,8 @@ class RemoteDataSource {
     }
   }
 
-  Future<ApelPengolahanFormModelSelectResponse>
-      getDataApelPengolahanByTanggal(tanggal, createdBy, token) async {
+  Future<ApelPengolahanFormModelSelectResponse> getDataApelPengolahanByTanggal(
+      tanggal, createdBy, token) async {
     try {
       var dio = Dio();
 
@@ -908,14 +939,19 @@ class RemoteDataSource {
       dynamic callback = response.data;
       List<dynamic> parsedData = callback['data'];
       return ApelPengolahanFormModelSelectResponse(
-          status_code: int.parse(callback['status_code']),
-          message: callback['msg'],
-          dataForm: parsedData
-              .map((value) => ApelPengolahanFormModel.fromJson(value))
-              .toList());
+        status_code: int.parse(callback['status_code']),
+        message: callback['msg'],
+        isCheckout: callback['is_checkout'],
+        dataForm: parsedData
+            .map((value) => ApelPengolahanFormModel.fromJson(value))
+            .toList(),
+      );
     } on DioError catch (err) {
       return ApelPengolahanFormModelSelectResponse(
-          status_code: 500, message: err.response.toString(), dataForm: []);
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [],
+          isCheckout: false);
     }
   }
 

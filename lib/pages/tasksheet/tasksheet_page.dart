@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:patuhfy/blocs/Apel_pengolahan/apel_pengolahan_card/apel_pengolahan_card_cubit.dart';
 import 'package:patuhfy/blocs/apel_pagi/apel_pagi_card/apel_pagi_card_cubit.dart';
 import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
@@ -18,6 +19,7 @@ import 'package:patuhfy/blocs/real_restan/real_restan_card/real_pemupukan_card_c
 import 'package:patuhfy/blocs/sync_to_server/sync_to_server_cubit.dart';
 import 'package:patuhfy/blocs/tasksheet_page_bloc/tasksheet_page_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
+import 'package:patuhfy/models/apel_pengolahan_model.dart';
 import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/apel_pagi/apel_pagi_card.dart';
@@ -53,61 +55,73 @@ class Tasksheet extends StatelessWidget {
   bool isToday = false;
   Tasksheet({super.key});
 
-List<Widget> taskList(UserModel userModel, bool isToday, state, selectedDate) {
-  List<Widget> commonCards = [
-    LabelTaskDoTo(selectedDate: selectedDate),
-  ];
+  List<Widget> taskList(
+      UserModel userModel, bool isToday, state, selectedDate) {
+    List<Widget> commonCards = [
+      LabelTaskDoTo(selectedDate: selectedDate),
+    ];
 
-  switch (userModel.psa_tipe) {
-    case 'KEBUN':
-      commonCards.addAll([
-        ApelPagiCard(selectedDate: state.selectedDate, isToday: isToday),
-        InspeksiHancaCard(selectedDate: state.selectedDate, isToday: isToday),
-        InspeksiTphCard(selectedDate: state.selectedDate, isToday: isToday),
-      ]);
-
-      if (userModel.role != 'MANAGER') {
+    switch (userModel.psa_tipe) {
+      case 'KEBUN':
         commonCards.addAll([
-          // PencurianTbsCard(selectedDate: state.selectedDate, isToday: isToday),
-          // LapKerusakanCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPemupukanCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPengendalianHamaCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPusinganPanenCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPemeliharaanJalanCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPenyianganCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealPenunasanCard(selectedDate: state.selectedDate, isToday: isToday),
-          RealRestanCard(selectedDate: state.selectedDate, isToday: isToday),
+          ApelPagiCard(selectedDate: state.selectedDate, isToday: isToday),
+          InspeksiHancaCard(selectedDate: state.selectedDate, isToday: isToday),
+          InspeksiTphCard(selectedDate: state.selectedDate, isToday: isToday),
         ]);
-      }
-      break;
 
-    case 'PABRIK':
-      commonCards.addAll([
-        ApelPengolahanCard(selectedDate: state.selectedDate, isToday: isToday),
+        if (userModel.role != 'MANAGER') {
+          commonCards.addAll([
+            // PencurianTbsCard(selectedDate: state.selectedDate, isToday: isToday),
+            // LapKerusakanCard(selectedDate: state.selectedDate, isToday: isToday),
+            RealPemupukanCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealPengendalianHamaCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealPusinganPanenCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealPemeliharaanJalanCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealPenyianganCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealPenunasanCard(
+                selectedDate: state.selectedDate, isToday: isToday),
+            RealRestanCard(selectedDate: state.selectedDate, isToday: isToday),
+          ]);
+        }
+        break;
 
-      ]);
+      case 'PABRIK':
+        commonCards.addAll([
+          ApelPengolahanCard(
+              selectedDate: state.selectedDate, isToday: isToday),
+        ]);
         if (userModel.role == 'ASISTEN_QC') {
-        commonCards.addAll([
-        CekSampelLosisCard(isToday: isToday, selectedDate: state.selectedDate),
-        CekMonitoringIpalCard(isToday: isToday, selectedDate: state.selectedDate),
-        CekRutinSortasiCard(isToday: isToday, selectedDate: state.selectedDate),
-        ]);
-      } else if (userModel.role == 'ASISTEN_PENGOLAHAN'){
-        commonCards.addAll([
-        EstetikaPabrikCard(isToday: isToday, selectedDate: state.selectedDate),
-        ProsesPengolahanCard(isToday: isToday, selectedDate: state.selectedDate),
-        ]);
+          commonCards.addAll([
+            CekSampelLosisCard(
+                isToday: isToday, selectedDate: state.selectedDate),
+            CekMonitoringIpalCard(
+                isToday: isToday, selectedDate: state.selectedDate),
+            CekRutinSortasiCard(
+                isToday: isToday, selectedDate: state.selectedDate),
+          ]);
+        } else if (userModel.role == 'ASISTEN_PENGOLAHAN') {
+          commonCards.addAll([
+            EstetikaPabrikCard(
+                isToday: isToday, selectedDate: state.selectedDate),
+            ProsesPengolahanCard(
+                isToday: isToday, selectedDate: state.selectedDate),
+          ]);
+        }
+        break;
 
-      }
-      break;
+      default:
+        commonCards
+            .add(Container(child: const Center(child: Text('No Card Found'))));
+        break;
+    }
 
-    default:
-      commonCards.add(Container(child: const Center(child: Text('No Card Found'))));
-      break;
+    return commonCards;
   }
-
-  return commonCards;
-}
 
   void btnRefresh(context) {
     BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
@@ -151,6 +165,55 @@ List<Widget> taskList(UserModel userModel, bool isToday, state, selectedDate) {
       BlocProvider.of<SyncToServerCubit>(context).getCountDataNotSend();
       // Navigator.pop(context);
     });
+  }
+
+  Widget _btnCheckout(context) {
+    return BlocListener<ApelPengolahanCardCubit, ApelPengolahanCardState>(
+      listener: (context, state) {
+        if (state is ErrorUpdateApelPengolahanCardState) {
+          BlocProvider.of<ApelPengolahanCardCubit>(context)
+              .checkIsAnwered(dateNow.toString().substring(0, 10));
+        }
+        // TODO: implement listener
+      },
+      child: BlocBuilder<ApelPengolahanCardCubit, ApelPengolahanCardState>(
+        builder: (context, state) {
+          if (state is IsApelPengolahanAswered) {
+            if (state.isAnswered && !state.isCheckout) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10.0, right: 10),
+                child: FloatingActionButton(
+                  backgroundColor: CommonColors.redColor,
+                  elevation: 1,
+                  child: const Icon(
+                      Icons.logout), //child widget inside this button
+                  onPressed: () {
+                    showDialogKonfirmasi(context, () {
+                      BlocProvider.of<ApelPengolahanCardCubit>(context)
+                          .checkOut(ApelPengolahanFormUpdateModel(
+                              rowstamp: state.dataForm!.rowstamp.toString()));
+                    });
+
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => FormRtlDetailForm(
+                    //       dataRtl: dataRtl,
+                    //     ),
+                    //   ),
+                    // );
+                    //task to execute when this button is pressed
+                  },
+                ),
+              );
+            } else {
+              return Container();
+            }
+          }
+
+          return Container();
+        },
+      ),
+    );
   }
 
   Widget _bottomNavigation(context, dateNow) {
@@ -377,6 +440,7 @@ List<Widget> taskList(UserModel userModel, bool isToday, state, selectedDate) {
     BlocProvider.of<PerformaCubit>(context).getData();
     return Scaffold(
       backgroundColor: kDarkWhite,
+      floatingActionButton: _btnCheckout(context),
       bottomNavigationBar: _bottomNavigation(context, dateNow),
       appBar: AppBar(
         backgroundColor: kDarkWhite,

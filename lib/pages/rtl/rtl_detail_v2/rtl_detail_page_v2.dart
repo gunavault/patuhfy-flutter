@@ -14,7 +14,6 @@ import 'package:patuhfy/utils/text_style.dart';
 import 'package:patuhfy/widgets/app_bar/app_bar.dart';
 import 'package:patuhfy/widgets/constant.dart';
 
-
 import 'widget/rtLdetail_card_v2.dart';
 
 class RtlDetailPageV2 extends StatelessWidget {
@@ -173,8 +172,8 @@ class RtlDetailPageV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateFormat dateFormat = DateFormat('ddmmyyyy');
-    String formattedDatetime = DateFormat('ddmmyyyy').format(DateTime.parse(dataRtl.mobileCreatedAt.toString()));
-
+    String formattedDatetime = DateFormat('ddmmyyyy')
+        .format(DateTime.parse(dataRtl.mobileCreatedAt.toString()));
 
     _getData(context);
     return LoaderOverlay(

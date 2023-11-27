@@ -62,7 +62,8 @@ contentBox(context, message, Function okAction) {
   return Stack(
     children: <Widget>[
       Container(
-        padding: const EdgeInsets.only(left: 20, top: 65, right: 20, bottom: 20),
+        padding:
+            const EdgeInsets.only(left: 20, top: 65, right: 20, bottom: 20),
         margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
@@ -118,5 +119,52 @@ contentBox(context, message, Function okAction) {
         ),
       ),
     ],
+  );
+}
+
+Future<void> showDialogKonfirmasi(context, okAction) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Konfirmasi',
+          style: body1,
+        ),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'Apakah anda yakin ingin Checkout?',
+                style: body1,
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              'Ya',
+              style: body1,
+            ),
+            onPressed: () {
+              okAction();
+              Navigator.of(context).pop();
+              // showDialogSuccess(context);
+            },
+          ),
+          TextButton(
+            child: Text(
+              'Tidak',
+              style: body1.copyWith(color: Colors.red),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
   );
 }

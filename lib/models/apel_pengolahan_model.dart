@@ -52,8 +52,6 @@ class ApelPengolahanFormModel {
     data["UPDATED_BY"] = updatedBy;
     data["KETERANGAN"] = keterangan;
 
-
-
     return data;
   }
 }
@@ -70,10 +68,39 @@ class ApelPengolahanFormModelResponse {
 class ApelPengolahanFormModelSelectResponse {
   final int status_code;
   final String message;
+  final bool isCheckout;
   final List<ApelPengolahanFormModel> dataForm;
 
   ApelPengolahanFormModelSelectResponse(
       {required this.status_code,
       required this.message,
+      required this.isCheckout,
       required this.dataForm});
+}
+
+class ApelPengolahanFormUpdateModel {
+  final String rowstamp;
+
+  ApelPengolahanFormUpdateModel({required this.rowstamp});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["ROWSTAMP"] = rowstamp;
+
+    return data;
+  }
+}
+
+class ApelPengolahanFormUpdateModelResponse {
+  final int status_code;
+  final String message;
+  final bool isCheckout;
+  final List<ApelPengolahanFormModel> dataForm;
+
+  ApelPengolahanFormUpdateModelResponse({
+    required this.status_code,
+    required this.message,
+    required this.isCheckout,
+    required this.dataForm,
+  });
 }

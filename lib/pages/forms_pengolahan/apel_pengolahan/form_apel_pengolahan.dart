@@ -62,14 +62,13 @@ class FormApelPengolahan extends StatelessWidget {
       jenisApelController.text = value!.toString();
     }
 
-
     return GestureDetector(
       onTap: () {
         CommonMethods.hideKeyboard();
       },
       child: BlocListener<ApelPengolahanFormCubit, ApelPengolahanFormState>(
         listener: (context, ApelPengolahanFormState) {
-                      print('ke sini $ApelPengolahanFormState');
+          print('ke sini $ApelPengolahanFormState');
 
           if (ApelPengolahanFormState is LoadingApelPengolahanFormState) {
             ScaffoldMessenger.of(context)
@@ -136,7 +135,7 @@ class FormApelPengolahan extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Estetika Pabrik",
+              title: "Form Apel Pagi ",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
@@ -156,15 +155,15 @@ class FormApelPengolahan extends StatelessWidget {
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxJenisApel,
                         ),
+                        TextFormFieldWidgetForm(
+                            fieldText: 'Keterangan',
+                            fieldKeterangan: 'keterangan',
+                            fieldType: 'text',
+                            fieldController: keteranganController),
                         UploadFoto(
                           fieldName: 'Evidence Foto',
                           imageNameController: imageNameController,
                         ),
-                         TextFormFieldWidgetForm(
-                            fieldText: 'keterangan',
-                            fieldKeterangan: 'keterangan',
-                            fieldType: 'text',
-                            fieldController: keteranganController),
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 30),
                           child: SizedBox(

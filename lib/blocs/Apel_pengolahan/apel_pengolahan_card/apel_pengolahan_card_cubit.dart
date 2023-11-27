@@ -15,7 +15,30 @@ class ApelPengolahanCardCubit extends Cubit<ApelPengolahanCardState> {
   final RemoteDataSource remoteDataSource;
 
   ApelPengolahanCardCubit(this.localDataSource, this.remoteDataSource)
-      : super(IsApelPengolahanAswered(false, null));
+      : super(IsApelPengolahanAswered(false, false, null));
+
+  checkOut(ApelPengolahanFormUpdateModel rowstamp) async {
+    final connectivityResult = await (Connectivity()
+        .checkConnectivity()); // cCheck if there is connection post to local and database
+
+    if (connectivityResult != ConnectivityResult.none) {
+      // Jika data 0 lokal data, cek ke online
+      UserModel userModel = await localDataSource.getCurrentUser();
+
+      ApelPengolahanFormUpdateModelResponse response = await RemoteDataSource()
+          .updateApelPagiPengolahan(userModel.token, rowstamp);
+
+      if (response.status_code == 200) {
+        emit(IsApelPengolahanAswered(
+            true, response.isCheckout, response.dataForm.first));
+      } else {
+        emit(ErrorUpdateApelPengolahanCardState());
+      }
+    } else {
+      // Jika Offline
+      emit(IsApelPengolahanAswered(false, false, null));
+    }
+  }
 
   checkIsAnwered(String taskDate) async {
     // List<ApelPengolahanFormModel> cekData;
@@ -32,13 +55,14 @@ class ApelPengolahanCardCubit extends Cubit<ApelPengolahanCardState> {
       print('data dari remote ${response.dataForm.length}');
       if (response.dataForm.length > 0) {
         print('kesini');
-        emit(IsApelPengolahanAswered(true, response.dataForm.first));
+        emit(IsApelPengolahanAswered(
+            true, response.isCheckout, response.dataForm.first));
       } else {
-        emit(IsApelPengolahanAswered(false, null));
-      } 
+        emit(IsApelPengolahanAswered(false, false, null));
+      }
     } else {
       // Jika Offline
-      emit(IsApelPengolahanAswered(false, null));
+      emit(IsApelPengolahanAswered(false, false, null));
     }
   }
 }

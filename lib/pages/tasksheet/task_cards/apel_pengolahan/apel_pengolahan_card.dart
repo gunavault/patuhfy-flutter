@@ -117,7 +117,7 @@ class ApelPengolahanCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Apel TEKPOL ',
+                                  'Apel Tekpol ',
                                   textAlign: TextAlign.start,
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.blackColor,
@@ -127,7 +127,7 @@ class ApelPengolahanCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
-                                  'Melakukan Apel TEKPOL',
+                                  'Melakukan Apel Tekpol',
                                   style: CommonStyle.getRalewayFont(
                                     color: CommonColors.textGeryColor,
                                     fontSize: 12,

@@ -7,10 +7,12 @@ class InitialApelPengolahanCardState extends ApelPengolahanCardState {}
 
 class IsApelPengolahanAswered extends ApelPengolahanCardState {
   final bool isAnswered;
+  final bool isCheckout;
   final ApelPengolahanFormModel? dataForm;
-  // final bool isSend;
 
-  IsApelPengolahanAswered(this.isAnswered, this.dataForm);
+  IsApelPengolahanAswered(this.isAnswered, this.isCheckout, this.dataForm);
 }
 
 class NoConnectionApelPengolahanCardState extends ApelPengolahanCardState {}
+
+class ErrorUpdateApelPengolahanCardState extends ApelPengolahanCardState {}
