@@ -15,10 +15,12 @@ import 'package:patuhfy/blocs/cek_rutin_sortasi/cek_rutin_sortasi_card/cek_rutin
 import 'package:patuhfy/blocs/cek_rutin_sortasi/cek_rutin_sortasi_form/cek_rutin_sortasi_form_cubit.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_card/cek_sampel_losis_card_cubit.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_form/estetika_pabrik_form_cubit.dart';
+import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_list/cek_sampel_losis_list_cubit.dart';
 import 'package:patuhfy/blocs/check_update_app/check_update_app_cubit.dart';
 import 'package:patuhfy/blocs/connectivity/connectivity_cubit.dart';
 import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_card/estetika_pabrik_card_cubit.dart';
 import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_form/estetika_pabrik_form_cubit.dart';
+import 'package:patuhfy/blocs/estetika_pabrik/estetika_pabrik_list/estetika_pabrik_list_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_card/inspeksi_hanca_card_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_hanca/inspeksi_hanca_form/inspeksi_hanca_form_cubit.dart';
 import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_card/inspeksi_tph_card_cubit.dart';
@@ -67,6 +69,8 @@ import 'package:patuhfy/blocs/selectbox_mandorks/selectbox_mandorks_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_pemanen/selectbox_pemanen_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_sampel_losis/selectbox_sampel_losis_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_stasiun/selectbox_stasiun_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_stasiun_es/selectbox_stasiun_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_stasiun_sl/selectbox_stasiun_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_tenaga_pengoperasian/selectbox_tenaga_pengoperasian_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_waktu_pengamatan/selectbox_waktu_pengamatan_cubit.dart';
 import 'package:patuhfy/blocs/sync_masterdata/sync_masterdata_cubit.dart';
@@ -150,6 +154,14 @@ Future<void> main() async {
         BlocProvider(
           create: (context) =>
               SelectboxStasiunCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxStasiunESCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxStasiunSLCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (context) =>
@@ -239,6 +251,14 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               PencurianTbsListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              EstetikaPabrikListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              CekSampelLosisListCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>
