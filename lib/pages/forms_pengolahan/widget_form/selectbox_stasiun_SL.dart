@@ -2,12 +2,13 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/selectbox_stasiun/selectbox_stasiun_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_stasiun_sl/selectbox_stasiun_cubit.dart';
 import 'package:patuhfy/models/stasiun_model.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/text_style.dart';
 
-class SelectboxStasiun extends StatelessWidget {
-  const SelectboxStasiun(
+class SelectboxStasiunSL extends StatelessWidget {
+  const SelectboxStasiunSL(
       {super.key,
       this.titleName,
       this.isTitleName,
@@ -20,7 +21,7 @@ class SelectboxStasiun extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SelectboxStasiunCubit>(context).getData();
+    BlocProvider.of<SelectboxStasiunSLCubit>(context).getData();
     Widget _customPopupItemBuilderExample2(
         BuildContext context, StasiunModel item, bool isSelected) {
       return Container(
@@ -75,7 +76,7 @@ class SelectboxStasiun extends StatelessWidget {
             onChangeFunc!(value);
           },
           asyncItems: (String? filter) =>
-              BlocProvider.of<SelectboxStasiunCubit>(context).getData(),
+              BlocProvider.of<SelectboxStasiunSLCubit>(context).getData(),
           itemAsString: (StasiunModel u) => u.userAsString(),
           popupProps: PopupPropsMultiSelection.modalBottomSheet(
             showSelectedItems: true,

@@ -17,7 +17,7 @@ class EstetikaPabrikCardCubit extends Cubit<EstetikaPabrikCardState> {
       : super(IsEstetikaPabrikAswered(false, null));
 
   checkIsAnwered(String taskDate) async {
-    // List<EstetikaPabrikFormModel> cekData;
+    List<EstetikaPabrikFormModel> cekData;
     final connectivityResult = await (Connectivity()
         .checkConnectivity()); // cCheck if there is connection post to local and database
 

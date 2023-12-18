@@ -1262,6 +1262,38 @@ class RemoteDataSource {
       // return err.response.toString();
     }
   }
+  Future<StasiunModelResponse> getAllStasiunES(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-stasiun-ep",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return StasiunModelResponse(
+          stasiunModel:
+              parsedData.map((value) => StasiunModel.fromJson(value)).toList());
+    } on DioError {
+      return StasiunModelResponse(stasiunModel: []);
+      // return err.response.toString();
+    }
+  }
+  Future<StasiunModelResponse> getAllStasiunSL(String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-stasiun-sl",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return StasiunModelResponse(
+          stasiunModel:
+              parsedData.map((value) => StasiunModel.fromJson(value)).toList());
+    } on DioError {
+      return StasiunModelResponse(stasiunModel: []);
+      // return err.response.toString();
+    }
+  }
 
   Future<KebunModelResponse> getKebunByCompany(token, company) async {
     try {

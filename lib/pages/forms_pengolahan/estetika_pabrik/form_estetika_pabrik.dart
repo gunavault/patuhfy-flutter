@@ -9,6 +9,7 @@ import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_jenis_kebersihan.dart';
 import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun_ES.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_waktu_pengamatan.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 import 'package:patuhfy/utils/common_method.dart';
@@ -155,7 +156,7 @@ class FormEstetikaPabrik extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxStasiun(
+                        SelectboxStasiunES(
                           titleName: "Stasiun",
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxStasiun,

@@ -2,6 +2,7 @@ import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/cek_sampel_losis/cek_sampel_losis_card/cek_sampel_losis_card_cubit.dart';
+import 'package:patuhfy/pages/forms/cek_sampel_losis/list_cek_sampel_losis.dart';
 import 'package:patuhfy/pages/forms_pengolahan/cek_sampel_losis/form_cek_sampel_losis.dart';
 
 import 'package:patuhfy/pages/network/disconnected.dart';
@@ -35,8 +36,8 @@ class CekSampelLosisCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                return CekSampelLosisDetailCard(
-                  dataForm: state.dataForm,
+                return ListCekSampelLosis(
+                  selectedDate: selectedDate,
                 );
               },
             );
@@ -54,7 +55,7 @@ class CekSampelLosisCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormCekSampelLosis(
+                              builder: (context) => ListCekSampelLosis(
                                 selectedDate: selectedDate,
                               ),
                             ),

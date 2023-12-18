@@ -188,7 +188,7 @@ class FormCekRutinSortasi extends StatelessWidget {
           child: Scaffold(
             backgroundColor: CommonColors.whiteColor,
             appBar: AppBarView(
-              title: "Form Monitoring Ipal",
+              title: "Form Rutin Sortasi",
               firstIcon: Icons.arrow_back_ios_new_rounded,
               onBackPress: () {
                 Navigator.pop(context);
