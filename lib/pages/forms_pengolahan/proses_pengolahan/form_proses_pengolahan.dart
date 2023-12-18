@@ -13,6 +13,7 @@ import 'package:patuhfy/pages/forms/widget_form/upload_foto.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kebun.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_kondisi_proses.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun.dart';
+import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_stasiun_ES.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_tenaga_pengoperasian.dart';
 import 'package:patuhfy/pages/forms_pengolahan/widget_form/selectbox_waktu_pengamatan.dart';
 import 'package:patuhfy/utils/common_colors.dart';
@@ -166,7 +167,7 @@ class FormProsesPengolahan extends StatelessWidget {
                         top: 20, left: 26, right: 26, bottom: 10),
                     child: Column(
                       children: [
-                        SelectboxStasiun(
+                        SelectboxStasiunES(
                           titleName: "Stasiun",
                           isTitleName: true,
                           onChangeFunc: onChangeSelectboxStasiun,

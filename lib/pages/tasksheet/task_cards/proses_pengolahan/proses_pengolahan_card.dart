@@ -2,6 +2,7 @@ import 'package:floating_snackbar/floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_card/proses_pengolahan_card_cubit.dart';
+import 'package:patuhfy/pages/forms/proses_pengolahan/list_proses_pengolahan.dart';
 import 'package:patuhfy/pages/forms_pengolahan/proses_pengolahan/form_proses_pengolahan.dart';
 import 'package:patuhfy/pages/network/disconnected.dart';
 import 'package:patuhfy/pages/tasksheet/task_cards/proses_pengolahan/proses_pengolahan_detail_card.dart';
@@ -27,8 +28,8 @@ class ProsesPengolahanCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
-                return ProsesPengolahanDetailCard(
-                  dataForm: state.dataForm,
+                return ListProsesPengolahan(
+                  selectedDate: selectedDate,
                 );
               },
             );
@@ -46,7 +47,7 @@ class ProsesPengolahanCard extends StatelessWidget {
                         if (isToday) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => FormProsesPengolahan(
+                              builder: (context) => ListProsesPengolahan(
                                 selectedDate: selectedDate,
                               ),
                             ),

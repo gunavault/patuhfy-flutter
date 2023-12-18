@@ -36,6 +36,7 @@ import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_lis
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_card/proses_pengolahan_card_cubit.dart';
 import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_form/proses_pengolahan_form_cubit.dart';
+import 'package:patuhfy/blocs/proses_pengolahan/proses_pengolahan_list/proses_pengolahan_list_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_card/real_pemeliharaan_jalan_card_cubit.dart';
 import 'package:patuhfy/blocs/real_pemeliharaan_jalan/real_pemeliharaan_jalan_form/real_pemeliharaan_jalan_form_cubit.dart';
 import 'package:patuhfy/blocs/real_pemupukan/real_pemupukan_card/real_pemupukan_card_cubit.dart';
@@ -259,6 +260,10 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) =>
               CekSampelLosisListCubit(localDataSource, remoteDataSource),
+        ),
+                BlocProvider(
+          create: (BuildContext context) =>
+              ProsesPengolahanListCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>
