@@ -45,6 +45,7 @@ class PelaporanKerusakanAlatFormModel {
     namaAlat = json["NAMA_ALAT"];
     createdBy = json["CREATED_BY"];
     namaPks = json["NAMA_PKS"];
+    status = json["STATUS"];
   }
 
   Map<String, dynamic> toJson() {

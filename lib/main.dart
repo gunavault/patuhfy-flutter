@@ -28,8 +28,12 @@ import 'package:patuhfy/blocs/inspeksi_tph/inspeksi_tph_form/inspeksi_tph_form_c
 import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_card/lap_kerusakan_card_cubit.dart';
 import 'package:patuhfy/blocs/lap_kerusakan/lap_kerusakan_form/lap_kerusakan_form_cubit.dart';
 import 'package:patuhfy/blocs/page/page_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/analisa_kerusakan_alat_form/analisa_kerusakan_alat_form_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/analisa_kerusakan_alat_list/analisa_kerusakan_alat_list_cubit.dart';
 import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_form/pelaporan_kerusakan_alat_form_cubit.dart';
 import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_list/pelaporan_kerusakan_alat_list_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/penyelesaian_kerusakan_alat_form/penyelesaian_kerusakan_alat_form_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/penyelesaian_kerusakan_alat_list/penyelesaian_kerusakan_alat_list_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_card/pencurian_tbs_card_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_form/pencurian_tbs_form_cubit.dart';
 import 'package:patuhfy/blocs/pencurian_tbs/pencurian_tbs_list/pencurian_tbs_list_cubit.dart';
@@ -62,6 +66,7 @@ import 'package:patuhfy/blocs/selectbox_alat_by_stasiun/selectbox_alat_by_stasiu
 import 'package:patuhfy/blocs/selectbox_blok/selectbox_blok_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_blok_pengolahan/selectbox_blok_pengolahan_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_jenis_kebersihan/selectbox_jenis_kebersihan_cubit.dart';
+import 'package:patuhfy/blocs/selectbox_jenis_kerusakan/selectbox_jenis_kerusakan_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_jenis_sampel/selectbox_jenis_sampel_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_kebun/selectbox_kebun_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_kondisi_pks/selectbox_kondisi_pks_cubit.dart';
@@ -191,6 +196,10 @@ Future<void> main() async {
         BlocProvider(
           create: (context) =>
               SelectboxJenisKebersihanCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SelectboxJenisKerusakanCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (context) => SelectboxTenagaPengoperasianCubit(
@@ -351,7 +360,23 @@ Future<void> main() async {
         ),
         BlocProvider(
           create: (BuildContext context) =>
+              AnalisakerusakanAlatListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              PenyelesaiankerusakanAlatListCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
               RtlDetailUpdateStatusFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              AnalisakerusakanAlatFormCubit(localDataSource, remoteDataSource),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              PenyelesaiankerusakanAlatFormCubit(localDataSource, remoteDataSource),
         ),
         BlocProvider(
           create: (BuildContext context) =>

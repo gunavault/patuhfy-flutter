@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:patuhfy/blocs/tabs/tab_cubit.dart';
 import 'package:patuhfy/models/user_model.dart';
+import 'package:patuhfy/pages/network/noacces.dart';
 import 'package:patuhfy/pages/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_page.dart';
 import 'package:patuhfy/pages/rtl/rtl_page.dart';
 import 'package:patuhfy/pages/tasksheet/tasksheet_page.dart';
@@ -13,6 +14,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class HomePageV2 extends StatelessWidget {
   final UserModel userModel;
+    DateTime dateNow = DateTime.now();
+
   HomePageV2({Key? key, required this.userModel}) : super(key: key);
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -40,8 +43,16 @@ class HomePageV2 extends StatelessWidget {
         );
       }
     } else {
+      // Check if the user has the role 'asisten_qc'
+      if (userModel.role == 'ASISTEN_QC') {
+        // Display an alternative page or show an error message
+                return Center(
+          child: NoAccessWidget(),
+        );
+      }
+
       if (activeTab == TabState.approval) {
-        return const PelaporanKerusakanAlatPage(
+        return PelaporanKerusakanAlatPage(
           key: PageStorageKey('pelaporan_kerusakan_alat'),
         );
       }

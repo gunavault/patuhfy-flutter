@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_list/pelaporan_kerusakan_alat_list_cubit.dart';
 import 'package:patuhfy/utils/common_colors.dart';
 
 class FilterMenuKerusakanAlat extends StatefulWidget {
@@ -12,6 +14,13 @@ class FilterMenuKerusakanAlat extends StatefulWidget {
 class _FilterMenuKerusakanAlatState extends State<FilterMenuKerusakanAlat> {
   bool _inProgress = true;
   bool _inDone = false;
+  refreshData(){
+    if (!_inProgress) {
+      BlocProvider.of<PelaporanKerusakanAlatListCubit>(context).getData('OPEN');
+    } else {
+      BlocProvider.of<PelaporanKerusakanAlatListCubit>(context).getData('CLOSE');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,7 @@ class _FilterMenuKerusakanAlatState extends State<FilterMenuKerusakanAlat> {
                 const TextStyle(color: false ? Colors.white : Colors.black),
             selected: _inProgress,
             onSelected: (bool selected) {
-              // refreshData();
+              refreshData();
               setState(() {
                 _inProgress = true;
                 _inDone = false;
@@ -53,6 +62,7 @@ class _FilterMenuKerusakanAlatState extends State<FilterMenuKerusakanAlat> {
                 const TextStyle(color: false ? Colors.white : Colors.black),
             selected: _inDone,
             onSelected: (bool selected) {
+              refreshData();
               setState(() {
                 _inProgress = false;
                 _inDone = true;

@@ -15,16 +15,16 @@ class PelaporanKerusakanAlatListCubit
   PelaporanKerusakanAlatListCubit(this.localDataSource, this.remoteDataSource)
       : super(LoadingPelaporanKerusakanAlatListState());
 
-  getData() async {
+  getData(String STATUS) async {
     emit(LoadingPelaporanKerusakanAlatListState());
     UserModel userModel = await localDataSource.getCurrentUser();
     PelaporanKerusakanAlatListModelSelectResponse response =
         await remoteDataSource.getPelaporanKerusakanAlatByCreatedBy(
-            '', userModel.nik_sap, userModel.token);
+            userModel.psa, STATUS, userModel.token);
 
     List<PelaporanKerusakanAlatFormModel> data = response.dataForm;
 
-    print('apa neeeeeee $response');
+    print('apa neeeeeee5555 ${response.status_code}');
     if (response.status_code == 200) {
       emit(SuccessPelaporanKerusakanAlatListState(data, userModel));
     } else {

@@ -27,7 +27,7 @@ class PelaporanKerusakanAlatCardCubit
 
       PelaporanKerusakanAlatFormModelSelectResponse response =
           await RemoteDataSource().getPelaporanKerusakanAlatByTanggal(
-              taskDate.toString(), userModel.nik_sap, userModel.token);
+              userModel.psa.toString(), userModel, userModel.token);
       print('data dari remote ${response.dataForm.length}');
       if (response.dataForm.length > 0) {
         print('kesini');

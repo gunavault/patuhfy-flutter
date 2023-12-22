@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:patuhfy/blocs/auth_session/auth_session_cubit.dart';
 import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_list/pelaporan_kerusakan_alat_list_cubit.dart';
+import 'package:patuhfy/models/pelaporan_kerusakan_alat_form_model.dart';
+import 'package:patuhfy/models/user_model.dart';
 import 'package:patuhfy/pages/forms_pengolahan/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_form.dart';
 import 'package:patuhfy/pages/network/notfound.dart';
+import 'package:patuhfy/pages/pelaporan_kerusakan_alat/Analisa%20Laporan/analisa_laporan_kerusakan_list_v2.dart';
 import 'package:patuhfy/pages/pelaporan_kerusakan_alat/widget/pelaporan_kerusakan_alat_page_card.dart';
 import 'package:patuhfy/pages/tasksheet/widget/filter_menu.dart';
 import 'package:patuhfy/pages/tasksheet/widget/filter_menu_kerusakan_alat.dart';
@@ -14,11 +18,23 @@ class PelaporanKerusakanAlatPage extends StatelessWidget {
   const PelaporanKerusakanAlatPage({super.key});
 
   void _getData(context) {
-    BlocProvider.of<PelaporanKerusakanAlatListCubit>(context).getData();
   }
+
 
   @override
   Widget build(BuildContext context) {
+    
+    BlocProvider.of<PelaporanKerusakanAlatListCubit>(context).getData('OPEN');
+        void _onClickFunction(PelaporanKerusakanAlatFormModel data, UserModel userModel) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AnalisaKerusakanAlatListV2(
+                    dataForm: data,
+                    userModel: userModel,
+                  )));
+    }
+
     _getData(context);
     return Scaffold(
       floatingActionButton: Padding(
@@ -127,11 +143,12 @@ class PelaporanKerusakanAlatPage extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: state.dataForm.length,
                       itemBuilder: (BuildContext context, int index) {
+
                         return PelaporanKerusakanAlatPageCard(
                           data: state.dataForm[index],
                           onClickFunction: () {
-                            // _onClickFunction(
-                            //     state.dataForm[index], state.userModel);
+                            _onClickFunction(
+                                state.dataForm[index], state.userModel);
                           },
                         );
                       },

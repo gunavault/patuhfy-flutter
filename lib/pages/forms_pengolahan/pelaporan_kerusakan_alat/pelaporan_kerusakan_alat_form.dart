@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_form/pelaporan_kerusakan_alat_form_cubit.dart';
+import 'package:patuhfy/blocs/pelaporan_kerusakan_alat/pelaporan_kerusakan_alat_list/pelaporan_kerusakan_alat_list_cubit.dart';
 import 'package:patuhfy/blocs/performa_list/performa_cubit.dart';
 import 'package:patuhfy/blocs/selectbox_alat_by_stasiun/selectbox_alat_by_stasiun_cubit.dart';
 import 'package:patuhfy/configs/styles.dart';
@@ -99,8 +100,7 @@ class FormPelaporanKerusakanAlat extends StatelessWidget {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             showAlertSuccessOkActionV2(
                 context, PelaporanKerusakanAlatFormState.message, () {
-              BlocProvider.of<PerformaCubit>(context).getData();
-
+              BlocProvider.of<PelaporanKerusakanAlatListCubit>(context).getData('OPEN');
               Navigator.pop(context);
             });
           } else if (PelaporanKerusakanAlatFormState

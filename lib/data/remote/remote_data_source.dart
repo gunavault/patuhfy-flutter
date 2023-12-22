@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:patuhfy/configs/constants.dart';
 import 'package:patuhfy/models/afdeling_model.dart';
 import 'package:patuhfy/models/alat_by_stasiun_model.dart';
+import 'package:patuhfy/models/analisa_kerusakan_alat_form_model.dart';
 import 'package:patuhfy/models/apel_pagi_form_model.dart';
 import 'package:patuhfy/models/apel_pagi_pengolahan_form_model.dart';
 import 'package:patuhfy/models/apel_pengolahan_model.dart';
@@ -12,6 +13,7 @@ import 'package:patuhfy/models/estetika_pabrik_model.dart';
 import 'package:patuhfy/models/inspeksi_hanca_form_model.dart';
 import 'package:patuhfy/models/inspeksi_tph_form_model.dart';
 import 'package:patuhfy/models/jenis_kebersihan_model.dart';
+import 'package:patuhfy/models/jenis_kerusakan_model.dart';
 import 'package:patuhfy/models/kondisi_pks_model.dart';
 import 'package:patuhfy/models/kebun_model.dart';
 import 'package:patuhfy/models/kondisi_proses_model.dart';
@@ -22,6 +24,7 @@ import 'package:patuhfy/models/mandor_model.dart';
 import 'package:patuhfy/models/pelaporan_kerusakan_alat_form_model.dart';
 import 'package:patuhfy/models/pemanen_model.dart';
 import 'package:patuhfy/models/pencurian_tbs_form_model.dart';
+import 'package:patuhfy/models/penyelesaian_kerusakan_alat_form_model.dart';
 import 'package:patuhfy/models/peroftma_model.dart';
 import 'package:patuhfy/models/proses_pengolahan_form_model.dart';
 import 'package:patuhfy/models/real_pemeliharaan_jalan_form_model.dart';
@@ -759,7 +762,7 @@ class RemoteDataSource {
 
       dynamic callback = response.data;
       List<dynamic> parsedData = callback['data'];
-      print('parsedData ${callback['status_code']}');
+      print('parsedDataerdrtr ${callback}');
 
       return RtlDetailListModelSelectResponse(
           status_code: callback['status_code'],
@@ -774,6 +777,101 @@ class RemoteDataSource {
           dataForm: [RtlDetailListModel()]);
     }
   }
+  Future<AnalisaKerusakanAlatListModelSelectResponse> getDataListAnalisaKerusakanAlatByRowstampAcuan(
+      rowstampAcuan, token) async {
+    try {
+      var dio = Dio();
+      print('adas rowasdstamp $rowstampAcuan');
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/analisa-kerusakan/get-data-by-rowstamp?ROWSTAMP_ACUAN=$rowstampAcuan",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('parsedDdsfdsata ${callback['status_code']}');
+
+      return AnalisaKerusakanAlatListModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => AnalisaKerusakanAlatModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      
+      return AnalisaKerusakanAlatListModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [AnalisaKerusakanAlatModel()]);
+    }
+  }
+  Future<PenyelesaianKerusakanAlatListModelSelectResponse> getDataListPenyelesaianKerusakanAlatByRowstampAcuan(
+      rowstampAcuan, token) async {
+    try {
+      var dio = Dio();
+      print('adas rowasdstamp $rowstampAcuan');
+      var response = await dio.get(
+          "$baseUrl/tasksheet-pengolahan/Penyelesaian-kerusakan/get-data-by-rowstamp?ROWSTAMP_ACUAN=$rowstampAcuan",
+          options: optionAuth(token));
+
+      dynamic callback = response.data;
+      List<dynamic> parsedData = callback['data'];
+      print('parsedDdsfdsata ${callback['status_code']}');
+
+      return PenyelesaianKerusakanAlatListModelSelectResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg'],
+          dataForm: parsedData
+              .map((value) => PenyelesaianKerusakanAlatModel.fromJson(value))
+              .toList());
+    } on DioError catch (err) {
+      
+      return PenyelesaianKerusakanAlatListModelSelectResponse(
+          status_code: 500,
+          message: err.response.toString(),
+          dataForm: [PenyelesaianKerusakanAlatModel()]);
+    }
+  }
+
+  Future<AnalisaKerusakanAlatModelResponse> createAnalisaKerusakanAlat(
+      token, AnalisaKerusakanAlatModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/analisa-kerusakan",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return AnalisaKerusakanAlatModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return AnalisaKerusakanAlatModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+  
+    Future<PenyelesaianKerusakanAlatModelResponse> createPenyelesaianKerusakanAlat(
+      token, PenyelesaianKerusakanAlatModel dataForm) async {
+    try {
+      var dio = Dio();
+      print('data yang mau dikirin ${dataForm.toJson()}');
+      var response = await dio.post(
+          "$baseUrl/tasksheet-pengolahan/penyelesaian-kerusakan",
+          data: dataForm.toJson(),
+          options: optionAuth(token));
+      dynamic callback = response.data;
+      return PenyelesaianKerusakanAlatModelResponse(
+          status_code: int.parse(callback['status_code']),
+          message: callback['msg']);
+    } on DioError catch (err) {
+      print('errornya apa ${err.error}');
+      return PenyelesaianKerusakanAlatModelResponse(
+          message: err.response.toString(), status_code: 500);
+    }
+  }
+
 
   Future<RtlUpdateStatusFormModelResponse> updateStatusRtl(
       token, RtlUpdateStatusFormModel dataForm) async {
@@ -1200,12 +1298,12 @@ class RemoteDataSource {
   }
 
   Future<PelaporanKerusakanAlatFormModelSelectResponse>
-      getPelaporanKerusakanAlatByTanggal(tanggal, createdBy, token) async {
+      getPelaporanKerusakanAlatByTanggal(PSA, STATUS, token) async {
     try {
       var dio = Dio();
 
       var response = await dio.get(
-          "$baseUrl/tasksheet-pengolahan/pelaporan-kerusakan/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          "$baseUrl/tasksheet-pengolahan/pelaporan-kerusakan/get-data-by-PSA?PSA=$PSA&STATUS=$STATUS",
           options: optionAuth(token));
 
       dynamic callback = response.data;
@@ -1223,16 +1321,18 @@ class RemoteDataSource {
   }
 
   Future<PelaporanKerusakanAlatListModelSelectResponse>
-      getPelaporanKerusakanAlatByCreatedBy(tanggal, createdBy, token) async {
+      getPelaporanKerusakanAlatByCreatedBy(PSA, STATUS, token) async {
     try {
       var dio = Dio();
-      print('aaa  ${createdBy}');
+            print('apa nihh response yang minii ${"$baseUrl/tasksheet-pengolahan/pelaporan-kerusakan/get-data-by-PSA?PSA=$PSA&STATUS=$STATUS"} ');
+
       var response = await dio.get(
-          "$baseUrl/tasksheet-pengolahan/pelaporan-kerusakan/get-data-by-date-createdby?TANGGAL=$tanggal&CREATED_BY=$createdBy",
+          "$baseUrl/tasksheet-pengolahan/pelaporan-kerusakan/get-data-by-psa?PSA=$PSA&STATUS=$STATUS",
           options: optionAuth(token));
-      print('apa nihh ${response}');
       dynamic callback = response.data;
-      List<dynamic> parsedData = callback['data'];
+      List<dynamic> parsedData = callback['data'] != null  ? callback['data'] : [];
+            print('apa nihh response yang minii 99999 ${callback['data']}');
+
       return PelaporanKerusakanAlatListModelSelectResponse(
           status_code: int.parse(callback['status_code']),
           message: callback['msg'],
@@ -1386,6 +1486,26 @@ class RemoteDataSource {
               .toList());
     } on DioError {
       return JenisKebersihanModelResponse(jenisKebersihanModel: []);
+      // return err.response.toString();
+    }
+  }
+
+
+  Future<JenisKerusakanModelResponse> getAllJenisKerusakan(
+      String token) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.get("$baseUrl/masterdata/get-jenis-kerusakan",
+          options: optionAuth(token));
+
+      List<dynamic> parsedData = response.data['data'];
+      return JenisKerusakanModelResponse(
+          jeniskerusakanmodel: parsedData
+              .map((value) => JenisKerusakanModel.fromJson(value))
+              .toList());
+    } on DioError {
+      return JenisKerusakanModelResponse(jeniskerusakanmodel: []);
       // return err.response.toString();
     }
   }

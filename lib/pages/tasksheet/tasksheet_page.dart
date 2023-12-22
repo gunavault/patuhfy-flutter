@@ -72,7 +72,7 @@ class Tasksheet extends StatelessWidget {
 
         if (userModel.role != 'MANAGER') {
           commonCards.addAll([
-            PencurianTbsCard(selectedDate: state.selectedDate, isToday: isToday),
+            // PencurianTbsCard(selectedDate: state.selectedDate, isToday: isToday),
             // LapKerusakanCard(selectedDate: state.selectedDate, isToday: isToday),
             RealPemupukanCard(
                 selectedDate: state.selectedDate, isToday: isToday),
